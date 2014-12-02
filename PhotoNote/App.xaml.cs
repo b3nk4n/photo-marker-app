@@ -7,6 +7,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using PhotoNote.Resources;
+using PhoneKit.Framework.Support;
 
 namespace PhotoNote
 {
@@ -23,8 +24,13 @@ namespace PhotoNote
         /// </summary>
         public App()
         {
-            // Globaler Handler für nicht abgefangene Ausnahmen.
+#if !DEBUG
+            // Initialize BugSense
+            BugSenseHandler.Instance.InitAndStartSession(new ExceptionManager(Current), RootFrame, "10cc8bf4");
+#else
+            // Global handler for uncaught exceptions.
             UnhandledException += Application_UnhandledException;
+#endif
 
             // Standard-XAML-Initialisierung
             InitializeComponent();
@@ -84,6 +90,8 @@ namespace PhotoNote
         // Code, der bei einem Navigationsfehler ausgeführt wird
         private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
+            ErrorReportingManager.Instance.Save(e.Exception, AppResources.ApplicationVersion, AppResources.ResourceLanguage);
+
             if (Debugger.IsAttached)
             {
                 // Navigationsfehler. Unterbrechen und Debugger öffnen
@@ -94,6 +102,8 @@ namespace PhotoNote
         // Code, der bei Ausnahmefehlern ausgeführt wird
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
+            ErrorReportingManager.Instance.Save(e.ExceptionObject, AppResources.ApplicationVersion, AppResources.ResourceLanguage);
+
             if (Debugger.IsAttached)
             {
                 // Ein Ausnahmefehler ist aufgetreten. Unterbrechen und Debugger öffnen
@@ -114,11 +124,14 @@ namespace PhotoNote
 
             // Frame erstellen, aber noch nicht als RootVisual festlegen. Dadurch kann der Begrüßungsbildschirm
             // aktiv bleiben, bis die Anwendung bereit für das Rendern ist.
-            RootFrame = new PhoneApplicationFrame();
+            RootFrame = new TransitionFrame();
             RootFrame.Navigated += CompleteInitializePhoneApplication;
 
             // Navigationsfehler behandeln
             RootFrame.NavigationFailed += RootFrame_NavigationFailed;
+
+            // Assign the custom URI mapper class to the application frame.
+            //RootFrame.UriMapper = new CustomUriMapper();
 
             // Behandeln Sie Rücksetzanforderungen zum Löschen des Backstack
             RootFrame.Navigated += CheckForResetNavigation;
@@ -136,6 +149,10 @@ namespace PhotoNote
 
             // Dieser Handler wird nicht mehr benötigt und kann entfernt werden
             RootFrame.Navigated -= CompleteInitializePhoneApplication;
+
+            ErrorReportingManager.Instance.CheckAndReport(
+                AppResources.FeedbackEmail,
+                string.Format("[{0}] Error Report", AppResources.ApplicationTitle));
         }
 
         private void CheckForResetNavigation(object sender, NavigationEventArgs e)

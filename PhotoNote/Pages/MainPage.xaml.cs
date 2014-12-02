@@ -18,24 +18,30 @@ namespace PhotoNote.Pages
         {
             InitializeComponent();
 
-            // Beispielcode zur Lokalisierung der ApplicationBar
-            //BuildLocalizedApplicationBar();
+            BuildLocalizedApplicationBar();
         }
 
-        // Beispielcode zur Erstellung einer lokalisierten ApplicationBar
-        //private void BuildLocalizedApplicationBar()
-        //{
-        //    // ApplicationBar der Seite einer neuen Instanz von ApplicationBar zuweisen
-        //    ApplicationBar = new ApplicationBar();
+        /// <summary>
+        /// Builds the localized app bar.
+        /// </summary>
+        private void BuildLocalizedApplicationBar()
+        {
+            // ApplicationBar der Seite einer neuen Instanz von ApplicationBar zuweisen
+            ApplicationBar = new ApplicationBar();
+            ApplicationBar.Opacity = 0.99;
 
-        //    // Eine neue Schaltfläche erstellen und als Text die lokalisierte Zeichenfolge aus AppResources zuweisen.
-        //    ApplicationBarIconButton appBarButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.add.rest.png", UriKind.Relative));
-        //    appBarButton.Text = AppResources.AppBarButtonText;
-        //    ApplicationBar.Buttons.Add(appBarButton);
+            // button
+            //ApplicationBarIconButton appBarButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.add.rest.png", UriKind.Relative));
+            //appBarButton.Text = AppResources.AppBarButtonText;
+            //ApplicationBar.Buttons.Add(appBarButton);
 
-        //    // Ein neues Menüelement mit der lokalisierten Zeichenfolge aus AppResources erstellen
-        //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
-        //    ApplicationBar.MenuItems.Add(appBarMenuItem);
-        //}
+            // about
+            ApplicationBarMenuItem appBarAboutMenuItem = new ApplicationBarMenuItem(AppResources.AboutTitle);
+            appBarAboutMenuItem.Click += (s, e) =>
+            {
+                NavigationService.Navigate(new Uri("/Pages/AboutPage.xaml", UriKind.Relative));
+            };
+            ApplicationBar.MenuItems.Add(appBarAboutMenuItem);
+        }
     }
 }
