@@ -70,6 +70,24 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die save ähnelt.
+        /// </summary>
+        public static string AppBarSave {
+            get {
+                return ResourceManager.GetString("AppBarSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die edit picture ähnelt.
+        /// </summary>
+        public static string AppBarSelectPicture {
+            get {
+                return ResourceManager.GetString("AppBarSelectPicture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die by Benjamin Sautermeister ähnelt.
         /// </summary>
         public static string ApplicationAuthor {
@@ -124,6 +142,33 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die choose a picture you would like to edit... ähnelt.
+        /// </summary>
+        public static string InfoChoosePhoto {
+            get {
+                return ResourceManager.GetString("InfoChoosePhoto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Launching the photo information app could not be started. I&apos;m very sorry! ähnelt.
+        /// </summary>
+        public static string MessageBoxNoInfo {
+            get {
+                return ResourceManager.GetString("MessageBoxNoInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Warning ähnelt.
+        /// </summary>
+        public static string MessageBoxWarning {
+            get {
+                return ResourceManager.GetString("MessageBoxWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die more apps ähnelt.
         /// </summary>
         public static string MoreApps {
@@ -165,6 +210,15 @@ namespace PhotoNote.Resources {
         public static string ResourceLanguage {
             get {
                 return ResourceManager.GetString("ResourceLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die show picture information ähnelt.
+        /// </summary>
+        public static string ShowPhotoInfo {
+            get {
+                return ResourceManager.GetString("ShowPhotoInfo", resourceCulture);
             }
         }
         

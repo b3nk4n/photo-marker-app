@@ -20,7 +20,7 @@ namespace PhotoNote.Pages
         /// The photo chooser task.
         /// </summary>
         /// <remarks>Must be defined at class level to work properly in tombstoning.</remarks>
-        private static PhotoChooserTask photoTask = new PhotoChooserTask();
+        private static readonly PhotoChooserTask photoTask = new PhotoChooserTask();
 
         /// <summary>
         /// The selected file name (for delayed opening).
@@ -70,8 +70,8 @@ namespace PhotoNote.Pages
             ApplicationBar.Opacity = 0.99;
 
             // add tile
-            ApplicationBarIconButton appBarTileButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.tiles.plus.png", UriKind.Relative));
-            appBarTileButton.Text = "add";
+            ApplicationBarIconButton appBarTileButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.image.select.png", UriKind.Relative));
+            appBarTileButton.Text = AppResources.AppBarSelectPicture;
             appBarTileButton.Click += (s, e) =>
             {
                 try
@@ -94,6 +94,11 @@ namespace PhotoNote.Pages
                 NavigationService.Navigate(new Uri("/Pages/AboutPage.xaml", UriKind.Relative));
             };
             ApplicationBar.MenuItems.Add(appBarAboutMenuItem);
+        }
+
+        private void ChoosePhotoClicked(object sender, RoutedEventArgs e)
+        {
+            photoTask.Show();
         }
     }
 }

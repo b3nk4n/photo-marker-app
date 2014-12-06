@@ -18,13 +18,13 @@ using System.Windows.Ink;
 using System.Windows.Media;
 using PhoneKit.Framework.Core.Graphics;
 using System.IO;
+using PhotoNote.Resources;
+using PhotoNote.Helpers;
 
 namespace PhotoNote.Pages
 {
     public partial class EditPage : PhoneApplicationPage
     {
-        private MediaLibrary _mediaLibrary;
-
         private string currentImageName;
 
         private Random rand = new Random();
@@ -46,13 +46,24 @@ namespace PhotoNote.Pages
             ApplicationBar.Opacity = 0.99;
 
             // save tile
-            ApplicationBarIconButton appBarTileButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.tiles.plus.png", UriKind.Relative));
-            appBarTileButton.Text = "save";
+            ApplicationBarIconButton appBarTileButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.save.png", UriKind.Relative));
+            appBarTileButton.Text = AppResources.AppBarSave;
             appBarTileButton.Click += (s, e) =>
             {
                 Save();
             };
             ApplicationBar.Buttons.Add(appBarTileButton);
+
+            // image info (photo info)
+            ApplicationBarMenuItem appBarPhotoInfoMenuItem = new ApplicationBarMenuItem(AppResources.ShowPhotoInfo);
+            appBarPhotoInfoMenuItem.Click += async (s, e) =>
+            {
+                if (!await LauncherHelper.LaunchPhotoInfoAsync(currentImageName))
+                {
+                    MessageBox.Show(AppResources.MessageBoxNoInfo, AppResources.MessageBoxWarning, MessageBoxButton.OK);
+                }
+            };
+            ApplicationBar.MenuItems.Add(appBarPhotoInfoMenuItem);
         }
 
         private void Save()
@@ -63,10 +74,23 @@ namespace PhotoNote.Pages
                 gfx.SaveJpeg(memStream, (int)EditImageContainer.ActualWidth, (int)EditImageContainer.ActualHeight, 0, 100);
                 memStream.Seek(0, SeekOrigin.Begin);
 
-                using (var media = MediaLibrary)
+                using (var media = StaticMediaLibrary.Instance)
                 {
                     var nameWithoutExtension = Path.GetFileNameWithoutExtension(currentImageName);
-                    media.SavePicture(string.Format("{0}_{1}.jpg", nameWithoutExtension, rand.Next(9999)), memStream);
+
+                    // prepend image prefix
+                    if (!nameWithoutExtension.StartsWith(AppConstants.IMAGE_PREFIX))
+                    {
+                        nameWithoutExtension = AppConstants.IMAGE_PREFIX + nameWithoutExtension;
+                    }
+                    else
+                    {
+                        // remove "_XXXX" postfix of previously save photo note
+                        nameWithoutExtension = nameWithoutExtension.Substring(0, nameWithoutExtension.Length - 5);
+                    }
+
+                    // save
+                    media.SavePicture(string.Format("{0}_{1:0000}.jpg", nameWithoutExtension, rand.Next(9999)), memStream);
                 }
             }
             
@@ -161,7 +185,7 @@ namespace PhotoNote.Pages
 
             try
             {
-                image = MediaLibrary.GetPictureFromToken(token);
+                image = StaticMediaLibrary.Instance.GetPictureFromToken(token);
             }
             catch (InvalidOperationException ioex)
             {
@@ -175,7 +199,7 @@ namespace PhotoNote.Pages
         {
             try
             {
-                foreach (var pic in MediaLibrary.Pictures)
+                foreach (var pic in StaticMediaLibrary.Instance.Pictures)
                 {
                     if (pic.Name == fileName)
                     {
@@ -191,7 +215,7 @@ namespace PhotoNote.Pages
 
             // second try, because sometime the file extenstion was not applied.
             // TODO: check if still necessary?!?
-            foreach (var pic in MediaLibrary.Pictures)
+            foreach (var pic in StaticMediaLibrary.Instance.Pictures)
             {
                 var nameWithoutCounter = RemoveImageCopyCounter(fileName);
                 if (pic.Name.Contains(fileName) || fileName.Contains(pic.Name) ||
@@ -249,19 +273,6 @@ namespace PhotoNote.Pages
                 NavigationService.GoBack();
             else
                 App.Current.Terminate();
-        }
-
-        /// <summary>
-        /// Gets the media library
-        /// </summary>
-        public MediaLibrary MediaLibrary
-        {
-            get
-            {
-                if (_mediaLibrary == null)
-                    _mediaLibrary = new MediaLibrary();
-                return _mediaLibrary;
-            }
         }
 
         #region  INK REGION

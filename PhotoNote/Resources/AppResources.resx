@@ -169,4 +169,28 @@
     <value>apps@bsautermeister.de</value>
     <comment>FeedbackDialogControl</comment>
   </data>
+  <data name="InfoChoosePhoto" xml:space="preserve">
+    <value>choose a picture you would like to edit...</value>
+    <comment>MainPage</comment>
+  </data>
+  <data name="AppBarSave" xml:space="preserve">
+    <value>save</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="AppBarSelectPicture" xml:space="preserve">
+    <value>edit picture</value>
+    <comment>Edit Page</comment>
+  </data>
+  <data name="MessageBoxNoInfo" xml:space="preserve">
+    <value>Launching the photo information app could not be started. I'm very sorry!</value>
+    <comment>MessageBox</comment>
+  </data>
+  <data name="MessageBoxWarning" xml:space="preserve">
+    <value>Warning</value>
+    <comment>MessageBox</comment>
+  </data>
+  <data name="ShowPhotoInfo" xml:space="preserve">
+    <value>show picture information</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

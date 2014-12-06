@@ -95,8 +95,10 @@
     <Compile Include="AppConstants.cs" />
     <Compile Include="Controls\LocalizedAboutControl.cs" />
     <Compile Include="CustomUriMapper.cs" />
+    <Compile Include="Helpers\LauncherHelper.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Model\EditPicture.cs" />
+    <Compile Include="Model\StaticMediaLibrary.cs" />
     <Compile Include="Pages\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
@@ -139,6 +141,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\AppBar\appbar.image.select.png" />
+    <Content Include="Assets\AppBar\appbar.save.png" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
