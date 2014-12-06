@@ -40,10 +40,28 @@ namespace PhotoNote.Pages
         /// </summary>
         private MainViewModel _mainViewModel = new MainViewModel();
 
+        /// <summary>
+        /// To ensure the animation is only played once.
+        /// </summary>
+        private bool _imageInAnimationPlayed;
+
         // Konstruktor
         public MainPage()
         {
             InitializeComponent();
+
+            Loaded += (s, e) =>
+            {
+                _mainViewModel.Update();
+                
+
+                if (!_imageInAnimationPlayed)
+                {
+                    HideAllImages();
+                    ImagesInAnimation.Begin();
+                    _imageInAnimationPlayed = true;
+                }
+            };
 
             BuildLocalizedApplicationBar();
 
@@ -96,7 +114,13 @@ namespace PhotoNote.Pages
 
             HideBannerForPremiumVersion();
 
-            _mainViewModel.Update();
+            bool res = _mainViewModel.CheckHasAnyPicture();
+            EmptyButton.Visibility = (!res) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void HideAllImages()
+        {
+            b1.Opacity = b2.Opacity = b3.Opacity = b4.Opacity = b5.Opacity = b6.Opacity = b7.Opacity = b8.Opacity = b9.Opacity = b10.Opacity = 0.0;
         }
 
         /// <summary>

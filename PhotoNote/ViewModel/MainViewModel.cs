@@ -38,6 +38,19 @@ namespace PhotoNote.ViewModel
             });
         }
 
+        public bool CheckHasAnyPicture()
+        {
+            foreach (var picture in StaticMediaLibrary.Instance.Pictures)
+            {
+                if (picture.Name.StartsWith(AppConstants.IMAGE_PREFIX))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public void Update()
         {
             EditPictureList.Clear();
@@ -54,7 +67,6 @@ namespace PhotoNote.ViewModel
                 }
             }
 
-            NotifyPropertyChanged("IsEditPictureListEmpty");
             NotifyPropertyChanged("Picture1");
             NotifyPropertyChanged("Picture2");
             NotifyPropertyChanged("Picture3");
@@ -82,19 +94,14 @@ namespace PhotoNote.ViewModel
             get { return _editPictureList; }
         }
 
-        public bool IsEditPictureListEmpty
-        {
-            get { return _editPictureList.Count == 0; }
-        }
-
         public ImageSource Picture1
         {
-            get { return GetPicture(0); }
+            get { return GetPicture(0, false); }
         }
 
         public ImageSource Picture2
         {
-            get { return GetPicture(1); }
+            get { return GetPicture(1, false); }
         }
 
         public ImageSource Picture3
@@ -137,11 +144,12 @@ namespace PhotoNote.ViewModel
             get { return GetPicture(9); }
         }
 
-        private ImageSource GetPicture(int index) {
+        private ImageSource GetPicture(int index, bool lowQuality = true) {
             if (index < 0 || index >= _editPictureList.Count)
                 return null;
 
             BitmapImage image = new BitmapImage();
+            var stream = (lowQuality) ? _editPictureList[index].ThumbnailImageStream : _editPictureList[index].ImageStream;
             using (var imageStream = _editPictureList[index].ImageStream)
             {
                 if (imageStream == null)
