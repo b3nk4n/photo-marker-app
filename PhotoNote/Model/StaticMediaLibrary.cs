@@ -16,7 +16,7 @@ namespace PhotoNote.Model
         {
             get
             {
-                if (_mediaLibrary == null)
+                if (_mediaLibrary == null || _mediaLibrary.IsDisposed)
                     _mediaLibrary = new MediaLibrary();
                 return _mediaLibrary;
             }

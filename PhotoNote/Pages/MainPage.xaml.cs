@@ -13,6 +13,7 @@ using Microsoft.Phone.Tasks;
 using System.IO;
 using PhoneKit.Framework.Support;
 using PhoneKit.Framework.InAppPurchase;
+using PhotoNote.ViewModel;
 
 namespace PhotoNote.Pages
 {
@@ -33,6 +34,11 @@ namespace PhotoNote.Pages
         /// Used for delayed pin, because there is an issue when we pin directly after the photo-task returns.
         /// </summary>
         private DispatcherTimer _delayedNavigaionTimer = new DispatcherTimer();
+
+        /// <summary>
+        /// The main view model.
+        /// </summary>
+        private MainViewModel _mainViewModel = new MainViewModel();
 
         // Konstruktor
         public MainPage()
@@ -69,6 +75,8 @@ namespace PhotoNote.Pages
                     BannerContainer.Visibility = System.Windows.Visibility.Visible;
                 }
             });
+
+            DataContext = _mainViewModel;
         }
 
         private void HideBannerForPremiumVersion()
@@ -87,6 +95,8 @@ namespace PhotoNote.Pages
             StartupActionManager.Instance.Fire(e);
 
             HideBannerForPremiumVersion();
+
+            _mainViewModel.Update();
         }
 
         /// <summary>

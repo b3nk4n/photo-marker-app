@@ -1,4 +1,5 @@
-﻿using PhotoNote.Model;
+﻿using PhoneKit.Framework.Core.Storage;
+using PhotoNote.Model;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,6 +12,33 @@ namespace PhotoNote.Helpers
 {
     public static class LauncherHelper
     {
+        /// <summary>
+        /// Launches picture in Photo hub.
+        /// </summary>
+        /// <param name="fileName">The file name of the image.</param>
+        /// <returns>True for success, else false.</returns>
+        public static async Task<bool> LaunchPhotoAsync(string fileName)
+        {
+            // search index;
+            EditPicture pic = GetImageFromFileName(fileName);
+
+            var tmpName = string.Format("tmp.{0}", pic.FileType.ToLower());
+
+            if (pic == null)
+                return false;
+
+            var res = StorageHelper.SaveFileFromStream(tmpName, pic.FullImageStream); // TODO: PNG !?!?!
+
+            // return when image not found in library.
+            if (res)
+            {
+                var file = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(StorageHelper.APPDATA_LOCAL_SCHEME + "/" + tmpName));
+                return await Launcher.LaunchFileAsync(file);
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Launches Photo-Info.
         /// </summary>
@@ -37,6 +65,37 @@ namespace PhotoNote.Helpers
         {
             var uriString = string.Format("photoinfo:show?mediaLibIndex={0}", mediaLibIndex);
             return await Launcher.LaunchUriAsync(new Uri(uriString, UriKind.Absolute));
+        }
+
+        private static EditPicture GetImageFromFileName(string fileName)
+        {
+            try
+            {
+                foreach (var pic in StaticMediaLibrary.Instance.Pictures)
+                {
+                    if (pic.Name == fileName)
+                    {
+                        return new EditPicture(pic);
+                    }
+                }
+            }
+            catch (InvalidOperationException ioex)
+            {
+                Debug.WriteLine("Could not retrieve photo from library with error: " + ioex.Message);
+            }
+
+            // second try, because sometime the file extenstion was not applied.
+            // TODO: check if still necessary?!?
+            foreach (var pic in StaticMediaLibrary.Instance.Pictures)
+            {
+                var nameWithoutCounter = RemoveImageCopyCounter(fileName);
+                if (pic.Name.Contains(fileName) || fileName.Contains(pic.Name) ||
+                    pic.Name.Contains(nameWithoutCounter) || pic.Name.Contains(nameWithoutCounter))
+                {
+                    return new EditPicture(pic);
+                }
+            }
+            return null;
         }
 
         private static int GetMediaLibIndexFromFileName(string fileName)
