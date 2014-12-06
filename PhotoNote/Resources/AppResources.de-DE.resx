@@ -181,6 +181,22 @@
     <value>Bild auswählen</value>
     <comment>Edit Page</comment>
   </data>
+  <data name="InAppStoreLoading" xml:space="preserve">
+    <value>lade...</value>
+    <comment>InAppStorePage</comment>
+  </data>
+  <data name="InAppStoreNoProducts" xml:space="preserve">
+    <value>Aktuell gibt es keine In-App-Käufe. Versuchen Sie es später noch einmal.</value>
+    <comment>InAppStorePage</comment>
+  </data>
+  <data name="InAppStorePurchased" xml:space="preserve">
+    <value>gekauft</value>
+    <comment>InAppStorePage</comment>
+  </data>
+  <data name="InAppStoreTitle" xml:space="preserve">
+    <value>erweiterungen</value>
+    <comment>InAppStorePage</comment>
+  </data>
   <data name="MessageBoxNoInfo" xml:space="preserve">
     <value>Leider konnte ich die App zum Anzeigen der Bildinformationen nicht starten. Tut mir wirklich sehr seid!</value>
     <comment>MessageBox</comment>

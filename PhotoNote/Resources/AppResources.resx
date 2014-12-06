@@ -181,6 +181,22 @@
     <value>edit picture</value>
     <comment>Edit Page</comment>
   </data>
+  <data name="InAppStoreLoading" xml:space="preserve">
+    <value>loading...</value>
+    <comment>InAppStorePage</comment>
+  </data>
+  <data name="InAppStoreNoProducts" xml:space="preserve">
+    <value>There are currently no in-app purchases available. Please try again later.</value>
+    <comment>InAppStorePage</comment>
+  </data>
+  <data name="InAppStorePurchased" xml:space="preserve">
+    <value>purchased</value>
+    <comment>InAppStorePage</comment>
+  </data>
+  <data name="InAppStoreTitle" xml:space="preserve">
+    <value>in-app store</value>
+    <comment>InAppStorePage</comment>
+  </data>
   <data name="MessageBoxNoInfo" xml:space="preserve">
     <value>Launching the photo information app could not be started. I'm very sorry!</value>
     <comment>MessageBox</comment>

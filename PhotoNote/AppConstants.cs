@@ -8,6 +8,11 @@ namespace PhotoNote
     public static class AppConstants
     {
         /// <summary>
+        /// Premium version IAP key.
+        /// </summary>
+        public const string IAP_PREMIUM_VERSION = "photoNote_premium";
+
+        /// <summary>
         /// The placeholder string.
         /// </summary>
         public const string PARAM_FILE_TOKEN = "token";

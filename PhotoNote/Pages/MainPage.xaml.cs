@@ -11,6 +11,8 @@ using PhotoNote.Resources;
 using System.Windows.Threading;
 using Microsoft.Phone.Tasks;
 using System.IO;
+using PhoneKit.Framework.Support;
+using PhoneKit.Framework.InAppPurchase;
 
 namespace PhotoNote.Pages
 {
@@ -58,6 +60,33 @@ namespace PhotoNote.Pages
                 fileNameToOpen = Path.GetFileName(pr.OriginalFileName);
                 _delayedNavigaionTimer.Start();
             };
+
+            // register startup actions
+            StartupActionManager.Instance.Register(3, ActionExecutionRule.MoreThan, () =>
+            {
+                if (!InAppPurchaseHelper.IsProductActive(AppConstants.IAP_PREMIUM_VERSION))
+                {
+                    BannerContainer.Visibility = System.Windows.Visibility.Visible;
+                }
+            });
+        }
+
+        private void HideBannerForPremiumVersion()
+        {
+            if (InAppPurchaseHelper.IsProductActive(AppConstants.IAP_PREMIUM_VERSION))
+            {
+                BannerContainer.Visibility = System.Windows.Visibility.Collapsed;
+            }
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            // fire startup events
+            StartupActionManager.Instance.Fire(e);
+
+            HideBannerForPremiumVersion();
         }
 
         /// <summary>
@@ -86,6 +115,14 @@ namespace PhotoNote.Pages
 
             };
             ApplicationBar.Buttons.Add(appBarTileButton);
+
+            // in-app store
+            ApplicationBarMenuItem appBarInAppStoreMenuItem = new ApplicationBarMenuItem(AppResources.InAppStoreTitle);
+            appBarInAppStoreMenuItem.Click += (s, e) =>
+            {
+                NavigationService.Navigate(new Uri("/Pages/InAppStorePage.xaml", UriKind.Relative));
+            };
+            ApplicationBar.MenuItems.Add(appBarInAppStoreMenuItem);
 
             // about
             ApplicationBarMenuItem appBarAboutMenuItem = new ApplicationBarMenuItem(AppResources.AboutTitle);

@@ -94,6 +94,7 @@
     </Compile>
     <Compile Include="AppConstants.cs" />
     <Compile Include="Controls\LocalizedAboutControl.cs" />
+    <Compile Include="Controls\LocalizedInAppStoreControl.cs" />
     <Compile Include="CustomUriMapper.cs" />
     <Compile Include="Helpers\LauncherHelper.cs" />
     <Compile Include="LocalizedStrings.cs" />
@@ -104,6 +105,9 @@
     </Compile>
     <Compile Include="Pages\EditPage.xaml.cs">
       <DependentUpon>EditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\InAppStorePage.xaml.cs">
+      <DependentUpon>InAppStorePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -125,6 +129,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\EditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\InAppStorePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
