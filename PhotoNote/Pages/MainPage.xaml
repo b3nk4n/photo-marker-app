@@ -19,43 +19,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- HINWEIS ZUR LOKALISIERUNG:
-            Um die angezeigten Zeichenfolgen zu lokalisieren, kopieren Sie die Werte in
-            die richtig benannten Schlüssel in der Datei der neutralen Ressourcensprache der App (AppResources.resx), und
-            ersetzen Sie den hartcodierten Textwert zwischen den Anführungszeichen des Attributs
-            mit der Bindungsklausel, deren Pfad auf diesen Zeichenfolgennamen verweist.
-
-            Zum Beispiel:
-
-                Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
-
-            Diese Bindung verweist auf die Zeichenfolgenressource der Vorlage mit der Bezeichnung "ApplicationTitle".
-
-            Werden auf der Registerkarte mit den Projekteigenschaften unterstützte Sprachen hinzugefügt, wird
-            pro Sprache eine neue resx-Datei erstellt. In dieser können die übersetzten Werte der
-            Zeichenfolgen der Benutzeroberfläche gespeichert werden. Die Bindung in diesen Beispielen führt dazu, dass der Wert der
-            Attribute aus der RESX-Datei entnommen wird, die
-            CurrentUICulture der App zur Laufzeit entspricht.
-         -->
-
         <!--TitlePanel enthält den Namen der Anwendung und den Seitentitel-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MEINE ANWENDUNG" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
-            <TextBlock Text="Seitenname" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
         </StackPanel>
 
         <!--ContentPanel - zusätzliche Inhalte hier platzieren-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 
         </Grid>
-
-        <!--Auskommentieren, um ein Ausrichtungsraster anzuzeigen und sicherzustellen, dass Ihre Steuerelemente
-            an den allgemeinen Grenzen ausgerichtet sind.  Das Bild hat oben einen Rand von -32 px wegen
-            der Taskleiste. Legen Sie dies auf 0 fest (oder entfernen Sie den Rand komplett),
-            wenn die Taskleiste ausgeblendet wird.
-
-            Entfernen Sie vor dem Versand dieses XAML und das Bild selbst.-->
-        <!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
+        
     </Grid>
 
 </phone:PhoneApplicationPage>
