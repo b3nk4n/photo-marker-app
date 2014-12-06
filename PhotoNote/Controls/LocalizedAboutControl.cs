@@ -16,7 +16,7 @@ namespace PhotoNote.Controls
         protected override void LocalizeContent()
         {
             // app
-            ApplicationIconSource = new Uri("/Assets/Tiles/FlipCycleTileMedium.png", UriKind.Relative);
+            ApplicationIconSource = new Uri("/Assets/Tiles/FlipCycleTileSmall.png", UriKind.Relative);
             ApplicationTitle = AppResources.ApplicationTitle;
             ApplicationVersion = AppResources.ApplicationVersion;
             ApplicationAuthor = AppResources.ApplicationAuthor;
