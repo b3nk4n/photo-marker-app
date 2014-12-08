@@ -4,7 +4,7 @@
   <Languages xmlns="">
     <Language code="de-DE" />
   </Languages>
-  <App xmlns="" ProductID="{deedd2ec-1f82-4e0a-b44e-dd223920457f}" Title="Photo Note" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="PhotoNote author" Description="A useful Photo Hub extension app to be able to take notes on pictures." Publisher="PhotoNote" PublisherID="{bfdb42b3-4ec2-416e-a685-8c570aea596f}">
+  <App xmlns="" ProductID="{e3c2905b-f01f-4b3e-a7eb-0f7bcd89cad9}" Title="Photo Note" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="PhotoNote author" Description="A useful Photo Hub extension app to be able to take notes on pictures." Publisher="PhotoNote" PublisherID="{bfdb42b3-4ec2-416e-a685-8c570aea596f}">
     <IconPath IsRelative="true" IsResource="false">Assets\Tiles\FlipCycleTileMedium.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />

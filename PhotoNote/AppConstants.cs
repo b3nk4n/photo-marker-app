@@ -10,7 +10,7 @@ namespace PhotoNote
         /// <summary>
         /// Premium version IAP key.
         /// </summary>
-        public const string IAP_PREMIUM_VERSION = "photoNote_premium";
+        public const string IAP_PREMIUM_VERSION = "photoMarker_premium";
 
         /// <summary>
         /// The placeholder string.
