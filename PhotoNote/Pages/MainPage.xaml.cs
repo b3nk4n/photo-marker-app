@@ -94,7 +94,25 @@ namespace PhotoNote.Pages
                 }
             });
 
+            InitializeBannerBehaviour();
+
             DataContext = _mainViewModel;
+        }
+
+        private void InitializeBannerBehaviour()
+        {
+            BannerControl.AdReceived += (s, e) =>
+            {
+                FallbackOfflineBanner.Visibility = Visibility.Collapsed;
+            };
+
+            FallbackOfflineBanner.Tap += (s, e) =>
+            {
+                var task = new MarketplaceDetailTask();
+                task.ContentType = MarketplaceContentType.Applications;
+                task.ContentIdentifier = "ac39aa30-c9b1-4dc6-af2d-1cc17d9807cc";
+                task.Show();
+            };
         }
 
         private void HideBannerForPremiumVersion()

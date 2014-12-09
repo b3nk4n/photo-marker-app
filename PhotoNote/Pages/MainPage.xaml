@@ -31,47 +31,87 @@
                 </Grid>
             </Border>
         </ControlTemplate>
-        <Storyboard x:Name="ImagesInAnimation">
+        <Storyboard x:Name="ImagesInAnimation" BeginTime="0:0:0.25">
         	<DoubleAnimationUsingKeyFrames BeginTime="0:0:0.1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="b1">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+        		<EasingDoubleKeyFrame KeyTime="0" Value="0">
+        			<EasingDoubleKeyFrame.EasingFunction>
+        				<CircleEase EasingMode="EaseIn"/>
+        			</EasingDoubleKeyFrame.EasingFunction>
+        		</EasingDoubleKeyFrame>
         		<EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
         	</DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames BeginTime="0:0:0.2" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="b2">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+        		<EasingDoubleKeyFrame KeyTime="0" Value="0">
+        			<EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn"/>
+        			</EasingDoubleKeyFrame.EasingFunction>
+        		</EasingDoubleKeyFrame>
         		<EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
         	</DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames BeginTime="0:0:0.4" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="b3">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+        		<EasingDoubleKeyFrame KeyTime="0" Value="0">
+        			<EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn"/>
+        			</EasingDoubleKeyFrame.EasingFunction>
+        		</EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
         	</DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames BeginTime="0:0:0.6" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="b4">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+        		<EasingDoubleKeyFrame KeyTime="0" Value="0">
+        			<EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn"/>
+        			</EasingDoubleKeyFrame.EasingFunction>
+        		</EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
         	</DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames BeginTime="0:0:0.8" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="b5">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+        		<EasingDoubleKeyFrame KeyTime="0" Value="0">
+        			<EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn"/>
+        			</EasingDoubleKeyFrame.EasingFunction>
+        		</EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
         	</DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames BeginTime="0:0:1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="b6">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+        		<EasingDoubleKeyFrame KeyTime="0" Value="0">
+        			<EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn"/>
+        			</EasingDoubleKeyFrame.EasingFunction>
+        		</EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
         	</DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames BeginTime="0:0:1.2" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="b7">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+        		<EasingDoubleKeyFrame KeyTime="0" Value="0">
+        			<EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn"/>
+        			</EasingDoubleKeyFrame.EasingFunction>
+        		</EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
         	</DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames BeginTime="0:0:1.4" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="b8">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+        		<EasingDoubleKeyFrame KeyTime="0" Value="0">
+        			<EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn"/>
+        			</EasingDoubleKeyFrame.EasingFunction>
+        		</EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
         	</DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames BeginTime="0:0:1.6" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="b9">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+        		<EasingDoubleKeyFrame KeyTime="0" Value="0">
+        			<EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn"/>
+        			</EasingDoubleKeyFrame.EasingFunction>
+        		</EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
         	</DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames BeginTime="0:0:1.8" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="b10">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
-        	</DoubleAnimationUsingKeyFrames>
+            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </phone:PhoneApplicationPage.Resources>
 
@@ -117,7 +157,8 @@
         <!-- Advertisment -->
         <Grid x:Name="BannerContainer" Width="480" Height="80"  VerticalAlignment="Top" HorizontalAlignment="Center"
 			Visibility="Collapsed" toolkit:TurnstileFeatherEffect.FeatheringIndex="0">
-            <adverts:MsDuplexAdControl Width="480" Height="80" Visibility="Collapsed" AdDuplexAppId="129407" MsApplicationId="5683e018-013e-478e-b03f-0caf0d12b6e5" MsAdUnitId="197953" />
+            <Image x:Name="FallbackOfflineBanner" Source="/Assets/Banner/Photo-Info_adduplex4_5.png" Height="80" Width="480" />
+            <adverts:MsDuplexAdControl x:Name="BannerControl" Width="480" Height="80" Visibility="Collapsed" AdDuplexAppId="129407" MsApplicationId="5683e018-013e-478e-b03f-0caf0d12b6e5" MsAdUnitId="197953" />
 
 			<Border x:Name="RemoveAdButton" Background="{StaticResource PhoneAccentBrush}" Width="26" Height="26" Opacity="0.9" Margin="1"
 				VerticalAlignment="Top" HorizontalAlignment="Right">
@@ -153,23 +194,23 @@
                 
 				<StackPanel Orientation="Horizontal" Margin="12,0,12,0"
                             toolkit:TurnstileFeatherEffect.FeatheringIndex="2">
-                    <Button x:Name="b2" Width="210" Height="210" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName2}" >
+                    <Button x:Name="b2" Width="210" Height="210" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName2}"  >
                         <Image Source="{Binding Picture2}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
                     </Button>
                     <StackPanel>
 						<StackPanel Orientation="Horizontal">
-                            <Button x:Name="b3" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName3}" >
+                            <Button x:Name="b3" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName3}"  >
                                 <Image Source="{Binding Picture3}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
                             </Button>
-                            <Button x:Name="b4" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName4}" >
+                            <Button x:Name="b4" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName4}"  >
                                 <Image Source="{Binding Picture4}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
                             </Button>
 						</StackPanel>
 						<StackPanel Orientation="Horizontal">
-                            <Button x:Name="b5" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName5}" >
+                            <Button x:Name="b5" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName5}"  >
                                 <Image Source="{Binding Picture5}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
                             </Button>
-                            <Button x:Name="b6" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName6}" >
+                            <Button x:Name="b6" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName6}"  >
                                 <Image Source="{Binding Picture6}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
                             </Button>
 						</StackPanel>
@@ -177,16 +218,16 @@
 				</StackPanel>
 				<StackPanel Orientation="Horizontal" Margin="12,0,12,0"
                             toolkit:TurnstileFeatherEffect.FeatheringIndex="3">
-                    <Button x:Name="b7" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName7}" >
+                    <Button x:Name="b7" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName7}"  >
                         <Image Source="{Binding Picture7}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
                     </Button>
-                    <Button x:Name="b8" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName8}" >
+                    <Button x:Name="b8" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName8}"  >
                         <Image Source="{Binding Picture8}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
                     </Button>
-                    <Button x:Name="b9" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName9}" >
+                    <Button x:Name="b9" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName9}"  >
                         <Image Source="{Binding Picture9}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
                     </Button>
-                    <Button x:Name="b10" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName10}" >
+                    <Button x:Name="b10" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName10}"  >
                         <Image Source="{Binding Picture10}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
                     </Button>
                 </StackPanel>

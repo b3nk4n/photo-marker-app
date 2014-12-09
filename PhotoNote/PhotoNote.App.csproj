@@ -152,6 +152,7 @@
   <ItemGroup>
     <Content Include="Assets\AppBar\appbar.image.select.png" />
     <Content Include="Assets\AppBar\appbar.save.png" />
+    <Content Include="Assets\Banner\Photo-Info_adduplex4_5.png" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
