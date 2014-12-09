@@ -134,11 +134,11 @@
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationDescription" xml:space="preserve">
-    <value>This app extends the Photos-Hub of Windows Phone 8 to enable a fast and easy functionality to take notes on your pictures.</value>
+    <value>This app extends the Photos-Hub of Windows Phone 8 to enable a fast and easy functionality to take notes on your pictures or highlight the most important parts.</value>
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationTitle" xml:space="preserve">
-    <value>Photo Note</value>
+    <value>Photo Marker</value>
     <comment>General</comment>
   </data>
   <data name="ApplicationVersion" xml:space="preserve">

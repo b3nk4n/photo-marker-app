@@ -97,7 +97,7 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die This app extends the Photos-Hub of Windows Phone 8 to enable a fast and easy functionality to take notes on your pictures. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die This app extends the Photos-Hub of Windows Phone 8 to enable a fast and easy functionality to take notes on your pictures or highlight the most important parts. ähnelt.
         /// </summary>
         public static string ApplicationDescription {
             get {
@@ -106,7 +106,7 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Photo Note ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Photo Marker ähnelt.
         /// </summary>
         public static string ApplicationTitle {
             get {
