@@ -59,7 +59,7 @@ namespace PhotoNote.ViewModel
             {
                 if (picture.Name.StartsWith(AppConstants.IMAGE_PREFIX))
                 {
-                    EditPictureList.Add(new EditPicture(picture));
+                    EditPictureList.Insert(0, new EditPicture(picture));
 
                     // stop after 10 photos ... thats enough for the start page
                     if (EditPictureList.Count == 10)
@@ -73,20 +73,12 @@ namespace PhotoNote.ViewModel
             NotifyPropertyChanged("Picture4");
             NotifyPropertyChanged("Picture5");
             NotifyPropertyChanged("Picture6");
-            NotifyPropertyChanged("Picture7");
-            NotifyPropertyChanged("Picture8");
-            NotifyPropertyChanged("Picture9");
-            NotifyPropertyChanged("Picture10");
             NotifyPropertyChanged("PictureName1");
             NotifyPropertyChanged("PictureName2");
             NotifyPropertyChanged("PictureName3");
             NotifyPropertyChanged("PictureName4");
             NotifyPropertyChanged("PictureName5");
             NotifyPropertyChanged("PictureName6");
-            NotifyPropertyChanged("PictureName7");
-            NotifyPropertyChanged("PictureName8");
-            NotifyPropertyChanged("PictureName9");
-            NotifyPropertyChanged("PictureName10");
         }
 
         public IList<EditPicture> EditPictureList
@@ -122,26 +114,6 @@ namespace PhotoNote.ViewModel
         public ImageSource Picture6
         {
             get { return GetPicture(5); }
-        }
-
-        public ImageSource Picture7
-        {
-            get { return GetPicture(6); }
-        }
-
-        public ImageSource Picture8
-        {
-            get { return GetPicture(7); }
-        }
-
-        public ImageSource Picture9
-        {
-            get { return GetPicture(8); }
-        }
-
-        public ImageSource Picture10
-        {
-            get { return GetPicture(9); }
         }
 
         private ImageSource GetPicture(int index, bool lowQuality = true) {
@@ -188,26 +160,6 @@ namespace PhotoNote.ViewModel
         public string PictureName6
         {
             get { return GetName(5); }
-        }
-
-        public string PictureName7
-        {
-            get { return GetName(6); }
-        }
-
-        public string PictureName8
-        {
-            get { return GetName(7); }
-        }
-
-        public string PictureName9
-        {
-            get { return GetName(8); }
-        }
-
-        public string PictureName10
-        {
-            get { return GetName(9); }
         }
 
         private string GetName(int index)

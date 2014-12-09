@@ -127,6 +127,14 @@ namespace PhotoNote.Pages
         {
             base.OnNavigatedTo(e);
 
+            if (e.NavigationMode == NavigationMode.Back)
+            {
+                if (_imageInAnimationPlayed) {
+                    HideAllImages();
+                    ImagesInAnimation.Begin();
+                }
+            }
+
             // fire startup events
             StartupActionManager.Instance.Fire(e);
 
