@@ -138,7 +138,7 @@ namespace PhotoNote.Pages
 
         private void HideAllImages()
         {
-            b1.Opacity = b2.Opacity = b3.Opacity = b4.Opacity = b5.Opacity = b6.Opacity = b7.Opacity = b8.Opacity = b9.Opacity = b10.Opacity = 0.0;
+            b1.Opacity = b2.Opacity = b3.Opacity = b4.Opacity = b5.Opacity = b6.Opacity = 0.0;
         }
 
         /// <summary>
@@ -189,5 +189,25 @@ namespace PhotoNote.Pages
         {
             photoTask.Show();
         }
+
+        #region Info Popup
+
+        private bool _isInfoVisible = false;
+
+        private void InfoArrowClicked(object sender, RoutedEventArgs e)
+        {
+            _isInfoVisible = !_isInfoVisible;
+
+            if (_isInfoVisible)
+            {
+                VisualStateManager.GoToState(this, "InfoState", true);
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, "NormalState", true);
+            }
+        }
+
+        #endregion
     }
 }

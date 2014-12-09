@@ -209,4 +209,24 @@
     <value>show picture information</value>
     <comment>EditPage</comment>
   </data>
+  <data name="Info1" xml:space="preserve">
+    <value>Open your library and select an image</value>
+    <comment>MainPage-Info</comment>
+  </data>
+  <data name="Info2" xml:space="preserve">
+    <value>Select Edit options</value>
+    <comment>MainPage-Info</comment>
+  </data>
+  <data name="Info3Close" xml:space="preserve">
+    <value>'</value>
+    <comment>MainPage-Info</comment>
+  </data>
+  <data name="Info3Open" xml:space="preserve">
+    <value>Select '</value>
+    <comment>MainPage-Info</comment>
+  </data>
+  <data name="Info4" xml:space="preserve">
+    <value>The photo can be edited instantly...</value>
+    <comment>MainPage-Info</comment>
+  </data>
 </root>

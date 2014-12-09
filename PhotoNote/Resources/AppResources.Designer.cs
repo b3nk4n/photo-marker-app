@@ -178,6 +178,51 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Open your library and select an image ähnelt.
+        /// </summary>
+        public static string Info1 {
+            get {
+                return ResourceManager.GetString("Info1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Select Edit options ähnelt.
+        /// </summary>
+        public static string Info2 {
+            get {
+                return ResourceManager.GetString("Info2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die &apos; ähnelt.
+        /// </summary>
+        public static string Info3Close {
+            get {
+                return ResourceManager.GetString("Info3Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Select &apos; ähnelt.
+        /// </summary>
+        public static string Info3Open {
+            get {
+                return ResourceManager.GetString("Info3Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The photo can be edited instantly... ähnelt.
+        /// </summary>
+        public static string Info4 {
+            get {
+                return ResourceManager.GetString("Info4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die choose a picture you would like to edit... ähnelt.
         /// </summary>
         public static string InfoChoosePhoto {
