@@ -319,5 +319,27 @@ namespace PhotoNote.Pages
         }
 
         #endregion
+
+        #region Orientation Events
+
+        protected override void OnOrientationChanged(OrientationChangedEventArgs e)
+        {
+            base.OnOrientationChanged(e);
+
+            if (e.Orientation == PageOrientation.Portrait ||
+                e.Orientation == PageOrientation.PortraitDown ||
+                e.Orientation == PageOrientation.PortraitUp)
+            {
+                VisualStateManager.GoToState(this, "Portrait", true);
+            } 
+            else if (e.Orientation == PageOrientation.Landscape ||
+                e.Orientation == PageOrientation.LandscapeLeft ||
+                e.Orientation == PageOrientation.LandscapeRight)
+            {
+                VisualStateManager.GoToState(this, "Landscape", true);
+            }
+        }
+
+        #endregion
     }
 }

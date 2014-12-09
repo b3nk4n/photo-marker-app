@@ -10,7 +10,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait" Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Landscape"
     mc:Ignorable="d">
 
     <!--LayoutRoot ist das Stammraster, in dem alle anderen Seiteninhalte platziert werden-->
@@ -18,16 +18,32 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ApplicationViewStates">
+                <VisualState x:Name="Portrait"/>
+                <VisualState x:Name="Landscape">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPanel" Storyboard.TargetProperty="Margin">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="0,0,72,0"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
         <!--ContentPanel - zusätzliche Inhalte hier platzieren-->
-        <Grid x:Name="ContentPanel" Grid.Row="1">
-            <Grid x:Name="EditImageContainer" Width="480" Height="700">
-                <Image x:Name="EditImageControl" Stretch="UniformToFill" />
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0,0,0,72">
+            
+            <Grid x:Name="EditImageContainer">
+                <Border Width="{Binding ElementName=EditImageControl, Path=ActualWidth}" Height="{Binding ElementName=EditImageControl, Path=ActualHeight}">
+                    <Image x:Name="EditImageControl" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Border>
                 <InkPresenter x:Name="MyIP"
                       MouseLeftButtonDown="MyIP_MouseLeftButtonDown" 
                       LostMouseCapture="MyIP_LostMouseCapture" 
-                      MouseMove="MyIP_MouseMove" 
-                      Background="Transparent" Opacity="1" />
+                      MouseMove="MyIP_MouseMove"
+                      Width="{Binding ElementName=EditImageControl, Path=ActualWidth}" Height="{Binding ElementName=EditImageControl, Path=ActualHeight}"
+                      Background="Transparent"/>
             </Grid>
         </Grid>
     </Grid>
