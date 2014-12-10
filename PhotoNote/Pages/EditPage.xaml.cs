@@ -70,8 +70,8 @@ namespace PhotoNote.Pages
         {
             using (var memStream = new MemoryStream())
             {
-                var gfx = GraphicsHelper.Create(EditImageContainer);
-                gfx.SaveJpeg(memStream, (int)EditImageContainer.ActualWidth, (int)EditImageContainer.ActualHeight, 0, 100);
+                var gfx = GraphicsHelper.Create(RenderContainer, (int)RenderContainer.ActualWidth, (int)RenderContainer.ActualHeight);
+                gfx.SaveJpeg(memStream, (int)RenderContainer.ActualWidth, (int)RenderContainer.ActualHeight, 0, 100);
                 memStream.Seek(0, SeekOrigin.Begin);
 
                 using (var media = StaticMediaLibrary.Instance)

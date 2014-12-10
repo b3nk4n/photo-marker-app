@@ -10,7 +10,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="PortraitOrLandscape" Orientation="Landscape"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     mc:Ignorable="d">
 
     <!--LayoutRoot ist das Stammraster, in dem alle anderen Seiteninhalte platziert werden-->
@@ -26,6 +26,15 @@
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPanel" Storyboard.TargetProperty="Margin">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="0,0,72,0"/>
                         </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="EditImageContainer" Storyboard.TargetProperty="Width">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="728"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="EditImageContainer" Storyboard.TargetProperty="Height">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="480"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="EditImageControl" Storyboard.TargetProperty="Height">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="480"/>
+                        </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>
@@ -34,16 +43,25 @@
         <!--ContentPanel - zusätzliche Inhalte hier platzieren-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0,0,0,72">
             
-            <Grid x:Name="EditImageContainer">
-                <Border Width="{Binding ElementName=EditImageControl, Path=ActualWidth}" Height="{Binding ElementName=EditImageControl, Path=ActualHeight}">
-                    <Image x:Name="EditImageControl" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                </Border>
-                <InkPresenter x:Name="MyIP"
-                      MouseLeftButtonDown="MyIP_MouseLeftButtonDown" 
-                      LostMouseCapture="MyIP_LostMouseCapture" 
-                      MouseMove="MyIP_MouseMove"
-                      Width="{Binding ElementName=EditImageControl, Path=ActualWidth}" Height="{Binding ElementName=EditImageControl, Path=ActualHeight}"
-                      Background="Transparent"/>
+            <Grid x:Name="EditImageContainer" Width="480" Height="728">
+                <Grid x:Name="RenderContainer" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    
+                    <Border BorderBrush="Red" BorderThickness="3">
+                        <!--<Image x:Name="EditImageControl" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
+                        <Image x:Name="EditImageControl" Source="/Assets/Images/1.jpg" VerticalAlignment="Top" HorizontalAlignment="Center" />
+                    </Border>
+                    <InkPresenter x:Name="MyIP" Width="Auto"
+                          MouseLeftButtonDown="MyIP_MouseLeftButtonDown" 
+                          LostMouseCapture="MyIP_LostMouseCapture" 
+                          MouseMove="MyIP_MouseMove"
+                          Background="Magenta" Opacity="0.5">
+                        
+                    </InkPresenter>
+                    <Rectangle Fill="Green" Width="12" Height="12" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                    <Rectangle Fill="Green" Width="12" Height="12" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+                </Grid>
+                <Rectangle Fill="Blue" Width="12" Height="12" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <Rectangle Fill="Blue" Width="12" Height="12" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
             </Grid>
         </Grid>
     </Grid>
