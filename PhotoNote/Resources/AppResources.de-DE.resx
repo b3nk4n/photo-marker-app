@@ -170,7 +170,7 @@
     <comment>FeedbackDialogControl</comment>
   </data>
   <data name="InfoChoosePhoto" xml:space="preserve">
-    <value>wählen Sie ein Bild aus, welches Sie barbeiten wollen...</value>
+    <value>wählen Sie ein Bild aus, welches Sie bearbeiten wollen...</value>
     <comment>MainPage</comment>
   </data>
   <data name="AppBarSave" xml:space="preserve">
@@ -228,5 +228,9 @@
   <data name="Info4" xml:space="preserve">
     <value>Bild kann sofort bearbeitet werden...</value>
     <comment>MainPage-Info</comment>
+  </data>
+  <data name="AppBarUndo" xml:space="preserve">
+    <value>rückgängig</value>
+    <comment>EditPage</comment>
   </data>
 </root>

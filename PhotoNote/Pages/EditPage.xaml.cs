@@ -49,14 +49,23 @@ namespace PhotoNote.Pages
             ApplicationBar = new ApplicationBar();
             ApplicationBar.Opacity = 0.99;
 
-            // save tile
-            ApplicationBarIconButton appBarTileButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.save.png", UriKind.Relative));
-            appBarTileButton.Text = AppResources.AppBarSave;
-            appBarTileButton.Click += (s, e) =>
+            // save
+            ApplicationBarIconButton appBarSaveButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.save.png", UriKind.Relative));
+            appBarSaveButton.Text = AppResources.AppBarSave;
+            appBarSaveButton.Click += (s, e) =>
             {
                 Save();
             };
-            ApplicationBar.Buttons.Add(appBarTileButton);
+            ApplicationBar.Buttons.Add(appBarSaveButton);
+
+            // undo
+            ApplicationBarIconButton appBarUndoButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.undo.curve.png", UriKind.Relative));
+            appBarUndoButton.Text = AppResources.AppBarUndo;
+            appBarUndoButton.Click += (s, e) =>
+            {
+                Undo();
+            };
+            ApplicationBar.Buttons.Add(appBarUndoButton);
 
             // image info (photo info)
             ApplicationBarMenuItem appBarPhotoInfoMenuItem = new ApplicationBarMenuItem(AppResources.ShowPhotoInfo);
@@ -377,6 +386,7 @@ namespace PhotoNote.Pages
             InkControl.CaptureMouse();
             StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
             MyStylusPointCollection.Add(e.StylusDevice.GetStylusPoints(InkControl));
+            
             NewStroke = new Stroke(MyStylusPointCollection);
             NewStroke.DrawingAttributes = new DrawingAttributes
             {
@@ -391,14 +401,17 @@ namespace PhotoNote.Pages
         private void MyIP_MouseMove(object sender, MouseEventArgs e)
         {
             if (NewStroke != null)
-                NewStroke.StylusPoints.Add(e.StylusDevice.GetStylusPoints(InkControl));
+            {
+                var stylusPoints = e.StylusDevice.GetStylusPoints(InkControl);
+                NewStroke.StylusPoints.Add(stylusPoints);
+            }
+                
         }
 
         //MyStroke is completed
         private void MyIP_LostMouseCapture(object sender, MouseEventArgs e)
         {
             NewStroke = null;
-
         }
 
         //Set the Clip property of the inkpresenter so that the strokes
@@ -408,6 +421,19 @@ namespace PhotoNote.Pages
             RectangleGeometry MyRectangleGeometry = new RectangleGeometry();
             MyRectangleGeometry.Rect = new Rect(0, 0, width, height);
             InkControl.Clip = MyRectangleGeometry;
+        }
+
+        private bool CanUndo()
+        {
+            return NewStroke == null && InkControl.Strokes.Count > 0;
+        }
+
+        private void Undo()
+        {
+            if (CanUndo())
+            {
+                InkControl.Strokes.RemoveAt(InkControl.Strokes.Count - 1);
+            }
         }
 
         #endregion

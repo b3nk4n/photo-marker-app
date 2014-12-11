@@ -229,4 +229,8 @@
     <value>The photo can be edited instantly...</value>
     <comment>MainPage-Info</comment>
   </data>
+  <data name="AppBarUndo" xml:space="preserve">
+    <value>undo</value>
+    <comment>EditPage</comment>
+  </data>
 </root>
