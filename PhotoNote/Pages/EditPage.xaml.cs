@@ -20,12 +20,9 @@ namespace PhotoNote.Pages
 {
     public partial class EditPage : PhoneApplicationPage
     {
-        private string currentImageName;
+        private EditPicture _editImage;
 
         private Random rand = new Random();
-
-        private double _imageOriginalHeight;
-        private double _imageOriginalWidth;
 
         private static readonly ScaleTransform NEUTRAL_SCALE = new ScaleTransform();
 
@@ -66,7 +63,7 @@ namespace PhotoNote.Pages
             ApplicationBarMenuItem appBarPhotoInfoMenuItem = new ApplicationBarMenuItem(AppResources.ShowPhotoInfo);
             appBarPhotoInfoMenuItem.Click += async (s, e) =>
             {
-                if (!await LauncherHelper.LaunchPhotoInfoAsync(currentImageName))
+                if (!await LauncherHelper.LaunchPhotoInfoAsync(_editImage.Name))
                 {
                     MessageBox.Show(AppResources.MessageBoxNoInfo, AppResources.MessageBoxWarning, MessageBoxButton.OK);
                 }
@@ -78,14 +75,14 @@ namespace PhotoNote.Pages
         {
             using (var memStream = new MemoryStream())
             {
-                var editedImageInkControl = new EditedImageInkControl(EditImageControl.Source as BitmapSource);
+                var editedImageInkControl = new EditedImageInkControl(_editImage.FullImage as BitmapSource);
                 var gfx = GraphicsHelper.Create(editedImageInkControl);
                 gfx.SaveJpeg(memStream, gfx.PixelWidth, gfx.PixelHeight, 0, 100);
                 memStream.Seek(0, SeekOrigin.Begin);
 
                 using (var media = StaticMediaLibrary.Instance)
                 {
-                    var nameWithoutExtension = Path.GetFileNameWithoutExtension(currentImageName);
+                    var nameWithoutExtension = Path.GetFileNameWithoutExtension(_editImage.Name);
 
                     // prepend image prefix
                     if (!nameWithoutExtension.StartsWith(AppConstants.IMAGE_PREFIX))
@@ -170,7 +167,7 @@ namespace PhotoNote.Pages
 
         private bool UpdatePicture(EditPicture pic)
         {
-            currentImageName = pic.Name;
+            _editImage = pic;
             BitmapSource img = new BitmapImage();
             using (var imageStream = pic.ImageStream)
             {
@@ -179,12 +176,10 @@ namespace PhotoNote.Pages
                 {
                     EditImageControl.Source = null;
                     EditImageContainer.Visibility = System.Windows.Visibility.Collapsed;
-                    _imageOriginalHeight = 0;
-                    _imageOriginalWidth = 0;
+                    _editImage = null;
                     return false;
                 }
-                _imageOriginalHeight = pic.Height;
-                _imageOriginalWidth = pic.Width;
+
                 img.SetSource(imageStream);
 
                 UpdateImageOrientationAndScale();
@@ -201,13 +196,13 @@ namespace PhotoNote.Pages
 
             // image
             var scale = GetScaleFactorOfOrientation();
-            EditImageControl.Width = scale * _imageOriginalWidth;
-            EditImageControl.Height = scale * _imageOriginalHeight;
+            EditImageControl.Width = scale * _editImage.Width;
+            EditImageControl.Height = scale * _editImage.Height;
 
             // ink surface
             var neutralScaleFactors = GetBiggestScaleFactorOfSmallerOrientation();
-            InkControl.Width = neutralScaleFactors * _imageOriginalWidth;
-            InkControl.Height = neutralScaleFactors * _imageOriginalHeight;
+            InkControl.Width = neutralScaleFactors * _editImage.Width;
+            InkControl.Height = neutralScaleFactors * _editImage.Height;
 
             // check if upper-scaling is required
             if (scale != neutralScaleFactors)
@@ -228,21 +223,21 @@ namespace PhotoNote.Pages
 
         private bool HasNoImage()
         {
-            return _imageOriginalHeight == 0 || _imageOriginalWidth == 0;
+            return _editImage.Height == 0 || _editImage.Width == 0;
         }
 
         private Size GetScaledImageSize(double scaleFactor)
         {
-            return new Size(_imageOriginalWidth * scaleFactor,
-                _imageOriginalHeight * scaleFactor);
+            return new Size(_editImage.Width * scaleFactor,
+                _editImage.Height * scaleFactor);
         }
 
         private double GetScaleFactorOfOrientation()
         {
             var viewportBounds = GetViewportBounds();
 
-            var heightScale = viewportBounds.Height / _imageOriginalHeight;
-            var widthScale = viewportBounds.Width / _imageOriginalWidth;
+            var heightScale = viewportBounds.Height / _editImage.Height;
+            var widthScale = viewportBounds.Width / _editImage.Width;
             return (heightScale < widthScale) ? heightScale : widthScale;
         }
 
@@ -250,8 +245,8 @@ namespace PhotoNote.Pages
         {
             var viewportBounds = GetNeutralViewportBounds();
 
-            var heightScale = viewportBounds.Height / _imageOriginalHeight;
-            var widthScale = viewportBounds.Width / _imageOriginalWidth;
+            var heightScale = viewportBounds.Height / _editImage.Height;
+            var widthScale = viewportBounds.Width / _editImage.Width;
             return (heightScale > widthScale) ? heightScale : widthScale;
         }
 
