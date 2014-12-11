@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using PhoneKit.Framework.Core.Storage;
-using PhoneKit.Framework.Core.Tile;
 using Microsoft.Xna.Framework.Media;
 using System.Diagnostics;
 using PhotoNote.Model;
@@ -20,6 +14,7 @@ using PhoneKit.Framework.Core.Graphics;
 using System.IO;
 using PhotoNote.Resources;
 using PhotoNote.Helpers;
+using PhotoNote.Controls;
 
 namespace PhotoNote.Pages
 {
@@ -83,8 +78,9 @@ namespace PhotoNote.Pages
         {
             using (var memStream = new MemoryStream())
             {
-                var gfx = GraphicsHelper.Create(RenderContainer, (int)RenderContainer.ActualWidth, (int)RenderContainer.ActualHeight);
-                gfx.SaveJpeg(memStream, (int)RenderContainer.ActualWidth, (int)RenderContainer.ActualHeight, 0, 100);
+                var editedImageInkControl = new EditedImageInkControl(EditImageControl.Source as BitmapSource);
+                var gfx = GraphicsHelper.Create(editedImageInkControl);
+                gfx.SaveJpeg(memStream, gfx.PixelWidth, gfx.PixelHeight, 0, 100);
                 memStream.Seek(0, SeekOrigin.Begin);
 
                 using (var media = StaticMediaLibrary.Instance)
@@ -175,7 +171,7 @@ namespace PhotoNote.Pages
         private bool UpdatePicture(EditPicture pic)
         {
             currentImageName = pic.Name;
-            BitmapImage img = new BitmapImage();
+            BitmapSource img = new BitmapImage();
             using (var imageStream = pic.ImageStream)
             {
                 // in case of a not successfully saved image
