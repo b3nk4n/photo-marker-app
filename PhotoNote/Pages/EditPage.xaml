@@ -32,9 +32,6 @@
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="EditImageContainer" Storyboard.TargetProperty="Height">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="480"/>
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="EditImageControl" Storyboard.TargetProperty="Height">
-                            <DiscreteObjectKeyFrame KeyTime="0" Value="480"/>
-                        </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>
@@ -44,24 +41,23 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0,0,0,72">
             
             <Grid x:Name="EditImageContainer" Width="480" Height="728">
-                <Grid x:Name="RenderContainer" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid x:Name="RenderContainer">
                     
-                    <Border BorderBrush="Red" BorderThickness="3">
-                        <!--<Image x:Name="EditImageControl" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
-                        <Image x:Name="EditImageControl" Source="/Assets/Images/1.jpg" VerticalAlignment="Top" HorizontalAlignment="Center" />
-                    </Border>
-                    <InkPresenter x:Name="MyIP" Width="Auto"
+                    <Image x:Name="EditImageControl"  VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <ScaleTransform />
+                        </Image.RenderTransform>
+                    </Image>
+
+                    <InkPresenter x:Name="InkControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5"
                           MouseLeftButtonDown="MyIP_MouseLeftButtonDown" 
                           LostMouseCapture="MyIP_LostMouseCapture" 
-                          MouseMove="MyIP_MouseMove"
-                          Background="Magenta" Opacity="0.5">
-                        
+                          MouseMove="MyIP_MouseMove" Background="Transparent">
+                        <InkPresenter.RenderTransform>
+                            <ScaleTransform />
+                        </InkPresenter.RenderTransform>
                     </InkPresenter>
-                    <Rectangle Fill="Green" Width="12" Height="12" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                    <Rectangle Fill="Green" Width="12" Height="12" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
                 </Grid>
-                <Rectangle Fill="Blue" Width="12" Height="12" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                <Rectangle Fill="Blue" Width="12" Height="12" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
             </Grid>
         </Grid>
     </Grid>

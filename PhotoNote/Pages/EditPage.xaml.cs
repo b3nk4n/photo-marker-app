@@ -29,11 +29,15 @@ namespace PhotoNote.Pages
 
         private Random rand = new Random();
 
+        private double _imageOriginalHeight;
+        private double _imageOriginalWidth;
+
+        private static readonly ScaleTransform NEUTRAL_SCALE = new ScaleTransform();
+
         public EditPage()
         {
             InitializeComponent();
             BuildLocalizedApplicationBar();
-            //SetBoundary();
         }
 
         /// <summary>
@@ -170,14 +174,102 @@ namespace PhotoNote.Pages
                 {
                     EditImageControl.Source = null;
                     EditImageContainer.Visibility = System.Windows.Visibility.Collapsed;
+                    _imageOriginalHeight = 0;
+                    _imageOriginalWidth = 0;
                     return false;
                 }
-
+                _imageOriginalHeight = pic.Height;
+                _imageOriginalWidth = pic.Width;
                 img.SetSource(imageStream);
+
+                UpdateImageOrientationAndScale();
+
                 EditImageControl.Source = img;
             }
             return true;
         }
+
+        private void UpdateImageOrientationAndScale()
+        {
+            if (HasNoImage())
+                return;
+
+            // image
+            var scale = GetScaleFactorOfOrientation();
+            EditImageControl.Width = scale * _imageOriginalWidth;
+            EditImageControl.Height = scale * _imageOriginalHeight;
+
+            // ink surface
+            var neutralScaleFactors = GetBiggestScaleFactorOfSmallerOrientation();
+            InkControl.Width = neutralScaleFactors * _imageOriginalWidth;
+            InkControl.Height = neutralScaleFactors * _imageOriginalHeight;
+
+            // check if upper-scaling is required
+            if (scale != neutralScaleFactors)
+            {
+                InkControl.RenderTransform = new ScaleTransform
+                {
+                    ScaleX = scale / neutralScaleFactors,
+                    ScaleY = scale / neutralScaleFactors
+                };
+            }
+            else
+            {
+                InkControl.RenderTransform = NEUTRAL_SCALE;
+            }
+
+            SetBoundary(InkControl.Width, InkControl.Height);
+        }
+
+        private bool HasNoImage()
+        {
+            return _imageOriginalHeight == 0 || _imageOriginalWidth == 0;
+        }
+
+        private Size GetScaledImageSize(double scaleFactor)
+        {
+            return new Size(_imageOriginalWidth * scaleFactor,
+                _imageOriginalHeight * scaleFactor);
+        }
+
+        private double GetScaleFactorOfOrientation()
+        {
+            var viewportBounds = GetViewportBounds();
+
+            var heightScale = viewportBounds.Height / _imageOriginalHeight;
+            var widthScale = viewportBounds.Width / _imageOriginalWidth;
+            return (heightScale < widthScale) ? heightScale : widthScale;
+        }
+
+        private double GetBiggestScaleFactorOfSmallerOrientation()
+        {
+            var viewportBounds = GetNeutralViewportBounds();
+
+            var heightScale = viewportBounds.Height / _imageOriginalHeight;
+            var widthScale = viewportBounds.Width / _imageOriginalWidth;
+            return (heightScale > widthScale) ? heightScale : widthScale;
+        }
+
+        private Size GetViewportBounds()
+        {
+            
+            if (Orientation == PageOrientation.Portrait ||
+                Orientation == PageOrientation.PortraitDown ||
+                Orientation == PageOrientation.PortraitUp)
+            {
+                return new Size(480, 728);
+            }
+            else // landscape
+            {
+                return new Size(728, 480);
+            }
+        }
+
+        private Size GetNeutralViewportBounds()
+        {
+            return new Size(480, 480);
+        }
+
 
         private EditPicture GetImageFromToken(string token)
         {
@@ -282,9 +374,9 @@ namespace PhotoNote.Pages
         //A new stroke object named MyStroke is created. MyStroke is added to the StrokeCollection of the InkPresenter named MyIP
         private void MyIP_MouseLeftButtonDown(object sender, MouseEventArgs e)
         {
-            MyIP.CaptureMouse();
+            InkControl.CaptureMouse();
             StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
-            MyStylusPointCollection.Add(e.StylusDevice.GetStylusPoints(MyIP));
+            MyStylusPointCollection.Add(e.StylusDevice.GetStylusPoints(InkControl));
             NewStroke = new Stroke(MyStylusPointCollection);
             NewStroke.DrawingAttributes = new DrawingAttributes
             {
@@ -292,14 +384,14 @@ namespace PhotoNote.Pages
                 Height = 12,
                 Width = 12,
             };
-            MyIP.Strokes.Add(NewStroke);
+            InkControl.Strokes.Add(NewStroke);
         }
 
         //StylusPoint objects are collected from the MouseEventArgs and added to MyStroke. 
         private void MyIP_MouseMove(object sender, MouseEventArgs e)
         {
             if (NewStroke != null)
-                NewStroke.StylusPoints.Add(e.StylusDevice.GetStylusPoints(MyIP));
+                NewStroke.StylusPoints.Add(e.StylusDevice.GetStylusPoints(InkControl));
         }
 
         //MyStroke is completed
@@ -311,11 +403,11 @@ namespace PhotoNote.Pages
 
         //Set the Clip property of the inkpresenter so that the strokes
         //are contained within the boundary of the inkpresenter
-        private void SetBoundary()
+        private void SetBoundary(double width, double height)
         {
             RectangleGeometry MyRectangleGeometry = new RectangleGeometry();
-            MyRectangleGeometry.Rect = new Rect(0, 0, MyIP.ActualWidth, MyIP.ActualHeight);
-            MyIP.Clip = MyRectangleGeometry;
+            MyRectangleGeometry.Rect = new Rect(0, 0, width, height);
+            InkControl.Clip = MyRectangleGeometry;
         }
 
         #endregion
@@ -338,6 +430,8 @@ namespace PhotoNote.Pages
             {
                 VisualStateManager.GoToState(this, "Landscape", true);
             }
+
+            UpdateImageOrientationAndScale();
         }
 
         #endregion
