@@ -233,4 +233,8 @@
     <value>rückgängig</value>
     <comment>EditPage</comment>
   </data>
+  <data name="Share" xml:space="preserve">
+    <value>Versenden</value>
+    <comment>ContextMenu</comment>
+  </data>
 </root>

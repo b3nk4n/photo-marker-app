@@ -233,4 +233,8 @@
     <value>undo</value>
     <comment>EditPage</comment>
   </data>
+  <data name="Share" xml:space="preserve">
+    <value>share</value>
+    <comment>ContextMenu</comment>
+  </data>
 </root>

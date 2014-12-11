@@ -1,4 +1,5 @@
-﻿using PhoneKit.Framework.Core.MVVM;
+﻿using Microsoft.Phone.Tasks;
+using PhoneKit.Framework.Core.MVVM;
 using PhotoNote.Helpers;
 using PhotoNote.Model;
 using System;
@@ -21,6 +22,7 @@ namespace PhotoNote.ViewModel
         public IList<EditPicture> _editPictureList = new ObservableCollection<EditPicture>();
 
         private DelegateCommand<string> _noteTileSelectedCommand;
+        private DelegateCommand<string> _shareCommand;
 
         public MainViewModel()
         {
@@ -35,6 +37,21 @@ namespace PhotoNote.ViewModel
                 {
                     // TODO error handling...
                 }
+            });
+
+            _shareCommand = new DelegateCommand<string>((indexString) =>
+            {
+                var index = int.Parse(indexString);
+
+                if (_editPictureList.Count <= index)
+                    return;
+
+                var picture = _editPictureList[index];
+
+                // share media
+                var shareTask = new ShareMediaTask();
+                shareTask.FilePath = picture.ImagePath;
+                shareTask.Show();
             });
         }
 
@@ -173,6 +190,11 @@ namespace PhotoNote.ViewModel
         public ICommand NoteTileSelectedCommand
         {
             get { return _noteTileSelectedCommand; }
+        }
+
+        public ICommand ShareCommand
+        {
+            get { return _shareCommand; }
         }
     }
 }

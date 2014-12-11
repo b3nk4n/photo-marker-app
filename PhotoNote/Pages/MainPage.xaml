@@ -175,27 +175,57 @@
 			<!-- photo tiles -->
             <StackPanel>
                 <Button x:Name="b1" Width="432" Height="210" VerticalAlignment="Center"  Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName1}">
+                    <toolkit:ContextMenuService.ContextMenu>
+                        <toolkit:ContextMenu>
+                            <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="0" />
+                        </toolkit:ContextMenu>
+                    </toolkit:ContextMenuService.ContextMenu>
                     <Image Source="{Binding Picture1}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill" />
                 </Button>
 
                 <StackPanel Orientation="Horizontal" Margin="12,0,12,0">
-                    <Button x:Name="b2" Width="210" Height="210" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName2}"  >
+                    <Button x:Name="b2" Width="210" Height="210" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName2}" >
+                        <toolkit:ContextMenuService.ContextMenu>
+                            <toolkit:ContextMenu>
+                                <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="1" />
+                            </toolkit:ContextMenu>
+                        </toolkit:ContextMenuService.ContextMenu>
                         <Image Source="{Binding Picture2}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
                     </Button>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Button x:Name="b3" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName3}"  >
+                            <Button x:Name="b3" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName3}" >
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu>
+                                        <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="2" />
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
                                 <Image Source="{Binding Picture3}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
                             </Button>
-                            <Button x:Name="b4" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName4}"  >
+                            <Button x:Name="b4" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName4}" >
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu>
+                                        <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="3" />
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
                                 <Image Source="{Binding Picture4}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
                             </Button>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Button x:Name="b5" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName5}"  >
+                            <Button x:Name="b5" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName5}" >
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu>
+                                        <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="4" />
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
                                 <Image Source="{Binding Picture5}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
                             </Button>
-                            <Button x:Name="b6" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName6}"  >
+                            <Button x:Name="b6" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName6}" >
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu>
+                                        <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="5" />
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
                                 <Image Source="{Binding Picture6}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
                             </Button>
                         </StackPanel>
