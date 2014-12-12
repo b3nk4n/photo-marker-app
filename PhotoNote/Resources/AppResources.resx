@@ -182,7 +182,7 @@
     <comment>Edit Page</comment>
   </data>
   <data name="InAppStoreLoading" xml:space="preserve">
-    <value>loading...</value>
+    <value>Loading...</value>
     <comment>InAppStorePage</comment>
   </data>
   <data name="InAppStoreNoProducts" xml:space="preserve">

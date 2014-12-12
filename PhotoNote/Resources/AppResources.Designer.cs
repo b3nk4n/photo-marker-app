@@ -151,7 +151,7 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die loading... ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Loading... ähnelt.
         /// </summary>
         public static string InAppStoreLoading {
             get {

@@ -126,7 +126,7 @@
     <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
   </data>
   <data name="AboutTitle" xml:space="preserve">
-    <value>hilfe</value>
+    <value>Hilfe</value>
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationAuthor" xml:space="preserve">
@@ -150,19 +150,19 @@
     <comment>AboutPage</comment>
   </data>
   <data name="MoreApps" xml:space="preserve">
-    <value>mehr apps</value>
+    <value>Mehr apps</value>
     <comment>AboutPage</comment>
   </data>
   <data name="PrivacyInfo" xml:space="preserve">
-    <value>datenschutz informationen</value>
+    <value>Datenschutz-Informationen</value>
     <comment>About Page</comment>
   </data>
   <data name="RateAndReview" xml:space="preserve">
-    <value>bewerten und kritik schreiben</value>
+    <value>Bewerten und Kritik schreiben</value>
     <comment>AboutPage</comment>
   </data>
   <data name="SupportAndFeedback" xml:space="preserve">
-    <value>hilfe und feedback</value>
+    <value>Hilfe und Feedback</value>
     <comment>About Page</comment>
   </data>
   <data name="FeedbackEmail" xml:space="preserve">
@@ -174,7 +174,7 @@
     <comment>MainPage</comment>
   </data>
   <data name="AppBarSave" xml:space="preserve">
-    <value>speichern</value>
+    <value>Speichern</value>
     <comment>EditPage</comment>
   </data>
   <data name="AppBarSelectPicture" xml:space="preserve">
@@ -182,7 +182,7 @@
     <comment>Edit Page</comment>
   </data>
   <data name="InAppStoreLoading" xml:space="preserve">
-    <value>lade...</value>
+    <value>Lade...</value>
     <comment>InAppStorePage</comment>
   </data>
   <data name="InAppStoreNoProducts" xml:space="preserve">
@@ -194,7 +194,7 @@
     <comment>InAppStorePage</comment>
   </data>
   <data name="InAppStoreTitle" xml:space="preserve">
-    <value>erweiterungen</value>
+    <value>Erweiterungen</value>
     <comment>InAppStorePage</comment>
   </data>
   <data name="MessageBoxNoInfo" xml:space="preserve">
@@ -206,7 +206,7 @@
     <comment>MessageBox</comment>
   </data>
   <data name="ShowPhotoInfo" xml:space="preserve">
-    <value>bildinformationen anzeigen</value>
+    <value>Bildinformationen anzeigen</value>
     <comment>EditPage</comment>
   </data>
   <data name="Info1" xml:space="preserve">
@@ -230,7 +230,7 @@
     <comment>MainPage-Info</comment>
   </data>
   <data name="AppBarUndo" xml:space="preserve">
-    <value>rückgängig</value>
+    <value>Rückgängig</value>
     <comment>EditPage</comment>
   </data>
   <data name="Share" xml:space="preserve">
