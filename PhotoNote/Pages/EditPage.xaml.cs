@@ -75,7 +75,8 @@ namespace PhotoNote.Pages
         {
             using (var memStream = new MemoryStream())
             {
-                var editedImageInkControl = new EditedImageInkControl(_editImage.FullImage as BitmapSource);
+                var neutralScaleFactor = GetBiggestScaleFactorOfSmallerOrientation();
+                var editedImageInkControl = new EditedImageInkControl(_editImage.FullImage as BitmapSource, InkControl.Strokes, 1.0 / neutralScaleFactor);
                 var gfx = GraphicsHelper.Create(editedImageInkControl);
                 gfx.SaveJpeg(memStream, gfx.PixelWidth, gfx.PixelHeight, 0, 100);
                 memStream.Seek(0, SeekOrigin.Begin);
@@ -200,17 +201,17 @@ namespace PhotoNote.Pages
             EditImageControl.Height = scale * _editImage.Height;
 
             // ink surface
-            var neutralScaleFactors = GetBiggestScaleFactorOfSmallerOrientation();
-            InkControl.Width = neutralScaleFactors * _editImage.Width;
-            InkControl.Height = neutralScaleFactors * _editImage.Height;
+            var neutralScaleFactor = GetBiggestScaleFactorOfSmallerOrientation();
+            InkControl.Width = neutralScaleFactor * _editImage.Width;
+            InkControl.Height = neutralScaleFactor * _editImage.Height;
 
             // check if upper-scaling is required
-            if (scale != neutralScaleFactors)
+            if (scale != neutralScaleFactor)
             {
                 InkControl.RenderTransform = new ScaleTransform
                 {
-                    ScaleX = scale / neutralScaleFactors,
-                    ScaleY = scale / neutralScaleFactors
+                    ScaleX = scale / neutralScaleFactor,
+                    ScaleY = scale / neutralScaleFactor
                 };
             }
             else

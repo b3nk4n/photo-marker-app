@@ -12,5 +12,12 @@
     <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneChromeBrush}">
         <Image x:Name="BackgroundImage" Stretch="Uniform"
                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <InkPresenter x:Name="InkControl" VerticalAlignment="Top" HorizontalAlignment="Left"
+                      Background="Transparent">
+            <InkPresenter.RenderTransform>
+                <ScaleTransform />
+            </InkPresenter.RenderTransform>
+        </InkPresenter>
     </Grid>
 </UserControl>
