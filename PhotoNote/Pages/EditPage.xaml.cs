@@ -30,6 +30,7 @@ namespace PhotoNote.Pages
         private bool _isPenToolbarVisible = false;
 
         private const string PEN_POPUP_VISIBLE_KEY = "_pen_popup_visible_";
+        private const string PEN_DATA_KEY = "_pen_data_";
 
         public EditPage()
         {
@@ -155,21 +156,14 @@ namespace PhotoNote.Pages
                     }
                 }
 
-                // restore state
-                bool showPenToolbar = PhoneStateHelper.LoadValue<bool>(PEN_POPUP_VISIBLE_KEY, false);
-                PhoneStateHelper.DeleteValue(PEN_POPUP_VISIBLE_KEY);
-
-                if (showPenToolbar)
-                {
-                    ShowPenToolbar(false);
-                }
-
                 // error handling? - go back or exit
                 if (!success)
                 {
                     BackOrTerminate();
                     return;
                 }
+                
+                RestoreState();
             }
         }
 
@@ -180,7 +174,34 @@ namespace PhotoNote.Pages
             // save state
             if (e.NavigationMode != NavigationMode.Back)
             {
-                PhoneStateHelper.SaveValue(PEN_POPUP_VISIBLE_KEY, _isPenToolbarVisible);
+                SaveState();
+            }
+        }
+
+        private void RestoreState()
+        {
+            var showPenToolbar = PhoneStateHelper.LoadValue<bool>(PEN_POPUP_VISIBLE_KEY, false);
+            PhoneStateHelper.DeleteValue(PEN_POPUP_VISIBLE_KEY);
+            if (showPenToolbar)
+            {
+                ShowPenToolbar(false);
+            }
+
+            var strokes = PhoneStateHelper.LoadValue<StrokeCollection>(PEN_DATA_KEY);
+            PhoneStateHelper.DeleteValue(PEN_DATA_KEY);
+            if (strokes != null)
+            {
+                InkControl.Strokes = strokes;
+            }
+        }
+
+        private void SaveState()
+        {
+            PhoneStateHelper.SaveValue(PEN_POPUP_VISIBLE_KEY, _isPenToolbarVisible);
+            
+            if (InkControl.Strokes.Count > 0)
+            {
+                PhoneStateHelper.SaveValue(PEN_DATA_KEY, InkControl.Strokes);
             }
         }
 
@@ -388,32 +409,38 @@ namespace PhotoNote.Pages
 
         #region  INK REGION
 
-        Stroke NewStroke;
+        private Stroke _activeStroke;
 
         //A new stroke object named MyStroke is created. MyStroke is added to the StrokeCollection of the InkPresenter named MyIP
         private void MyIP_MouseLeftButtonDown(object sender, MouseEventArgs e)
         {
+            if (_isPenToolbarVisible)
+                return;
+
             InkControl.CaptureMouse();
             StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
             MyStylusPointCollection.Add(e.StylusDevice.GetStylusPoints(InkControl));
             
-            NewStroke = new Stroke(MyStylusPointCollection);
-            NewStroke.DrawingAttributes = new DrawingAttributes
+            _activeStroke = new Stroke(MyStylusPointCollection);
+            _activeStroke.DrawingAttributes = new DrawingAttributes
             {
                 Color = Color.FromArgb(50, 255, 255, 0),
                 Height = 12,
                 Width = 12,
             };
-            InkControl.Strokes.Add(NewStroke);
+            InkControl.Strokes.Add(_activeStroke);
         }
 
         //StylusPoint objects are collected from the MouseEventArgs and added to MyStroke. 
         private void MyIP_MouseMove(object sender, MouseEventArgs e)
         {
-            if (NewStroke != null)
+            if (_isPenToolbarVisible)
+                return;
+
+            if (_activeStroke != null)
             {
                 var stylusPoints = e.StylusDevice.GetStylusPoints(InkControl);
-                NewStroke.StylusPoints.Add(stylusPoints);
+                _activeStroke.StylusPoints.Add(stylusPoints);
             }
                 
         }
@@ -421,7 +448,7 @@ namespace PhotoNote.Pages
         //MyStroke is completed
         private void MyIP_LostMouseCapture(object sender, MouseEventArgs e)
         {
-            NewStroke = null;
+            _activeStroke = null;
         }
 
         //Set the Clip property of the inkpresenter so that the strokes
@@ -435,7 +462,7 @@ namespace PhotoNote.Pages
 
         private bool CanUndo()
         {
-            return NewStroke == null && InkControl.Strokes.Count > 0;
+            return _activeStroke == null && InkControl.Strokes.Count > 0;
         }
 
         private void Undo()
