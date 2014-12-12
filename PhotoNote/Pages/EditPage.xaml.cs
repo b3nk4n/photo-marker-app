@@ -15,6 +15,7 @@ using System.IO;
 using PhotoNote.Resources;
 using PhotoNote.Helpers;
 using PhotoNote.Controls;
+using PhoneKit.Framework.Storage;
 
 namespace PhotoNote.Pages
 {
@@ -25,6 +26,10 @@ namespace PhotoNote.Pages
         private Random rand = new Random();
 
         private static readonly ScaleTransform NEUTRAL_SCALE = new ScaleTransform();
+
+        private bool _isPenToolbarVisible = false;
+
+        private const string PEN_POPUP_VISIBLE_KEY = "_pen_popup_visible_";
 
         public EditPage()
         {
@@ -56,19 +61,7 @@ namespace PhotoNote.Pages
             appBarPenButton.Text = "Stift";
             appBarPenButton.Click += (s, e) =>
             {
-                // make sure the right toobar is visible (required for the first launch
-                if (Orientation == PageOrientation.Portrait ||
-                    Orientation == PageOrientation.PortraitDown ||
-                    Orientation == PageOrientation.PortraitUp)
-                {
-                    PenToolbar.Visibility = System.Windows.Visibility.Visible;
-                } 
-                else
-                {
-                    PenToolbarLandscape.Visibility = System.Windows.Visibility.Visible;
-                }
-
-                VisualStateManager.GoToState(this, "Displayed", true);
+                ShowPenToolbar();
             };
             ApplicationBar.Buttons.Add(appBarPenButton);
 
@@ -134,11 +127,6 @@ namespace PhotoNote.Pages
             bool success = false;
             if (NavigationContext.QueryString != null)
             {
-                if (e.NavigationMode == NavigationMode.Back)
-                {
-                    BackOrTerminate();
-                }
-
                 if (NavigationContext.QueryString.ContainsKey(AppConstants.PARAM_FILE_TOKEN))
                 {
                     var token = NavigationContext.QueryString[AppConstants.PARAM_FILE_TOKEN];
@@ -167,25 +155,32 @@ namespace PhotoNote.Pages
                     }
                 }
 
-                if (NavigationContext.QueryString.ContainsKey(AppConstants.PARAM_FILE_NAME))
-                {
-                    var fileName = NavigationContext.QueryString[AppConstants.PARAM_FILE_NAME];
-                    //var imagePath = string.Format("{0}{1}", LiveTileHelper.SHARED_SHELL_CONTENT_PATH, fileName);
+                // restore state
+                bool showPenToolbar = PhoneStateHelper.LoadValue<bool>(PEN_POPUP_VISIBLE_KEY, false);
+                PhoneStateHelper.DeleteValue(PEN_POPUP_VISIBLE_KEY);
 
-                    //if (StorageHelper.FileExists(imagePath))
-                    //{
-                    //    var file = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(StorageHelper.APPDATA_LOCAL_SCHEME + imagePath));
-                    //    await Windows.System.Launcher.LaunchFileAsync(file);
-                    //}
+                if (showPenToolbar)
+                {
+                    ShowPenToolbar(false);
                 }
 
-                // error handling - warning and go back or exit
+                // error handling? - go back or exit
                 if (!success)
                 {
-                    //MessageBox.Show(AppResources.MessageBoxNoImageFound, AppResources.MessageBoxWarning, MessageBoxButton.OK);
                     BackOrTerminate();
                     return;
                 }
+            }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+
+            // save state
+            if (e.NavigationMode != NavigationMode.Back)
+            {
+                PhoneStateHelper.SaveValue(PEN_POPUP_VISIBLE_KEY, _isPenToolbarVisible);
             }
         }
 
@@ -479,7 +474,48 @@ namespace PhotoNote.Pages
 
         private void ClosedPenToobarTapped(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            HidePenToolbar();
+        }
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            if (_isPenToolbarVisible)
+            {
+                e.Cancel = true;
+                HidePenToolbar();
+            }
+
+            base.OnBackKeyPress(e);
+        }
+
+        public void ShowPenToolbar(bool useTransition=true)
+        {
+            if (_isPenToolbarVisible)
+                return;
+
+            // make sure the right toobar is visible (required for the first launch
+            if (Orientation == PageOrientation.Portrait ||
+                Orientation == PageOrientation.PortraitDown ||
+                Orientation == PageOrientation.PortraitUp)
+            {
+                PenToolbar.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                PenToolbarLandscape.Visibility = System.Windows.Visibility.Visible;
+            }
+
+            VisualStateManager.GoToState(this, "Displayed", useTransition);
+            _isPenToolbarVisible = true;
+        }
+
+        public void HidePenToolbar()
+        {
+            if (!_isPenToolbarVisible)
+                return;
+
             VisualStateManager.GoToState(this, "Normal", true);
+            _isPenToolbarVisible = false;
         }
     }
 }

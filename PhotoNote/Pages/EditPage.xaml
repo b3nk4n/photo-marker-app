@@ -12,6 +12,7 @@
     SupportedOrientations="PortraitOrLandscape" Orientation="Landscape"
     mc:Ignorable="d">
 
+    <!-- REMOVED BECAUSE IT CAUSES BAD INK PERFORMANCE!
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
             <toolkit:NavigationInTransition.Backward>
@@ -31,7 +32,7 @@
                 <toolkit:SlideTransition Mode="SlideDownFadeOut"/>
             </toolkit:NavigationOutTransition.Forward>
         </toolkit:NavigationOutTransition>
-    </toolkit:TransitionService.NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>-->
 
     <phone:PhoneApplicationPage.Resources>
 		<Converters:SolidColorBrushToColorConverter x:Key="BrushToBrush"/>
