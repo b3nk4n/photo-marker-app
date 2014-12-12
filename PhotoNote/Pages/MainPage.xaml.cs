@@ -217,5 +217,10 @@ namespace PhotoNote.Pages
         }
 
         #endregion
+
+        private void AdCloseTapped(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/InAppStorePage.xaml", UriKind.Relative));
+        }
     }
 }
