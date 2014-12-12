@@ -41,14 +41,6 @@ namespace PhotoNote.Pages
             ApplicationBar = new ApplicationBar();
             ApplicationBar.Opacity = 0.99;
 
-            // save
-            ApplicationBarIconButton appBarSaveButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.save.png", UriKind.Relative));
-            appBarSaveButton.Text = AppResources.AppBarSave;
-            appBarSaveButton.Click += (s, e) =>
-            {
-                Save();
-            };
-            ApplicationBar.Buttons.Add(appBarSaveButton);
 
             // undo
             ApplicationBarIconButton appBarUndoButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.undo.curve.png", UriKind.Relative));
@@ -58,6 +50,37 @@ namespace PhotoNote.Pages
                 Undo();
             };
             ApplicationBar.Buttons.Add(appBarUndoButton);
+
+            // undo
+            ApplicationBarIconButton appBarPenButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.draw.marker.png", UriKind.Relative));
+            appBarPenButton.Text = "Stift";
+            appBarPenButton.Click += (s, e) =>
+            {
+                // make sure the right toobar is visible (required for the first launch
+                if (Orientation == PageOrientation.Portrait ||
+                    Orientation == PageOrientation.PortraitDown ||
+                    Orientation == PageOrientation.PortraitUp)
+                {
+                    PenToolbar.Visibility = System.Windows.Visibility.Visible;
+                } 
+                else
+                {
+                    PenToolbarLandscape.Visibility = System.Windows.Visibility.Visible;
+                }
+
+                VisualStateManager.GoToState(this, "Displayed", true);
+            };
+            ApplicationBar.Buttons.Add(appBarPenButton);
+
+            // save
+            ApplicationBarIconButton appBarSaveButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.save.png", UriKind.Relative));
+            appBarSaveButton.Text = AppResources.AppBarSave;
+            appBarSaveButton.Click += (s, e) =>
+            {
+                Save();
+            };
+            ApplicationBar.Buttons.Add(appBarSaveButton);
+
 
             // image info (photo info)
             ApplicationBarMenuItem appBarPhotoInfoMenuItem = new ApplicationBarMenuItem(AppResources.ShowPhotoInfo);
@@ -453,5 +476,10 @@ namespace PhotoNote.Pages
         }
 
         #endregion
+
+        private void ClosedPenToobarTapped(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            VisualStateManager.GoToState(this, "Normal", true);
+        }
     }
 }
