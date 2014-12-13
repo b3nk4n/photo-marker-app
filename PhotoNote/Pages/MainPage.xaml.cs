@@ -85,15 +85,6 @@ namespace PhotoNote.Pages
                 _delayedNavigaionTimer.Start();
             };
 
-            // register startup actions
-            StartupActionManager.Instance.Register(3, ActionExecutionRule.MoreThan, () =>
-            {
-                if (!InAppPurchaseHelper.IsProductActive(AppConstants.IAP_PREMIUM_VERSION))
-                {
-                    BannerContainer.Visibility = System.Windows.Visibility.Visible;
-                }
-            });
-
             InitializeBannerBehaviour();
         }
 
@@ -111,14 +102,6 @@ namespace PhotoNote.Pages
                 task.ContentIdentifier = "ac39aa30-c9b1-4dc6-af2d-1cc17d9807cc";
                 task.Show();
             };
-        }
-
-        private void HideBannerForPremiumVersion()
-        {
-            if (InAppPurchaseHelper.IsProductActive(AppConstants.IAP_PREMIUM_VERSION))
-            {
-                BannerContainer.Visibility = System.Windows.Visibility.Collapsed;
-            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -148,7 +131,14 @@ namespace PhotoNote.Pages
             // fire startup events
             StartupActionManager.Instance.Fire(e);
 
-            HideBannerForPremiumVersion();
+            if (StartupActionManager.Instance.Count <=3 || InAppPurchaseHelper.IsProductActive(AppConstants.IAP_PREMIUM_VERSION))
+            {
+                BannerContainer.Visibility = System.Windows.Visibility.Collapsed;
+            }
+            else
+            {
+                BannerContainer.Visibility = System.Windows.Visibility.Visible;
+            }
 
             bool res = _mainViewModel.CheckHasAnyPicture();
             EmptyButton.Visibility = (!res) ? Visibility.Visible : Visibility.Collapsed;
