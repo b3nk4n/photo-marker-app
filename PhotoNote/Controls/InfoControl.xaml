@@ -93,7 +93,6 @@
                     <Border Width="290" Height="480" Margin="0,-16,0,0" Background="{StaticResource PhoneSubtleBrush}">
                         <Grid Margin="2" Background="{StaticResource PhoneBackgroundBrush}">
                             <Image Source="/Assets/Images/2.jpg" />
-                            <TextBlock Text=" asfasdf" />
                         </Grid>
                     </Border>
                 </phone:PivotItem>
