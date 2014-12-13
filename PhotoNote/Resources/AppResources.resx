@@ -170,7 +170,7 @@
     <comment>FeedbackDialogControl</comment>
   </data>
   <data name="InfoChoosePhoto" xml:space="preserve">
-    <value>choose a picture you would like to edit...</value>
+    <value>select a picture you would like to edit...</value>
     <comment>MainPage</comment>
   </data>
   <data name="AppBarSave" xml:space="preserve">
@@ -178,7 +178,7 @@
     <comment>EditPage</comment>
   </data>
   <data name="AppBarSelectPicture" xml:space="preserve">
-    <value>edit picture</value>
+    <value>select picture</value>
     <comment>Edit Page</comment>
   </data>
   <data name="InAppStoreLoading" xml:space="preserve">

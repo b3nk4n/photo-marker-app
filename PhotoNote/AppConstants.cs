@@ -23,6 +23,11 @@ namespace PhotoNote
         public const string PARAM_SELECTED_FILE_NAME = "selectedFileName";
 
         /// <summary>
+        /// The clear history indicator.
+        /// </summary>
+        public const string PARAM_CLEAR_HISTORY = "clearHistory";
+
+        /// <summary>
         /// The photo prefix to recognize edited photos in the library.
         /// </summary>
         public const string IMAGE_PREFIX = "PhotoNote_";

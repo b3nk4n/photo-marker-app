@@ -72,6 +72,7 @@ namespace PhotoNote.Pages
             appBarSaveButton.Click += (s, e) =>
             {
                 Save();
+                BackToMainPageWithHistoryClear();
             };
             ApplicationBar.Buttons.Add(appBarSaveButton);
 
@@ -159,7 +160,7 @@ namespace PhotoNote.Pages
                 // error handling? - go back or exit
                 if (!success)
                 {
-                    BackOrTerminate();
+                    BackToMainPageWithHistoryClear();
                     return;
                 }
                 
@@ -325,15 +326,10 @@ namespace PhotoNote.Pages
             return new Size(480, 480);
         }
 
-        /// <summary>
-        /// Goes back or terminates the app when the back stack is empty.
-        /// </summary>
-        private void BackOrTerminate()
+        private void BackToMainPageWithHistoryClear()
         {
-            if (NavigationService.CanGoBack)
-                NavigationService.GoBack();
-            else
-                App.Current.Terminate();
+            var uriString = string.Format("/Pages/MainPage.xaml?{0}=true", AppConstants.PARAM_CLEAR_HISTORY);
+            NavigationService.Navigate(new Uri(uriString, UriKind.Relative)); 
         }
 
         #region  INK REGION

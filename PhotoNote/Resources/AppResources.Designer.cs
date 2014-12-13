@@ -88,7 +88,7 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die edit picture ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die select picture ähnelt.
         /// </summary>
         public static string AppBarSelectPicture {
             get {
@@ -250,7 +250,7 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die choose a picture you would like to edit... ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die select a picture you would like to edit... ähnelt.
         /// </summary>
         public static string InfoChoosePhoto {
             get {

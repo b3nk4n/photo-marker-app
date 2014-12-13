@@ -131,6 +131,12 @@ namespace PhotoNote.Pages
                 DataContext = _mainViewModel;
             }
 
+            if (NavigationContext.QueryString.ContainsKey(AppConstants.PARAM_CLEAR_HISTORY))
+            {
+                while (NavigationService.CanGoBack)
+                    NavigationService.RemoveBackEntry();
+            }
+
             if (e.NavigationMode == NavigationMode.Back)
             {
                 if (_imageInAnimationPlayed) {
@@ -217,6 +223,18 @@ namespace PhotoNote.Pages
             {
                 VisualStateManager.GoToState(this, "NormalState", true);
             }
+        }
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            if (_isInfoVisible)
+            {
+                VisualStateManager.GoToState(this, "NormalState", true);
+                _isInfoVisible = false;
+                e.Cancel = true;
+            }
+
+            base.OnBackKeyPress(e);
         }
 
         #endregion

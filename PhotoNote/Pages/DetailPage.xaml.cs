@@ -51,7 +51,8 @@ namespace PhotoNote.Pages
             appBarPenButton.Text = AppResources.Edit;
             appBarPenButton.Click += (s, e) =>
             {
-                // TODO implement link to edit ... clear back stack after that???? what happens if not?
+                var uriString = string.Format("/Pages/EditPage.xaml?{0}={1}", AppConstants.PARAM_SELECTED_FILE_NAME, _editImage.Name);
+                NavigationService.Navigate(new Uri(uriString, UriKind.Relative));
             };
             ApplicationBar.Buttons.Add(appBarPenButton);
 
