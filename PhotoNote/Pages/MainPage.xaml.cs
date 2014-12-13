@@ -65,7 +65,7 @@ namespace PhotoNote.Pages
 
             BuildLocalizedApplicationBar();
 
-            _delayedNavigaionTimer.Interval = TimeSpan.FromMilliseconds(100);
+            _delayedNavigaionTimer.Interval = TimeSpan.FromMilliseconds(1);
             _delayedNavigaionTimer.Tick += (s, e) =>
             {
                 _delayedNavigaionTimer.Stop();

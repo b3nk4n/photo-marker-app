@@ -88,7 +88,7 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die select picture ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die select ähnelt.
         /// </summary>
         public static string AppBarSelectPicture {
             get {

@@ -178,7 +178,7 @@
     <comment>EditPage</comment>
   </data>
   <data name="AppBarSelectPicture" xml:space="preserve">
-    <value>select picture</value>
+    <value>select</value>
     <comment>Edit Page</comment>
   </data>
   <data name="InAppStoreLoading" xml:space="preserve">

@@ -334,6 +334,15 @@
             </Grid>
 
         </Grid>
+        
+        <Grid x:Name="SavingPopup" Visibility="Collapsed">
+            <Rectangle Fill="{StaticResource PhoneBackgroundBrush}" Opacity="0.5" />
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <ProgressBar IsIndeterminate="True" Width="200" Margin="6"/>
+                <TextBlock Text="Saving picture..." TextAlignment="Center" />
+            </StackPanel>
+            
+        </Grid>
 	</Grid>
 
 </phone:PhoneApplicationPage>

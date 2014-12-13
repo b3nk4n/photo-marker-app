@@ -16,6 +16,7 @@ using PhotoNote.Resources;
 using PhotoNote.Helpers;
 using PhotoNote.Controls;
 using PhoneKit.Framework.Storage;
+using System.Threading.Tasks;
 
 namespace PhotoNote.Pages
 {
@@ -89,35 +90,51 @@ namespace PhotoNote.Pages
             ApplicationBar.MenuItems.Add(appBarPhotoInfoMenuItem);
         }
 
-        private void Save()
+        private async void Save()
         {
-            using (var memStream = new MemoryStream())
+            SavingPopup.Visibility = System.Windows.Visibility.Visible;
+
+            await Task.Delay(33);
+
+            try
             {
-                var neutralScaleFactor = GetBiggestScaleFactorOfSmallerOrientation();
-                var editedImageInkControl = new EditedImageInkControl(_editImage.FullImage as BitmapSource, InkControl.Strokes, 1.0 / neutralScaleFactor);
-                var gfx = GraphicsHelper.Create(editedImageInkControl);
-                gfx.SaveJpeg(memStream, gfx.PixelWidth, gfx.PixelHeight, 0, 100);
-                memStream.Seek(0, SeekOrigin.Begin);
-
-                using (var media = StaticMediaLibrary.Instance)
+                using (var memStream = new MemoryStream())
                 {
-                    var nameWithoutExtension = Path.GetFileNameWithoutExtension(_editImage.Name);
+                    var neutralScaleFactor = GetBiggestScaleFactorOfSmallerOrientation();
+                    var editedImageInkControl = new EditedImageInkControl(_editImage.FullImage as BitmapSource, InkControl.Strokes, 1.0 / neutralScaleFactor);
+                    var gfx = GraphicsHelper.Create(editedImageInkControl);
+                    gfx.SaveJpeg(memStream, gfx.PixelWidth, gfx.PixelHeight, 0, 100);
+                    memStream.Seek(0, SeekOrigin.Begin);
 
-                    // prepend image prefix
-                    if (!nameWithoutExtension.StartsWith(AppConstants.IMAGE_PREFIX))
+                    using (var media = StaticMediaLibrary.Instance)
                     {
-                        nameWithoutExtension = AppConstants.IMAGE_PREFIX + nameWithoutExtension;
-                    }
-                    else
-                    {
-                        // remove "_XXXX" postfix of previously save photo note
-                        nameWithoutExtension = nameWithoutExtension.Substring(0, nameWithoutExtension.Length - 5);
-                    }
+                        var nameWithoutExtension = Path.GetFileNameWithoutExtension(_editImage.Name);
 
-                    // save
-                    media.SavePicture(string.Format("{0}_{1:0000}.jpg", nameWithoutExtension, rand.Next(9999)), memStream);
+                        // prepend image prefix
+                        if (!nameWithoutExtension.StartsWith(AppConstants.IMAGE_PREFIX))
+                        {
+                            nameWithoutExtension = AppConstants.IMAGE_PREFIX + nameWithoutExtension;
+                        }
+                        else
+                        {
+                            // remove "_XXXX" postfix of previously save photo note
+                            nameWithoutExtension = nameWithoutExtension.Substring(0, nameWithoutExtension.Length - 5);
+                        }
+
+                        // save
+                        media.SavePicture(string.Format("{0}_{1:0000}.jpg", nameWithoutExtension, rand.Next(9999)), memStream);
+                    }
                 }
+            } 
+            catch (Exception e)
+            {
+                // TODO error message box.
+            } 
+            finally
+            {
+                SavingPopup.Visibility = System.Windows.Visibility.Collapsed;
             }
+            
             
         }
 
