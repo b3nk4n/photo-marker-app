@@ -235,6 +235,10 @@
   </data>
   <data name="Share" xml:space="preserve">
     <value>Versenden</value>
-    <comment>ContextMenu</comment>
+    <comment>General</comment>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Bearbeiten</value>
+    <comment>General</comment>
   </data>
 </root>

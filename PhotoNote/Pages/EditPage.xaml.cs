@@ -57,9 +57,9 @@ namespace PhotoNote.Pages
             };
             ApplicationBar.Buttons.Add(appBarUndoButton);
 
-            // undo
+            // pen toolbar
             ApplicationBarIconButton appBarPenButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.draw.marker.png", UriKind.Relative));
-            appBarPenButton.Text = "Stift";
+            appBarPenButton.Text = "Stift"; // TODO translate
             appBarPenButton.Click += (s, e) =>
             {
                 ShowPenToolbar();
@@ -132,7 +132,7 @@ namespace PhotoNote.Pages
                 {
                     var token = NavigationContext.QueryString[AppConstants.PARAM_FILE_TOKEN];
 
-                    var image = GetImageFromToken(token);
+                    var image = StaticMediaLibrary.GetImageFromToken(token);
                     if (image != null)
                     {
                         if (UpdatePicture(image))
@@ -146,7 +146,7 @@ namespace PhotoNote.Pages
                 {
                     var selectedFileName = NavigationContext.QueryString[AppConstants.PARAM_SELECTED_FILE_NAME];
 
-                    var image = GetImageFromFileName(selectedFileName);
+                    var image = StaticMediaLibrary.GetImageFromFileName(selectedFileName);
                     if (image != null)
                     {
                         if (UpdatePicture(image))
@@ -308,92 +308,6 @@ namespace PhotoNote.Pages
         private Size GetNeutralViewportBounds()
         {
             return new Size(480, 480);
-        }
-
-
-        private EditPicture GetImageFromToken(string token)
-        {
-            Picture image = null;
-
-            try
-            {
-                image = StaticMediaLibrary.Instance.GetPictureFromToken(token);
-            }
-            catch (InvalidOperationException ioex)
-            {
-                Debug.WriteLine("Could not retrieve photo from library with error: " + ioex.Message);
-            }
-
-            return (image == null) ? null : new EditPicture(image);
-        }
-
-        private EditPicture GetImageFromFileName(string fileName)
-        {
-            try
-            {
-                foreach (var pic in StaticMediaLibrary.Instance.Pictures)
-                {
-                    if (pic.Name == fileName)
-                    {
-                        return new EditPicture(pic);
-                    }
-                }
-                Debug.WriteLine("pic: " + fileName);
-            }
-            catch (InvalidOperationException ioex)
-            {
-                Debug.WriteLine("Could not retrieve photo from library with error: " + ioex.Message);
-            }
-
-            // second try, because sometime the file extenstion was not applied.
-            // TODO: check if still necessary?!?
-            foreach (var pic in StaticMediaLibrary.Instance.Pictures)
-            {
-                var nameWithoutCounter = RemoveImageCopyCounter(fileName);
-                if (pic.Name.Contains(fileName) || fileName.Contains(pic.Name) ||
-                    pic.Name.Contains(nameWithoutCounter) || pic.Name.Contains(nameWithoutCounter))
-                {
-                    return new EditPicture(pic);
-                }
-            }
-            return null;
-        }
-
-        private static string RemoveImageCopyCounter(string fileName)
-        {
-            if (fileName.Length <= 3)
-                return fileName;
-
-            var bracketsStart = fileName.IndexOf('(');
-            var bracketsEnd = fileName.IndexOf(')');
-
-            if (bracketsStart != -1 && bracketsEnd != -1 && bracketsStart < bracketsEnd)
-            {
-                try
-                {
-                    return fileName.Substring(0, bracketsStart);
-                }
-                catch (Exception) { }
-            }
-
-            return fileName;
-        }
-
-        /// <summary>
-        /// Replacement for Path.GetFileNameWithoutExtension(), which throw "ArgumentException: Illegal characters in path".
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        private string ExtractFileExtension(string fileName)
-        {
-            var extensionStartIndex = fileName.LastIndexOf('.');
-
-            if (extensionStartIndex != -1)
-            {
-                fileName = fileName.Substring(0, Math.Max(1, extensionStartIndex));
-            }
-
-            return fileName;
         }
 
         /// <summary>

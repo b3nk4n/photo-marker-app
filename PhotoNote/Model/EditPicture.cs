@@ -1,4 +1,5 @@
 ﻿using Microsoft.Phone;
+using Microsoft.Phone.Tasks;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Media.PhoneExtensions;
 using System.IO;
@@ -13,6 +14,13 @@ namespace PhotoNote.Model
         public EditPicture(Picture image)
         {
             _image = image;
+        }
+
+        public void Share()
+        {
+            var shareTask = new ShareMediaTask();
+            shareTask.FilePath = ImagePath;
+            shareTask.Show();
         }
 
         public Stream ThumbnailImageStream

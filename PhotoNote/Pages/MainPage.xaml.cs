@@ -38,7 +38,7 @@ namespace PhotoNote.Pages
         /// <summary>
         /// The main view model.
         /// </summary>
-        private MainViewModel _mainViewModel = new MainViewModel();
+        private MainViewModel _mainViewModel;
 
         /// <summary>
         /// To ensure the animation is only played once.
@@ -95,8 +95,6 @@ namespace PhotoNote.Pages
             });
 
             InitializeBannerBehaviour();
-
-            DataContext = _mainViewModel;
         }
 
         private void InitializeBannerBehaviour()
@@ -126,6 +124,12 @@ namespace PhotoNote.Pages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
+            if (_mainViewModel == null)
+            {
+                _mainViewModel = new MainViewModel(NavigationService);
+                DataContext = _mainViewModel;
+            }
 
             if (e.NavigationMode == NavigationMode.Back)
             {
@@ -172,7 +176,6 @@ namespace PhotoNote.Pages
                     // suppress multiple Show() calls:
                     // reported via Email error report (24.11.2014)
                 }
-
             };
             ApplicationBar.Buttons.Add(appBarTileButton);
 

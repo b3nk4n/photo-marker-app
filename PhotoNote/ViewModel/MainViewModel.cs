@@ -1,16 +1,12 @@
-﻿using Microsoft.Phone.Tasks;
-using PhoneKit.Framework.Core.MVVM;
-using PhotoNote.Helpers;
+﻿using PhoneKit.Framework.Core.MVVM;
 using PhotoNote.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 
 namespace PhotoNote.ViewModel
 {
@@ -19,24 +15,25 @@ namespace PhotoNote.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        private NavigationService _navigationService;
+
         public IList<EditPicture> _editPictureList = new ObservableCollection<EditPicture>();
 
         private DelegateCommand<string> _noteTileSelectedCommand;
         private DelegateCommand<string> _shareCommand;
 
-        public MainViewModel()
+        public MainViewModel(NavigationService navigationService)
         {
             InitializeCommands();
+            _navigationService = navigationService;
         }
 
         private void InitializeCommands()
         {
-            _noteTileSelectedCommand = new DelegateCommand<string>(async (fileName) =>
+            _noteTileSelectedCommand = new DelegateCommand<string>((fileName) =>
             {
-                if (!await LauncherHelper.LaunchPhotoAsync(fileName))
-                {
-                    // TODO error handling...
-                }
+                var uriString = new Uri(string.Format("/Pages/DetailPage.xaml?{0}={1}", AppConstants.PARAM_SELECTED_FILE_NAME, fileName), UriKind.Relative);
+                _navigationService.Navigate(uriString);
             });
 
             _shareCommand = new DelegateCommand<string>((indexString) =>
@@ -49,9 +46,7 @@ namespace PhotoNote.ViewModel
                 var picture = _editPictureList[index];
 
                 // share media
-                var shareTask = new ShareMediaTask();
-                shareTask.FilePath = picture.ImagePath;
-                shareTask.Show();
+                picture.Share();
             });
         }
 
