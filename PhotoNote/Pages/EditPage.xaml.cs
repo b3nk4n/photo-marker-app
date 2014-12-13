@@ -164,6 +164,7 @@ namespace PhotoNote.Pages
                 }
                 
                 RestoreState();
+                LoadSettings();
             }
         }
 
@@ -176,6 +177,20 @@ namespace PhotoNote.Pages
             {
                 SaveState();
             }
+        }
+
+        private void LoadSettings()
+        {
+            this.ColorPicker.Color = AppSettings.PenColor.Value;
+            this.OpacitySlider.Value = AppSettings.PenOpacity.Value;
+            this.ThicknessSlider.Value = AppSettings.PenThickness.Value;
+        }
+
+        private void SaveSettings()
+        {
+            AppSettings.PenColor.Value = this.ColorPicker.Color;
+            AppSettings.PenOpacity.Value = this.OpacitySlider.Value;
+            AppSettings.PenThickness.Value = this.ThicknessSlider.Value;
         }
 
         private void RestoreState()
@@ -334,13 +349,16 @@ namespace PhotoNote.Pages
             InkControl.CaptureMouse();
             StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
             MyStylusPointCollection.Add(e.StylusDevice.GetStylusPoints(InkControl));
-            
+
+            var opacity = AppSettings.PenOpacity.Value;
+            var color = AppSettings.PenColor.Value;
+            var size = AppSettings.PenThickness.Value;
             _activeStroke = new Stroke(MyStylusPointCollection);
             _activeStroke.DrawingAttributes = new DrawingAttributes
             {
-                Color = Color.FromArgb(50, 255, 255, 0),
-                Height = 12,
-                Width = 12,
+                Color = Color.FromArgb((byte)(255 * opacity), color.R, color.G, color.B),
+                Height = size,
+                Width = size,
             };
             InkControl.Strokes.Add(_activeStroke);
         }
@@ -457,6 +475,8 @@ namespace PhotoNote.Pages
 
             VisualStateManager.GoToState(this, "Normal", true);
             _isPenToolbarVisible = false;
+
+            SaveSettings();
         }
     }
 }

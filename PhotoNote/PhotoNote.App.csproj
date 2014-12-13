@@ -93,6 +93,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppConstants.cs" />
+    <Compile Include="AppSettings.cs" />
     <Compile Include="Controls\EditedImageInkControl.xaml.cs">
       <DependentUpon>EditedImageInkControl.xaml</DependentUpon>
     </Compile>
