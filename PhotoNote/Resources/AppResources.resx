@@ -241,4 +241,8 @@
     <value>edit</value>
     <comment>General</comment>
   </data>
+  <data name="AppBarPen" xml:space="preserve">
+    <value>marker</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

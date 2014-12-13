@@ -59,7 +59,7 @@ namespace PhotoNote.Pages
 
             // pen toolbar
             ApplicationBarIconButton appBarPenButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.draw.marker.png", UriKind.Relative));
-            appBarPenButton.Text = "Stift"; // TODO translate
+            appBarPenButton.Text = AppResources.AppBarPen;
             appBarPenButton.Click += (s, e) =>
             {
                 ShowPenToolbar();

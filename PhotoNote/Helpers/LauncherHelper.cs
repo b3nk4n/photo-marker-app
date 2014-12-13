@@ -17,27 +17,27 @@ namespace PhotoNote.Helpers
         /// </summary>
         /// <param name="fileName">The file name of the image.</param>
         /// <returns>True for success, else false.</returns>
-        public static async Task<bool> LaunchPhotoAsync(string fileName)
-        {
-            // search index;
-            EditPicture pic = GetImageFromFileName(fileName);
+        //public static async Task<bool> LaunchPhotoAsync(string fileName)
+        //{
+        //    // search index;
+        //    EditPicture pic = GetImageFromFileName(fileName);
 
-            var tmpName = string.Format("tmp.{0}", pic.FileType.ToLower());
+        //    var tmpName = string.Format("tmp.{0}", pic.FileType.ToLower());
 
-            if (pic == null)
-                return false;
+        //    if (pic == null)
+        //        return false;
 
-            var res = StorageHelper.SaveFileFromStream(tmpName, pic.FullImageStream); // TODO: PNG !?!?!
+        //    var res = StorageHelper.SaveFileFromStream(tmpName, pic.FullImageStream);
 
-            // return when image not found in library.
-            if (res)
-            {
-                var file = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(StorageHelper.APPDATA_LOCAL_SCHEME + "/" + tmpName));
-                return await Launcher.LaunchFileAsync(file);
-            }
+        //    // return when image not found in library.
+        //    if (res)
+        //    {
+        //        var file = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(StorageHelper.APPDATA_LOCAL_SCHEME + "/" + tmpName));
+        //        return await Launcher.LaunchFileAsync(file);
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
         /// <summary>
         /// Launches Photo-Info.
@@ -47,7 +47,7 @@ namespace PhotoNote.Helpers
         public static async Task<bool> LaunchPhotoInfoAsync(string fileName)
         {
             // search index;
-            int index = GetMediaLibIndexFromFileName(fileName);
+            int index = StaticMediaLibrary.GetMediaLibIndexFromFileName(fileName);
 
             // return when image not found in library.
             if (index == -1)
@@ -65,91 +65,6 @@ namespace PhotoNote.Helpers
         {
             var uriString = string.Format("photoinfo:show?mediaLibIndex={0}", mediaLibIndex);
             return await Launcher.LaunchUriAsync(new Uri(uriString, UriKind.Absolute));
-        }
-
-        private static EditPicture GetImageFromFileName(string fileName)
-        {
-            try
-            {
-                foreach (var pic in StaticMediaLibrary.Instance.Pictures)
-                {
-                    if (pic.Name == fileName)
-                    {
-                        return new EditPicture(pic);
-                    }
-                }
-            }
-            catch (InvalidOperationException ioex)
-            {
-                Debug.WriteLine("Could not retrieve photo from library with error: " + ioex.Message);
-            }
-
-            // second try, because sometime the file extenstion was not applied.
-            // TODO: check if still necessary?!?
-            foreach (var pic in StaticMediaLibrary.Instance.Pictures)
-            {
-                var nameWithoutCounter = RemoveImageCopyCounter(fileName);
-                if (pic.Name.Contains(fileName) || fileName.Contains(pic.Name) ||
-                    pic.Name.Contains(nameWithoutCounter) || pic.Name.Contains(nameWithoutCounter))
-                {
-                    return new EditPicture(pic);
-                }
-            }
-            return null;
-        }
-
-        private static int GetMediaLibIndexFromFileName(string fileName)
-        {
-            try
-            {
-                int i = 0;
-                foreach (var pic in StaticMediaLibrary.Instance.Pictures)
-                {
-                    if (pic.Name == fileName)
-                    {
-                        return i;
-                    }
-                    i++;
-                }
-            }
-            catch (InvalidOperationException ioex)
-            {
-                Debug.WriteLine("Could not retrieve photo from library with error: " + ioex.Message);
-            }
-
-            // second try, because sometime the file extenstion was not applied.
-            int j = 0;
-            foreach (var pic in StaticMediaLibrary.Instance.Pictures)
-            {
-                var nameWithoutCounter = RemoveImageCopyCounter(fileName);
-                if (pic.Name.Contains(fileName) || fileName.Contains(pic.Name) ||
-                    pic.Name.Contains(nameWithoutCounter) || pic.Name.Contains(nameWithoutCounter))
-                {
-                    return j;
-                }
-                j++;
-            }
-            return -1;
-        }
-
-        private static string RemoveImageCopyCounter(string fileName)
-        {
-            if (fileName.Length <= 3)
-                return fileName;
-
-            var bracketsStart = fileName.IndexOf('(');
-            var bracketsEnd = fileName.IndexOf(')');
-
-            if (bracketsStart != -1 && bracketsEnd != -1 && bracketsStart < bracketsEnd)
-            {
-                try
-                {
-                    return fileName.Substring(0, bracketsStart);
-                }
-                catch (Exception) { }
-            }
-
-            return fileName;
         }
     }
 }

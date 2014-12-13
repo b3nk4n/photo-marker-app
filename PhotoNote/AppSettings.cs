@@ -26,6 +26,6 @@ namespace PhotoNote
         /// <summary>
         /// The pen thickness.
         /// </summary>
-        public static StoredObject<double> PenThickness = new StoredObject<double>("_pen_thickness_", 15.0);
+        public static StoredObject<double> PenThickness = new StoredObject<double>("_pen_thickness_", 10.0);
     }
 }

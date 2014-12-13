@@ -70,6 +70,15 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die marker ähnelt.
+        /// </summary>
+        public static string AppBarPen {
+            get {
+                return ResourceManager.GetString("AppBarPen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die save ähnelt.
         /// </summary>
         public static string AppBarSave {

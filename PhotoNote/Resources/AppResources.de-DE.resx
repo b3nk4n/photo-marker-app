@@ -241,4 +241,8 @@
     <value>Bearbeiten</value>
     <comment>General</comment>
   </data>
+  <data name="AppBarPen" xml:space="preserve">
+    <value>Markerstift</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

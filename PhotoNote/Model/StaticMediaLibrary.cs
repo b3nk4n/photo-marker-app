@@ -59,7 +59,6 @@ namespace PhotoNote.Model
             }
 
             // second try, because sometime the file extenstion was not applied.
-            // TODO: check if still necessary?!?
             foreach (var pic in StaticMediaLibrary.Instance.Pictures)
             {
                 var nameWithoutCounter = RemoveImageCopyCounter(fileName);
@@ -70,6 +69,40 @@ namespace PhotoNote.Model
                 }
             }
             return null;
+        }
+
+        public static int GetMediaLibIndexFromFileName(string fileName)
+        {
+            try
+            {
+                int i = 0;
+                foreach (var pic in StaticMediaLibrary.Instance.Pictures)
+                {
+                    if (pic.Name == fileName)
+                    {
+                        return i;
+                    }
+                    i++;
+                }
+            }
+            catch (InvalidOperationException ioex)
+            {
+                Debug.WriteLine("Could not retrieve photo from library with error: " + ioex.Message);
+            }
+
+            // second try, because sometime the file extenstion was not applied.
+            int j = 0;
+            foreach (var pic in StaticMediaLibrary.Instance.Pictures)
+            {
+                var nameWithoutCounter = RemoveImageCopyCounter(fileName);
+                if (pic.Name.Contains(fileName) || fileName.Contains(pic.Name) ||
+                    pic.Name.Contains(nameWithoutCounter) || pic.Name.Contains(nameWithoutCounter))
+                {
+                    return j;
+                }
+                j++;
+            }
+            return -1;
         }
 
         private static string RemoveImageCopyCounter(string fileName)
