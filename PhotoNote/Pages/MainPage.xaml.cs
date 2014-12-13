@@ -14,6 +14,7 @@ using System.IO;
 using PhoneKit.Framework.Support;
 using PhoneKit.Framework.InAppPurchase;
 using PhotoNote.ViewModel;
+using PhotoNote.Controls;
 
 namespace PhotoNote.Pages
 {
@@ -36,9 +37,17 @@ namespace PhotoNote.Pages
         private DispatcherTimer _delayedNavigaionTimer = new DispatcherTimer();
 
         /// <summary>
+        /// Delayed info control loading.
+        /// </summary>
+        private DispatcherTimer _delayedInfoTimer = new DispatcherTimer();
+
+        /// <summary>
         /// The main view model.
         /// </summary>
         private MainViewModel _mainViewModel;
+
+        // the info control with screenshots, which uses lazy loading to improve the startup time.
+        private InfoControl _infoControl;
 
         /// <summary>
         /// To ensure the animation is only played once.
@@ -72,6 +81,20 @@ namespace PhotoNote.Pages
 
                 var uriString = new Uri(string.Format("/Pages/EditPage.xaml?{0}={1}", AppConstants.PARAM_SELECTED_FILE_NAME, fileNameToOpen), UriKind.Relative);
                 NavigationService.Navigate(uriString);
+            };
+
+            _delayedInfoTimer.Interval = TimeSpan.FromMilliseconds(3000);
+            _delayedInfoTimer.Tick += (s, e) =>
+            {
+                _delayedInfoTimer.Stop();
+
+                if (_infoControl != null)
+                    return;
+
+                _infoControl = new InfoControl();
+                this.LayoutRoot.Children.Add(_infoControl);
+                Grid.SetRow(_infoControl, 0);
+                Grid.SetRowSpan(_infoControl, 3);
             };
 
             // init photo chooser task
@@ -140,6 +163,12 @@ namespace PhotoNote.Pages
                 BannerContainer.Visibility = System.Windows.Visibility.Visible;
             }
 
+            // show info button
+            if (StartupActionManager.Instance.Count <= 10)
+            {
+                 _delayedInfoTimer.Start();
+            }
+
             bool res = _mainViewModel.CheckHasAnyPicture();
             EmptyButton.Visibility = (!res) ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -197,37 +226,14 @@ namespace PhotoNote.Pages
             photoTask.Show();
         }
 
-        #region Info Popup
-
-        private bool _isInfoVisible = false;
-
-        private void InfoArrowClicked(object sender, RoutedEventArgs e)
-        {
-            _isInfoVisible = !_isInfoVisible;
-
-            if (_isInfoVisible)
-            {
-                VisualStateManager.GoToState(this, "InfoState", true);
-            }
-            else
-            {
-                VisualStateManager.GoToState(this, "NormalState", true);
-            }
-        }
-
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
-            if (_isInfoVisible)
-            {
-                VisualStateManager.GoToState(this, "NormalState", true);
-                _isInfoVisible = false;
-                e.Cancel = true;
-            }
+
+            if (_infoControl != null)
+                e.Cancel = _infoControl.HandleBack();
 
             base.OnBackKeyPress(e);
         }
-
-        #endregion
 
         private void AdCloseTapped(object sender, System.Windows.Input.GestureEventArgs e)
         {

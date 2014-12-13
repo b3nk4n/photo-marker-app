@@ -117,28 +117,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ResourceFlowDirection" xml:space="preserve">
-    <value>LeftToRight</value>
-    <comment>Controls the FlowDirection for all elements in the RootFrame. Set to the traditional direction of this resource file's language</comment>
-  </data>
-  <data name="ResourceLanguage" xml:space="preserve">
-    <value>de-DE</value>
-    <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
-  </data>
   <data name="AboutTitle" xml:space="preserve">
     <value>Hilfe</value>
     <comment>AboutPage</comment>
+  </data>
+  <data name="AppBarPen" xml:space="preserve">
+    <value>Markerstift</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="AppBarSave" xml:space="preserve">
+    <value>Speichern</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="AppBarSelectPicture" xml:space="preserve">
+    <value>Bild auswählen</value>
+    <comment>Edit Page</comment>
+  </data>
+  <data name="AppBarUndo" xml:space="preserve">
+    <value>Rückgängig</value>
+    <comment>EditPage</comment>
   </data>
   <data name="ApplicationAuthor" xml:space="preserve">
     <value>von Benjamin Sautermeister</value>
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationDescription" xml:space="preserve">
-    <value>Dieses Tool erweitert den Windows Phone 8 Bilder-Hub mit der Funktion, kurze Notizen zu deinen Bildern hinzuzufügen. Hebe die wichtigsten Elemente deiner Fotos ganz einfach hervor.</value>
+    <value>Dieses Tool erweitert den Windows Phone 8 Bilder-Hub mit der Funktion, kurze Notizen zu deinen Bildern hinzuzufügen. Hebe die wichtigsten Elemente deiner Fotos ganz einfach hervor, um sie selbsterklärend zu machen.</value>
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationTitle" xml:space="preserve">
-    <value>Photo Marker</value>
+    <value>Bildnotiz</value>
     <comment>General</comment>
   </data>
   <data name="ApplicationVersion" xml:space="preserve">
@@ -149,37 +157,13 @@
     <value>Unterstützt von</value>
     <comment>AboutPage</comment>
   </data>
-  <data name="MoreApps" xml:space="preserve">
-    <value>Mehr apps</value>
-    <comment>AboutPage</comment>
-  </data>
-  <data name="PrivacyInfo" xml:space="preserve">
-    <value>Datenschutz-Informationen</value>
-    <comment>About Page</comment>
-  </data>
-  <data name="RateAndReview" xml:space="preserve">
-    <value>Bewerten und Kritik schreiben</value>
-    <comment>AboutPage</comment>
-  </data>
-  <data name="SupportAndFeedback" xml:space="preserve">
-    <value>Hilfe und Feedback</value>
-    <comment>About Page</comment>
+  <data name="Edit" xml:space="preserve">
+    <value>Bearbeiten</value>
+    <comment>General</comment>
   </data>
   <data name="FeedbackEmail" xml:space="preserve">
     <value>apps@bsautermeister.de</value>
     <comment>FeedbackDialogControl</comment>
-  </data>
-  <data name="InfoChoosePhoto" xml:space="preserve">
-    <value>wählen Sie ein Bild aus, welches Sie bearbeiten wollen...</value>
-    <comment>MainPage</comment>
-  </data>
-  <data name="AppBarSave" xml:space="preserve">
-    <value>Speichern</value>
-    <comment>EditPage</comment>
-  </data>
-  <data name="AppBarSelectPicture" xml:space="preserve">
-    <value>Bild auswählen</value>
-    <comment>Edit Page</comment>
   </data>
   <data name="InAppStoreLoading" xml:space="preserve">
     <value>Lade...</value>
@@ -196,18 +180,6 @@
   <data name="InAppStoreTitle" xml:space="preserve">
     <value>Erweiterungen</value>
     <comment>InAppStorePage</comment>
-  </data>
-  <data name="MessageBoxNoInfo" xml:space="preserve">
-    <value>Leider konnte ich die App zum Anzeigen der Bildinformationen nicht starten. Tut mir wirklich sehr seid!</value>
-    <comment>MessageBox</comment>
-  </data>
-  <data name="MessageBoxWarning" xml:space="preserve">
-    <value>Warnung</value>
-    <comment>MessageBox</comment>
-  </data>
-  <data name="ShowPhotoInfo" xml:space="preserve">
-    <value>Bildinformationen anzeigen</value>
-    <comment>EditPage</comment>
   </data>
   <data name="Info1" xml:space="preserve">
     <value>Bibliothek öffnen und Bild auswählen</value>
@@ -229,21 +201,13 @@
     <value>Bild kann sofort bearbeitet werden...</value>
     <comment>MainPage-Info</comment>
   </data>
-  <data name="AppBarUndo" xml:space="preserve">
-    <value>Rückgängig</value>
-    <comment>EditPage</comment>
+  <data name="InfoChoosePhoto" xml:space="preserve">
+    <value>wählen Sie ein Bild aus, welches Sie bearbeiten wollen...</value>
+    <comment>MainPage</comment>
   </data>
-  <data name="Share" xml:space="preserve">
-    <value>Versenden</value>
-    <comment>General</comment>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Bearbeiten</value>
-    <comment>General</comment>
-  </data>
-  <data name="AppBarPen" xml:space="preserve">
-    <value>Markerstift</value>
-    <comment>EditPage</comment>
+  <data name="MessageBoxNoInfo" xml:space="preserve">
+    <value>Leider konnte ich die App zum Anzeigen der Bildinformationen nicht starten. Tut mir wirklich sehr seid!</value>
+    <comment>MessageBox</comment>
   </data>
   <data name="MessageBoxNoSave" xml:space="preserve">
     <value>Leider konnte ich das Bild nicht speichern. Tut mir wirklich sehr seid!</value>
@@ -252,5 +216,41 @@
   <data name="MessageBoxUnknownError" xml:space="preserve">
     <value>Hoppala! Irgendwas ist wohl schief gelaufen. Tut mir wirklich leid!</value>
     <comment>MessageBox</comment>
+  </data>
+  <data name="MessageBoxWarning" xml:space="preserve">
+    <value>Warnung</value>
+    <comment>MessageBox</comment>
+  </data>
+  <data name="MoreApps" xml:space="preserve">
+    <value>Mehr apps</value>
+    <comment>AboutPage</comment>
+  </data>
+  <data name="PrivacyInfo" xml:space="preserve">
+    <value>Datenschutz-Informationen</value>
+    <comment>About Page</comment>
+  </data>
+  <data name="RateAndReview" xml:space="preserve">
+    <value>Bewerten und Kritik schreiben</value>
+    <comment>AboutPage</comment>
+  </data>
+  <data name="ResourceFlowDirection" xml:space="preserve">
+    <value>LeftToRight</value>
+    <comment>Controls the FlowDirection for all elements in the RootFrame. Set to the traditional direction of this resource file's language</comment>
+  </data>
+  <data name="ResourceLanguage" xml:space="preserve">
+    <value>de-DE</value>
+    <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
+  </data>
+  <data name="Share" xml:space="preserve">
+    <value>Versenden</value>
+    <comment>General</comment>
+  </data>
+  <data name="ShowPhotoInfo" xml:space="preserve">
+    <value>Bildinformationen anzeigen</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="SupportAndFeedback" xml:space="preserve">
+    <value>Hilfe und Feedback</value>
+    <comment>About Page</comment>
   </data>
 </root>

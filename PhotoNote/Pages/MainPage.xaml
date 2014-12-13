@@ -8,12 +8,12 @@
     xmlns:adverts="clr-namespace:PhoneKit.Framework.Advertising;assembly=PhoneKit.Framework"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:conv="clr-namespace:PhoneKit.Framework.Conversion;assembly=PhoneKit.Framework"
+    xmlns:local="clr-namespace:PhotoNote.Controls"
     x:Class="PhotoNote.Pages.MainPage"
     mc:Ignorable="d"
     SupportedOrientations="Portrait" Orientation="Landscape">
 
     <phone:PhoneApplicationPage.Resources>
-        <conv:ToUpperCaseConverter x:Key="ToUpperCaseConverter" />
         <conv:BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
         <ControlTemplate x:Key="EmptyTileButtonControlTemplate" TargetType="Button">
@@ -107,33 +107,12 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <!--LayoutRoot ist das Stammraster, in dem alle anderen Seiteninhalte platziert werden-->
-	<Grid x:Name="LayoutRoot" Background="Transparent">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="PopupState">
-                <VisualStateGroup.Transitions>
-                    <VisualTransition GeneratedDuration="0:0:0.5">
-                        <VisualTransition.GeneratedEasingFunction>
-                            <CubicEase EasingMode="EaseInOut"/>
-                        </VisualTransition.GeneratedEasingFunction>
-                    </VisualTransition>
-                </VisualStateGroup.Transitions>
-                <VisualState x:Name="NormalState"/>
-                <VisualState x:Name="InfoState">
-                    <Storyboard>
-                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="InfoPanorama" d:IsOptimized="True"/>
-                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)" Storyboard.TargetName="SlideInInfoBox" d:IsOptimized="True"/>
-                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" Storyboard.TargetName="ellipse" d:IsOptimized="True"/>
-                        <DoubleAnimation Duration="0" To="-180" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" Storyboard.TargetName="button" d:IsOptimized="True"/>
-                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="infoTitle" d:IsOptimized="True"/>
-                    </Storyboard>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
+    <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
         <!-- Advertisment -->
         <Grid x:Name="BannerContainer" Width="480" Height="80"  VerticalAlignment="Top" HorizontalAlignment="Center"
@@ -274,91 +253,7 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.RowSpan="3" x:Name="SlideInInfoBox" Height="800" Background="{StaticResource PhoneBackgroundBrush}">
-            <Grid.RenderTransform>
-                <CompositeTransform TranslateY="646" />
-            </Grid.RenderTransform>
-            <StackPanel>
-                <Grid>
-                    <StackPanel x:Name="infoTitle" Opacity="0" Margin="12,17,0,28"  toolkit:TurnstileFeatherEffect.FeatheringIndex="0" HorizontalAlignment="Left">
-                        <TextBlock FontWeight="Medium" Text="{Binding LocalizedResources.ApplicationTitle, Converter={StaticResource ToUpperCaseConverter}, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
-                    </StackPanel>
-                    <Button x:Name="button" Template="{StaticResource EmptyButtonControlTemplate}" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5"
-                            Margin="12,0,12,0" Click="InfoArrowClicked" Background="{StaticResource PhoneBackgroundBrush}">
-                        <Button.RenderTransform>
-                            <CompositeTransform/>
-                        </Button.RenderTransform>
-                        <Grid>
-                            <Ellipse x:Name="ellipse" Width="48" Height="48" Stroke="{StaticResource PhoneForegroundBrush}" StrokeThickness="4" RenderTransformOrigin="0.5,0.5"
-                                         Fill="{StaticResource PhoneBackgroundBrush}">
-                                <Ellipse.RenderTransform>
-                                    <CompositeTransform/>
-                                </Ellipse.RenderTransform>
-                            </Ellipse>
-                            <Path Width="20" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 34,57L 42,57L 42,32.25L 52,42.25L 52,31.75L 38,17.75L 24,31.75L 24,42.25L 34,32.25L 34,57 Z "/>
-                        </Grid>
-                    </Button>
-                </Grid>
-                <phone:Pivot x:Name="InfoPanorama" Height="600" Opacity="0">
-                    <phone:PivotItem>
-                        <phone:PivotItem.Header>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,-18">
-                                <TextBlock Text="1" FontSize="42" FontWeight="Bold" Margin="2,0,0,0" />
-                                <TextBlock Text="{Binding Path=LocalizedResources.Info1, Source={StaticResource LocalizedStrings}}" FontSize="24" VerticalAlignment="Bottom" Margin="12,0,6,6" />
-                            </StackPanel>
-                        </phone:PivotItem.Header>
-                        <Border Width="290" Height="480" Margin="0,-16,0,0" Background="{StaticResource PhoneSubtleBrush}">
-                            <Grid Margin="2" Background="{StaticResource PhoneBackgroundBrush}">
-                                <Image Source="/Assets/Images/1.jpg" />
-                            </Grid>
-                        </Border>
-                    </phone:PivotItem>
-                    <phone:PivotItem>
-                        <phone:PivotItem.Header>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,-18">
-                                <TextBlock Text="2" FontSize="42" FontWeight="Bold" Margin="2,0,0,0" />
-                                <TextBlock Text="{Binding Path=LocalizedResources.Info2, Source={StaticResource LocalizedStrings}}" FontSize="24" VerticalAlignment="Bottom" Margin="12,0,6,6" />
-                            </StackPanel>
-                        </phone:PivotItem.Header>
-                        <Border Width="290" Height="480" Margin="0,-16,0,0" Background="{StaticResource PhoneSubtleBrush}">
-                            <Grid Margin="2" Background="{StaticResource PhoneBackgroundBrush}">
-                                <Image Source="/Assets/Images/2.jpg" />
-                            </Grid>
-                        </Border>
-                    </phone:PivotItem>
-                    <phone:PivotItem>
-                        <phone:PivotItem.Header>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,-18">
-                                <TextBlock Text="3" FontSize="42" FontWeight="Bold" Margin="2,0,0,0" />
-                                <TextBlock FontSize="24" VerticalAlignment="Bottom" Margin="12,0,6,6">
-                                        <Run Text="{Binding Path=LocalizedResources.Info3Open, Source={StaticResource LocalizedStrings}}" />
-                                        <Run Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" />
-                                        <Run Text="{Binding Path=LocalizedResources.Info3Close, Source={StaticResource LocalizedStrings}}" />
-                                </TextBlock>
-                            </StackPanel>
-                        </phone:PivotItem.Header>
-                        <Border Width="290" Height="480" Margin="0,-16,0,0" Background="{StaticResource PhoneSubtleBrush}">
-                            <Grid Margin="2" Background="{StaticResource PhoneBackgroundBrush}">
-                                <Image Source="/Assets/Images/3.jpg" />
-                            </Grid>
-                        </Border>
-                    </phone:PivotItem>
-                    <phone:PivotItem>
-                        <phone:PivotItem.Header>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,-18">
-                                <TextBlock Text="4" FontSize="42" FontWeight="Bold" Margin="2,0,0,0" />
-                                <TextBlock Text="{Binding Path=LocalizedResources.Info4, Source={StaticResource LocalizedStrings}}" FontSize="24" VerticalAlignment="Bottom" Margin="12,0,6,6" />
-                            </StackPanel>
-                        </phone:PivotItem.Header>
-                        <Border Width="290" Height="480" Margin="0,-16,0,0" Background="{StaticResource PhoneSubtleBrush}">
-                            <Grid Margin="2" Background="{StaticResource PhoneBackgroundBrush}">
-                                <Image Source="/Assets/Images/4.jpg" />
-                            </Grid>
-                        </Border>
-                    </phone:PivotItem>
-                </phone:Pivot>
-            </StackPanel>
-        </Grid>
+        <!-- Info Control will be created here... -->
 
     </Grid>
 
