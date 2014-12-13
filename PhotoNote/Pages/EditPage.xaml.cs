@@ -70,10 +70,17 @@ namespace PhotoNote.Pages
             // save
             ApplicationBarIconButton appBarSaveButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.save.png", UriKind.Relative));
             appBarSaveButton.Text = AppResources.AppBarSave;
-            appBarSaveButton.Click += (s, e) =>
+            appBarSaveButton.Click += async (s, e) =>
             {
-                Save();
-                BackToMainPageWithHistoryClear();
+                if (await Save())
+                {
+                    NavigationHelper.BackToMainPageWithHistoryClear(NavigationService);
+                }
+                else
+                {
+                    MessageBox.Show(AppResources.MessageBoxNoSave, AppResources.MessageBoxWarning, MessageBoxButton.OK);
+                }
+                
             };
             ApplicationBar.Buttons.Add(appBarSaveButton);
 
@@ -90,12 +97,12 @@ namespace PhotoNote.Pages
             ApplicationBar.MenuItems.Add(appBarPhotoInfoMenuItem);
         }
 
-        private async void Save()
+        private async Task<bool> Save()
         {
             SavingPopup.Visibility = System.Windows.Visibility.Visible;
 
             await Task.Delay(33);
-
+            bool success = true;
             try
             {
                 using (var memStream = new MemoryStream())
@@ -128,14 +135,14 @@ namespace PhotoNote.Pages
             } 
             catch (Exception e)
             {
-                // TODO error message box.
+                success = false;
             } 
             finally
             {
                 SavingPopup.Visibility = System.Windows.Visibility.Collapsed;
             }
-            
-            
+
+            return success;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -174,10 +181,11 @@ namespace PhotoNote.Pages
                     }
                 }
 
-                // error handling? - go back or exit
+                // error: go back or exit
                 if (!success)
                 {
-                    BackToMainPageWithHistoryClear();
+                    MessageBox.Show(AppResources.MessageBoxUnknownError, AppResources.MessageBoxWarning, MessageBoxButton.OK);
+                    NavigationHelper.BackToMainPageWithHistoryClear(NavigationService);
                     return;
                 }
                 
@@ -341,12 +349,6 @@ namespace PhotoNote.Pages
         private Size GetNeutralViewportBounds()
         {
             return new Size(480, 480);
-        }
-
-        private void BackToMainPageWithHistoryClear()
-        {
-            var uriString = string.Format("/Pages/MainPage.xaml?{0}=true", AppConstants.PARAM_CLEAR_HISTORY);
-            NavigationService.Navigate(new Uri(uriString, UriKind.Relative)); 
         }
 
         #region  INK REGION

@@ -245,4 +245,12 @@
     <value>Markerstift</value>
     <comment>EditPage</comment>
   </data>
+  <data name="MessageBoxNoSave" xml:space="preserve">
+    <value>Leider konnte ich das Bild nicht speichern. Tut mir wirklich sehr seid!</value>
+    <comment>MessageBox</comment>
+  </data>
+  <data name="MessageBoxUnknownError" xml:space="preserve">
+    <value>Hoppala! Irgendwas ist wohl schief gelaufen. Tut mir wirklich leid!</value>
+    <comment>MessageBox</comment>
+  </data>
 </root>

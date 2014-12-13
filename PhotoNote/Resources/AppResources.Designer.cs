@@ -268,6 +268,24 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Could not save the photo. I&apos;m verry sorry! ähnelt.
+        /// </summary>
+        public static string MessageBoxNoSave {
+            get {
+                return ResourceManager.GetString("MessageBoxNoSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Ooops! Anything went wrong. I&apos;m very sorry! ähnelt.
+        /// </summary>
+        public static string MessageBoxUnknownError {
+            get {
+                return ResourceManager.GetString("MessageBoxUnknownError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Warning ähnelt.
         /// </summary>
         public static string MessageBoxWarning {

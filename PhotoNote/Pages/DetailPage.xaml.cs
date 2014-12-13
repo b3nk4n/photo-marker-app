@@ -93,6 +93,8 @@ namespace PhotoNote.Pages
                 // error handling? - go back or exit
                 if (!success)
                 {
+                    MessageBox.Show(AppResources.MessageBoxUnknownError, AppResources.MessageBoxWarning, MessageBoxButton.OK);
+                    NavigationHelper.BackToMainPageWithHistoryClear(NavigationService);
                     return;
                 }
             }

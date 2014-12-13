@@ -22,6 +22,7 @@ namespace PhotoNote.ViewModel
 
         private DelegateCommand<string> _noteTileSelectedCommand;
         private DelegateCommand<string> _shareCommand;
+        private DelegateCommand<string> _editCommand;
 
         public MainViewModel(NavigationService navigationService)
         {
@@ -48,6 +49,19 @@ namespace PhotoNote.ViewModel
 
                 // share media
                 picture.Share();
+            });
+
+            _editCommand = new DelegateCommand<string>((indexString) =>
+            {
+                var index = int.Parse(indexString);
+
+                if (_editPictureList.Count <= index)
+                    return;
+
+                var picture = _editPictureList[index];
+
+                var uriString = new Uri(string.Format("/Pages/EditPage.xaml?{0}={1}", AppConstants.PARAM_SELECTED_FILE_NAME, picture.Name), UriKind.Relative);
+                _navigationService.Navigate(uriString);
             });
         }
 
@@ -250,6 +264,11 @@ namespace PhotoNote.ViewModel
         public ICommand ShareCommand
         {
             get { return _shareCommand; }
+        }
+
+        public ICommand EditCommand
+        {
+            get { return _editCommand; }
         }
     }
 }

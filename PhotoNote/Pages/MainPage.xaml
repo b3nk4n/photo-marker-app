@@ -171,6 +171,7 @@
                     <Button x:Name="b1" Width="432" Height="210" VerticalAlignment="Center" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName1}">
                         <toolkit:ContextMenuService.ContextMenu>
                             <toolkit:ContextMenu>
+                                <toolkit:MenuItem Header="{Binding LocalizedResources.Edit, Source={StaticResource LocalizedStrings}}" Command="{Binding EditCommand}" CommandParameter="0" />
                                 <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="0" />
                             </toolkit:ContextMenu>
                         </toolkit:ContextMenuService.ContextMenu>
@@ -183,6 +184,7 @@
                     <Button x:Name="b2" Width="210" Height="210" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName2}" >
                         <toolkit:ContextMenuService.ContextMenu>
                             <toolkit:ContextMenu>
+                                <toolkit:MenuItem Header="{Binding LocalizedResources.Edit, Source={StaticResource LocalizedStrings}}" Command="{Binding EditCommand}" CommandParameter="1" />
                                 <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="1" />
                             </toolkit:ContextMenu>
                         </toolkit:ContextMenuService.ContextMenu>
@@ -193,6 +195,7 @@
                             <Button x:Name="b3" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName3}" >
                                 <toolkit:ContextMenuService.ContextMenu>
                                     <toolkit:ContextMenu>
+                                        <toolkit:MenuItem Header="{Binding LocalizedResources.Edit, Source={StaticResource LocalizedStrings}}" Command="{Binding EditCommand}" CommandParameter="2" />
                                         <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="2" />
                                     </toolkit:ContextMenu>
                                 </toolkit:ContextMenuService.ContextMenu>
@@ -201,6 +204,7 @@
                             <Button x:Name="b4" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName4}" >
                                 <toolkit:ContextMenuService.ContextMenu>
                                     <toolkit:ContextMenu>
+                                        <toolkit:MenuItem Header="{Binding LocalizedResources.Edit, Source={StaticResource LocalizedStrings}}" Command="{Binding EditCommand}" CommandParameter="3" />
                                         <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="3" />
                                     </toolkit:ContextMenu>
                                 </toolkit:ContextMenuService.ContextMenu>
@@ -211,6 +215,7 @@
                             <Button x:Name="b5" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName5}" >
                                 <toolkit:ContextMenuService.ContextMenu>
                                     <toolkit:ContextMenu>
+                                        <toolkit:MenuItem Header="{Binding LocalizedResources.Edit, Source={StaticResource LocalizedStrings}}" Command="{Binding EditCommand}" CommandParameter="4" />
                                         <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="4" />
                                     </toolkit:ContextMenu>
                                 </toolkit:ContextMenuService.ContextMenu>
@@ -219,6 +224,7 @@
                             <Button x:Name="b6" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName6}" >
                                 <toolkit:ContextMenuService.ContextMenu>
                                     <toolkit:ContextMenu>
+                                        <toolkit:MenuItem Header="{Binding LocalizedResources.Edit, Source={StaticResource LocalizedStrings}}" Command="{Binding EditCommand}" CommandParameter="5" />
                                         <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="5" />
                                     </toolkit:ContextMenu>
                                 </toolkit:ContextMenuService.ContextMenu>
@@ -231,6 +237,7 @@
                     <Button x:Name="b7" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName7}" >
                         <toolkit:ContextMenuService.ContextMenu>
                             <toolkit:ContextMenu>
+                                <toolkit:MenuItem Header="{Binding LocalizedResources.Edit, Source={StaticResource LocalizedStrings}}" Command="{Binding EditCommand}" CommandParameter="6" />
                                 <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="6" />
                             </toolkit:ContextMenu>
                         </toolkit:ContextMenuService.ContextMenu>
@@ -239,6 +246,7 @@
                     <Button x:Name="b8" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName8}" >
                         <toolkit:ContextMenuService.ContextMenu>
                             <toolkit:ContextMenu>
+                                <toolkit:MenuItem Header="{Binding LocalizedResources.Edit, Source={StaticResource LocalizedStrings}}" Command="{Binding EditCommand}" CommandParameter="7" />
                                 <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="7" />
                             </toolkit:ContextMenu>
                         </toolkit:ContextMenuService.ContextMenu>
@@ -247,6 +255,7 @@
                     <Button x:Name="b9" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName9}" >
                         <toolkit:ContextMenuService.ContextMenu>
                             <toolkit:ContextMenu>
+                                <toolkit:MenuItem Header="{Binding LocalizedResources.Edit, Source={StaticResource LocalizedStrings}}" Command="{Binding EditCommand}" CommandParameter="8" />
                                 <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="8" />
                             </toolkit:ContextMenu>
                         </toolkit:ContextMenuService.ContextMenu>
@@ -255,6 +264,7 @@
                     <Button x:Name="b10" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName10}" >
                         <toolkit:ContextMenuService.ContextMenu>
                             <toolkit:ContextMenu>
+                                <toolkit:MenuItem Header="{Binding LocalizedResources.Edit, Source={StaticResource LocalizedStrings}}" Command="{Binding EditCommand}" CommandParameter="9" />
                                 <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="9" />
                             </toolkit:ContextMenu>
                         </toolkit:ContextMenuService.ContextMenu>

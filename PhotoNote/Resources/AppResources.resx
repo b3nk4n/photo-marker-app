@@ -245,4 +245,12 @@
     <value>marker</value>
     <comment>EditPage</comment>
   </data>
+  <data name="MessageBoxNoSave" xml:space="preserve">
+    <value>Could not save the photo. I'm verry sorry!</value>
+    <comment>MessageBox</comment>
+  </data>
+  <data name="MessageBoxUnknownError" xml:space="preserve">
+    <value>Ooops! Anything went wrong. I'm very sorry!</value>
+    <comment>MessageBox</comment>
+  </data>
 </root>

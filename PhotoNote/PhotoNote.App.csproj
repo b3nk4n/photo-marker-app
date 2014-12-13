@@ -101,6 +101,7 @@
     <Compile Include="Controls\LocalizedInAppStoreControl.cs" />
     <Compile Include="CustomUriMapper.cs" />
     <Compile Include="Helpers\LauncherHelper.cs" />
+    <Compile Include="Helpers\NavigationHelper.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Model\EditPicture.cs" />
     <Compile Include="Model\StaticMediaLibrary.cs" />
