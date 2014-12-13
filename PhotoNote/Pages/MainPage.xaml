@@ -167,16 +167,19 @@
             
 			<!-- photo tiles -->
             <StackPanel>
-                <Button x:Name="b1" Width="432" Height="210" VerticalAlignment="Center"  Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName1}">
-                    <toolkit:ContextMenuService.ContextMenu>
-                        <toolkit:ContextMenu>
-                            <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="0" />
-                        </toolkit:ContextMenu>
-                    </toolkit:ContextMenuService.ContextMenu>
-                    <Image Source="{Binding Picture1}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill" />
-                </Button>
+                <Border HorizontalAlignment="Center" Margin="24,0,12,0">
+                    <Button x:Name="b1" Width="432" Height="210" VerticalAlignment="Center" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName1}">
+                        <toolkit:ContextMenuService.ContextMenu>
+                            <toolkit:ContextMenu>
+                                <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="0" />
+                            </toolkit:ContextMenu>
+                        </toolkit:ContextMenuService.ContextMenu>
+                        <Image Source="{Binding Picture1}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill" />
+                    </Button>
+                </Border>
+                
 
-                <StackPanel Orientation="Horizontal" Margin="12,0,12,0">
+                <StackPanel Orientation="Horizontal" Margin="12,0,12,0" HorizontalAlignment="Center">
                     <Button x:Name="b2" Width="210" Height="210" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName2}" >
                         <toolkit:ContextMenuService.ContextMenu>
                             <toolkit:ContextMenu>
@@ -223,6 +226,40 @@
                             </Button>
                         </StackPanel>
                     </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="12,0,12,0" HorizontalAlignment="Center">
+                    <Button x:Name="b7" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName7}" >
+                        <toolkit:ContextMenuService.ContextMenu>
+                            <toolkit:ContextMenu>
+                                <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="6" />
+                            </toolkit:ContextMenu>
+                        </toolkit:ContextMenuService.ContextMenu>
+                        <Image Source="{Binding Picture7}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
+                    </Button>
+                    <Button x:Name="b8" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName8}" >
+                        <toolkit:ContextMenuService.ContextMenu>
+                            <toolkit:ContextMenu>
+                                <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="7" />
+                            </toolkit:ContextMenu>
+                        </toolkit:ContextMenuService.ContextMenu>
+                        <Image Source="{Binding Picture8}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
+                    </Button>
+                    <Button x:Name="b9" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName9}" >
+                        <toolkit:ContextMenuService.ContextMenu>
+                            <toolkit:ContextMenu>
+                                <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="8" />
+                            </toolkit:ContextMenu>
+                        </toolkit:ContextMenuService.ContextMenu>
+                        <Image Source="{Binding Picture9}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
+                    </Button>
+                    <Button x:Name="b10" Width="99" Height="99" VerticalAlignment="Center" Margin="12,12,0,0" Template="{StaticResource EmptyTileButtonControlTemplate}" Command="{Binding NoteTileSelectedCommand}" CommandParameter="{Binding PictureName10}" >
+                        <toolkit:ContextMenuService.ContextMenu>
+                            <toolkit:ContextMenu>
+                                <toolkit:MenuItem Header="{Binding LocalizedResources.Share, Source={StaticResource LocalizedStrings}}" Command="{Binding ShareCommand}" CommandParameter="9" />
+                            </toolkit:ContextMenu>
+                        </toolkit:ContextMenuService.ContextMenu>
+                        <Image Source="{Binding Picture10}" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
+                    </Button>
                 </StackPanel>
             </StackPanel>
         </Grid>

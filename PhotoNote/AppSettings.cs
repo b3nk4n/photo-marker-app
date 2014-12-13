@@ -21,11 +21,11 @@ namespace PhotoNote
         /// <summary>
         /// The pen opacity.
         /// </summary>
-        public static StoredObject<double> PenOpacity = new StoredObject<double>("_pen_opacity_", 0.4);
+        public static StoredObject<double> PenOpacity = new StoredObject<double>("_pen_opacity_", 0.35);
 
         /// <summary>
         /// The pen thickness.
         /// </summary>
-        public static StoredObject<double> PenThickness = new StoredObject<double>("_pen_thickness_", 10.0);
+        public static StoredObject<double> PenThickness = new StoredObject<double>("_pen_thickness_", 14.0);
     }
 }
