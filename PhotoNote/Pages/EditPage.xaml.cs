@@ -133,7 +133,7 @@ namespace PhotoNote.Pages
                     }
                 }
             } 
-            catch (Exception e)
+            catch (Exception)
             {
                 success = false;
             } 
@@ -199,7 +199,7 @@ namespace PhotoNote.Pages
             base.OnNavigatedFrom(e);
 
             // save state
-            if (e.NavigationMode != NavigationMode.Back)
+            if (!e.IsNavigationInitiator)
             {
                 SaveState();
             }
