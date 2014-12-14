@@ -11,7 +11,7 @@
     xmlns:local="clr-namespace:PhotoNote.Controls"
     x:Class="PhotoNote.Pages.MainPage"
     mc:Ignorable="d"
-    SupportedOrientations="Portrait" Orientation="Landscape">
+    SupportedOrientations="Portrait" Orientation="Portrait">
 
     <phone:PhoneApplicationPage.Resources>
         <conv:BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
@@ -117,14 +117,17 @@
         <!-- Advertisment -->
         <Grid x:Name="BannerContainer" Width="480" Height="80"  VerticalAlignment="Top" HorizontalAlignment="Center"
 			Visibility="Collapsed">
-            <Image x:Name="FallbackOfflineBanner" Source="/Assets/Banner/Photo-Info_adduplex4_5.png" Height="80" Width="480" />
+            <adverts:OfflineAdControl x:Name="FallbackOfflineBanner" Height="80" Width="480" />
             <adverts:MsDuplexAdControl x:Name="BannerControl" Width="480" Height="80" Visibility="Collapsed" AdDuplexAppId="129407" MsApplicationId="5683e018-013e-478e-b03f-0caf0d12b6e5" MsAdUnitId="197953" />
 
 			<Border x:Name="RemoveAdButton" Background="{StaticResource PhoneAccentBrush}" Width="26" Height="26" Opacity="0.9" Margin="1"
-				VerticalAlignment="Top" HorizontalAlignment="Right" Tap="AdCloseTapped">
+				VerticalAlignment="Top" HorizontalAlignment="Right">
 				<Path Width="18" Height="18" Stretch="Fill" Fill="White" Data="F1 M 26.9166,22.1667L 37.9999,33.25L 49.0832,22.1668L 53.8332,26.9168L 42.7499,38L 53.8332,49.0834L 49.0833,53.8334L 37.9999,42.75L 26.9166,53.8334L 22.1666,49.0833L 33.25,38L 22.1667,26.9167L 26.9166,22.1667 Z "/>
 			</Border>
-		</Grid>
+
+            <!-- bigger click region -->
+            <Rectangle VerticalAlignment="Top" HorizontalAlignment="Right" Tap="AdCloseTapped" Width="60" Height="80" Fill="#01000000"/>
+        </Grid>
         
 
         <!-- Title -->

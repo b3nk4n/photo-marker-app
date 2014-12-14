@@ -63,7 +63,14 @@ namespace PhotoNote.Pages
             appBarPenButton.Text = AppResources.AppBarPen;
             appBarPenButton.Click += (s, e) =>
             {
-                ShowPenToolbar();
+                if (_isPenToolbarVisible)
+                {
+                    HidePenToolbar();
+                }
+                else
+                {
+                    ShowPenToolbar();
+                }
             };
             ApplicationBar.Buttons.Add(appBarPenButton);
 
@@ -435,10 +442,13 @@ namespace PhotoNote.Pages
                 VisualStateManager.GoToState(this, "Portrait", true);
             } 
             else if (e.Orientation == PageOrientation.Landscape ||
-                e.Orientation == PageOrientation.LandscapeLeft ||
-                e.Orientation == PageOrientation.LandscapeRight)
+                e.Orientation == PageOrientation.LandscapeLeft)
             {
-                VisualStateManager.GoToState(this, "Landscape", true);
+                VisualStateManager.GoToState(this, "LandscapeLeft", true);
+            }
+            else if (e.Orientation == PageOrientation.LandscapeRight)
+            {
+                VisualStateManager.GoToState(this, "LandscapeRight", true);
             }
 
             UpdateImageOrientationAndScale();

@@ -147,7 +147,6 @@ namespace PhotoNote.Pages
         {
             if (e.PinchManipulation != null)
             {
-
                 double newWidth, newHeight;
 
 
@@ -195,6 +194,42 @@ namespace PhotoNote.Pages
             m_Zoom = ImageControl.Width / m_Width;
         }
 
+        private void ResetZoom()
+        {
+            int newHeight;
+            int newWidth;
+            if (Orientation == PageOrientation.Landscape || Orientation == PageOrientation.LandscapeLeft || Orientation == PageOrientation.LandscapeRight)
+            {
+                newWidth = 800;
+                newHeight = 480;
+            }
+            else
+            {
+                newWidth = 480;
+                newHeight = 800;
+            }
+
+            ImageControl.Width = newWidth;
+            ImageControl.Height = newHeight;
+
+            m_Zoom = ImageControl.Width / m_Width;
+
+            // Set new view port bound
+            viewport.Bounds = new Rect(0, 0, newWidth, newHeight);
+        }
+
         #endregion
+
+        protected override void OnOrientationChanged(OrientationChangedEventArgs e)
+        {
+            base.OnOrientationChanged(e);
+
+            ResetZoom();
+        }
+
+        private void ImageDoubleTapped(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ResetZoom();
+        }
     }
 }
