@@ -253,4 +253,8 @@
     <value>Ooops! Anything went wrong. I'm very sorry!</value>
     <comment>MessageBox</comment>
   </data>
+  <data name="SavingPicuture" xml:space="preserve">
+    <value>Saving picture...</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

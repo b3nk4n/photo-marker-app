@@ -146,7 +146,7 @@
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationTitle" xml:space="preserve">
-    <value>Bildnotiz</value>
+    <value>Photo Marker</value>
     <comment>General</comment>
   </data>
   <data name="ApplicationVersion" xml:space="preserve">
@@ -240,6 +240,10 @@
   <data name="ResourceLanguage" xml:space="preserve">
     <value>de-DE</value>
     <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
+  </data>
+  <data name="SavingPicuture" xml:space="preserve">
+    <value>Speichern...</value>
+    <comment>EditPage</comment>
   </data>
   <data name="Share" xml:space="preserve">
     <value>Versenden</value>

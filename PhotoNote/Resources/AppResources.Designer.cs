@@ -340,6 +340,15 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Saving picture... ähnelt.
+        /// </summary>
+        public static string SavingPicuture {
+            get {
+                return ResourceManager.GetString("SavingPicuture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die share ähnelt.
         /// </summary>
         public static string Share {
