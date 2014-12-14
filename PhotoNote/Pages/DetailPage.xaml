@@ -10,7 +10,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="PortraitOrLandscape" Orientation="Landscape"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     mc:Ignorable="d">
 
     <toolkit:TransitionService.NavigationInTransition>
@@ -36,13 +36,34 @@
 
     <!--LayoutRoot ist das Stammraster, in dem alle anderen Seiteninhalte platziert werden-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <ViewportControl x:Name="viewport" Bounds="0,0,100,100"
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ApplicationViewStates">
+                <VisualState x:Name="Portrait" />
+                <VisualState x:Name="LandscapeLeft">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPanel" Storyboard.TargetProperty="Margin">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="0,0,72,0"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="LandscapeRight">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPanel" Storyboard.TargetProperty="Margin">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="72,0,0,0"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid x:Name="ContentPanel" Margin="0,0,0,72">
+            <ViewportControl x:Name="viewport"
             ManipulationDelta="viewport_ManipulationDelta" 
             ManipulationCompleted="viewport_ManipulationCompleted" >
-            <Image x:Name="ImageControl" CacheMode="BitmapCache" 
+                <Image x:Name="ImageControl" CacheMode="BitmapCache" 
                    Loaded="image_Loaded" Stretch="None"
                    DoubleTap="ImageDoubleTapped"/>
-        </ViewportControl>
+            </ViewportControl>
+        </Grid>
     </Grid>
 
 </phone:PhoneApplicationPage>

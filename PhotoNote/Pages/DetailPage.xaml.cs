@@ -139,8 +139,10 @@ namespace PhotoNote.Pages
 
             // Initaialy we put Stretch to None in XAML part, so we can read image ActualWidth i ActualHeight (otherwise values are strange)
             // After that we set Stretch to UniformToFill in order to be able to resize image
-            ImageControl.Stretch = Stretch.UniformToFill;
+            ImageControl.Stretch = Stretch.Uniform;
             viewport.Bounds = new Rect(0, 0, ImageControl.ActualWidth, ImageControl.ActualHeight);
+
+            ResetZoom();
         }
 
         private void viewport_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
@@ -200,19 +202,26 @@ namespace PhotoNote.Pages
             int newWidth;
             if (Orientation == PageOrientation.Landscape || Orientation == PageOrientation.LandscapeLeft || Orientation == PageOrientation.LandscapeRight)
             {
-                newWidth = 800;
+                newWidth = 728;
                 newHeight = 480;
             }
             else
             {
                 newWidth = 480;
-                newHeight = 800;
+                newHeight = 728;
             }
 
             ImageControl.Width = newWidth;
             ImageControl.Height = newHeight;
 
-            m_Zoom = ImageControl.Width / m_Width;
+            if (_editImage.Width > _editImage.Height)
+            {
+                m_Zoom = newWidth / _editImage.Width;
+            }
+            else
+            {
+                m_Zoom = newHeight / _editImage.Height;
+            }
 
             // Set new view port bound
             viewport.Bounds = new Rect(0, 0, newWidth, newHeight);
@@ -220,16 +229,36 @@ namespace PhotoNote.Pages
 
         #endregion
 
-        protected override void OnOrientationChanged(OrientationChangedEventArgs e)
-        {
-            base.OnOrientationChanged(e);
-
-            ResetZoom();
-        }
-
         private void ImageDoubleTapped(object sender, System.Windows.Input.GestureEventArgs e)
         {
             ResetZoom();
         }
+
+        #region Orientation Events
+
+        protected override void OnOrientationChanged(OrientationChangedEventArgs e)
+        {
+            base.OnOrientationChanged(e);
+
+            if (e.Orientation == PageOrientation.Portrait ||
+                e.Orientation == PageOrientation.PortraitDown ||
+                e.Orientation == PageOrientation.PortraitUp)
+            {
+                VisualStateManager.GoToState(this, "Portrait", true);
+            }
+            else if (e.Orientation == PageOrientation.Landscape ||
+                e.Orientation == PageOrientation.LandscapeLeft)
+            {
+                VisualStateManager.GoToState(this, "LandscapeLeft", true);
+            }
+            else if (e.Orientation == PageOrientation.LandscapeRight)
+            {
+                VisualStateManager.GoToState(this, "LandscapeRight", true);
+            }
+
+            ResetZoom();
+        }
+
+        #endregion
     }
 }
