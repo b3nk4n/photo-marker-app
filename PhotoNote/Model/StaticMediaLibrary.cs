@@ -78,6 +78,7 @@ namespace PhotoNote.Model
                 int i = 0;
                 foreach (var pic in StaticMediaLibrary.Instance.Pictures)
                 {
+                    Debug.WriteLine(pic.Name + " <> " + fileName);
                     if (pic.Name == fileName)
                     {
                         return i;

@@ -68,7 +68,7 @@ namespace PhotoNote.Pages
                 if (HasNoImage())
                     return;
 
-                if (!await LauncherHelper.LaunchPhotoInfoAsync(_editImage.Name))
+                if (!await LauncherHelper.LaunchPhotoInfoAsync(_editImage.FullName))
                 {
                     MessageBox.Show(AppResources.MessageBoxNoInfo, AppResources.MessageBoxWarning, MessageBoxButton.OK);
                 }
