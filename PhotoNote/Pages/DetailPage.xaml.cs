@@ -41,8 +41,10 @@ namespace PhotoNote.Pages
             appBarShareButton.Text = AppResources.Share;
             appBarShareButton.Click += (s, e) =>
             {
-                if (_editImage != null)
-                    _editImage.Share();
+                if (_editImage == null)
+                    return;
+
+                _editImage.Share();
             };
             ApplicationBar.Buttons.Add(appBarShareButton);
 
@@ -51,6 +53,9 @@ namespace PhotoNote.Pages
             appBarPenButton.Text = AppResources.Edit;
             appBarPenButton.Click += (s, e) =>
             {
+                if (_editImage == null)
+                    return;
+
                 var uriString = string.Format("/Pages/EditPage.xaml?{0}={1}", AppConstants.PARAM_SELECTED_FILE_NAME, _editImage.Name);
                 NavigationService.Navigate(new Uri(uriString, UriKind.Relative));
             };
@@ -60,6 +65,9 @@ namespace PhotoNote.Pages
             ApplicationBarMenuItem appBarPhotoInfoMenuItem = new ApplicationBarMenuItem(AppResources.ShowPhotoInfo);
             appBarPhotoInfoMenuItem.Click += async (s, e) =>
             {
+                if (_editImage == null)
+                    return;
+
                 if (!await LauncherHelper.LaunchPhotoInfoAsync(_editImage.Name))
                 {
                     MessageBox.Show(AppResources.MessageBoxNoInfo, AppResources.MessageBoxWarning, MessageBoxButton.OK);
@@ -198,6 +206,12 @@ namespace PhotoNote.Pages
 
         private void ResetZoom()
         {
+            // ensure there is an edit image. Could be NULL when the image could not be openend succesfully.
+            // BugSense: 16.12.14
+            //           Photo Note (1.0.0.0): Object reference not set to an instance of an object.
+            if (_editImage == null)
+                return;
+
             int newHeight;
             int newWidth;
             if (Orientation == PageOrientation.Landscape || Orientation == PageOrientation.LandscapeLeft || Orientation == PageOrientation.LandscapeRight)
