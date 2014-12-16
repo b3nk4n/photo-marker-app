@@ -179,6 +179,7 @@
     <Content Include="Assets\AppBar\appbar.save.png" />
     <Content Include="Assets\AppBar\appbar.undo.curve.png" />
     <Content Include="Assets\AppBar\appbar.share.png" />
+    <Content Include="Assets\ApplicationIcon.png" />
     <Content Include="Assets\Banner\Photo-Pin_adduplex.png" />
     <Content Include="Assets\Banner\powernAPP_adduplex.png" />
     <Content Include="Assets\Banner\Bash0r_adduplex.png" />
