@@ -36,7 +36,8 @@ namespace PhotoNote.Controls
 
             SetContributorsList(new List<ContributorModel>
             {
-                new ContributorModel("/Assets/Languages/spanish.png", "Atteneri Cimadevilla")
+                new ContributorModel("/Assets/Languages/spanish.png", "Atteneri Cimadevilla"),
+                new ContributorModel("/Assets/Languages/italiano.png", "Antonio")
             });
         }
     }
