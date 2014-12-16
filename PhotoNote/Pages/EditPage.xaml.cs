@@ -96,6 +96,9 @@ namespace PhotoNote.Pages
             ApplicationBarMenuItem appBarPhotoInfoMenuItem = new ApplicationBarMenuItem(AppResources.ShowPhotoInfo);
             appBarPhotoInfoMenuItem.Click += async (s, e) =>
             {
+                if (HasNoImage())
+                    return;
+
                 if (!await LauncherHelper.LaunchPhotoInfoAsync(_editImage.Name))
                 {
                     MessageBox.Show(AppResources.MessageBoxNoInfo, AppResources.MessageBoxWarning, MessageBoxButton.OK);
@@ -106,6 +109,9 @@ namespace PhotoNote.Pages
 
         private async Task<bool> Save()
         {
+            if (HasNoImage())
+                return false;
+
             SavingPopup.Visibility = System.Windows.Visibility.Visible;
 
             await Task.Delay(33);
@@ -311,7 +317,7 @@ namespace PhotoNote.Pages
 
         private bool HasNoImage()
         {
-            return _editImage.Height == 0 || _editImage.Width == 0;
+            return _editImage == null || _editImage.Height == 0 || _editImage.Width == 0;
         }
 
         private Size GetScaledImageSize(double scaleFactor)

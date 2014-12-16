@@ -41,7 +41,7 @@ namespace PhotoNote.Pages
             appBarShareButton.Text = AppResources.Share;
             appBarShareButton.Click += (s, e) =>
             {
-                if (_editImage == null)
+                if (HasNoImage())
                     return;
 
                 _editImage.Share();
@@ -53,7 +53,7 @@ namespace PhotoNote.Pages
             appBarPenButton.Text = AppResources.Edit;
             appBarPenButton.Click += (s, e) =>
             {
-                if (_editImage == null)
+                if (HasNoImage())
                     return;
 
                 var uriString = string.Format("/Pages/EditPage.xaml?{0}={1}", AppConstants.PARAM_SELECTED_FILE_NAME, _editImage.Name);
@@ -65,7 +65,7 @@ namespace PhotoNote.Pages
             ApplicationBarMenuItem appBarPhotoInfoMenuItem = new ApplicationBarMenuItem(AppResources.ShowPhotoInfo);
             appBarPhotoInfoMenuItem.Click += async (s, e) =>
             {
-                if (_editImage == null)
+                if (HasNoImage())
                     return;
 
                 if (!await LauncherHelper.LaunchPhotoInfoAsync(_editImage.Name))
@@ -129,6 +129,11 @@ namespace PhotoNote.Pages
                 ImageControl.Source = img;
             }
             return true;
+        }
+
+        private bool HasNoImage()
+        {
+            return _editImage == null || _editImage.Height == 0 || _editImage.Width == 0;
         }
 
         #region Image Zooming 
@@ -209,7 +214,7 @@ namespace PhotoNote.Pages
             // ensure there is an edit image. Could be NULL when the image could not be openend succesfully.
             // BugSense: 16.12.14
             //           Photo Note (1.0.0.0): Object reference not set to an instance of an object.
-            if (_editImage == null)
+            if (HasNoImage())
                 return;
 
             int newHeight;
