@@ -8,6 +8,8 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using PhotoNote.Resources;
 using PhoneKit.Framework.Support;
+using BugSense;
+using BugSense.Core.Model;
 
 namespace PhotoNote
 {

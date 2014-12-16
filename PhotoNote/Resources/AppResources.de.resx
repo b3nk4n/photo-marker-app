@@ -142,7 +142,7 @@
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationDescription" xml:space="preserve">
-    <value>Dieses Tool erweitert den Windows Phone 8 Bilder-Hub mit der Funktion, kurze Notizen zu deinen Bildern hinzuzufügen. Hebe die wichtigsten Elemente deiner Fotos ganz einfach hervor, um sie selbsterklärend zu machen.</value>
+    <value>Dieses Tool erweitert den Windows Phone Bilder-Hub mit der Funktion, kurze Notizen zu deinen Bildern hinzuzufügen. Hebe die wichtigsten Elemente deiner Fotos ganz einfach hervor, um sie selbsterklärend zu machen.</value>
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationTitle" xml:space="preserve">
@@ -150,7 +150,7 @@
     <comment>General</comment>
   </data>
   <data name="ApplicationVersion" xml:space="preserve">
-    <value>1.0</value>
+    <value>1.1</value>
     <comment>General</comment>
   </data>
   <data name="Contributors" xml:space="preserve">

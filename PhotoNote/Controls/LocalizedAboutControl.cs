@@ -32,7 +32,12 @@ namespace PhotoNote.Controls
             MoreAppsSearchTerms = "Benjamin Sautermeister";
 
             // contributors
-            ContributorsListVisibility = System.Windows.Visibility.Collapsed;
+            ContributorsListVisibility = System.Windows.Visibility.Visible;
+
+            SetContributorsList(new List<ContributorModel>
+            {
+                new ContributorModel("/Assets/Languages/spanish.png", "Atteneri Cimadevilla")
+            });
         }
     }
 }
