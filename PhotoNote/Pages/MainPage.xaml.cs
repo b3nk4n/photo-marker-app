@@ -185,10 +185,7 @@ namespace PhotoNote.Pages
                 }
             }
 
-            // fire startup events
-            StartupActionManager.Instance.Fire(e);
-
-            if (StartupActionManager.Instance.Count <=3 || InAppPurchaseHelper.IsProductActive(AppConstants.IAP_PREMIUM_VERSION))
+            if (InAppPurchaseHelper.IsProductActive(AppConstants.IAP_PREMIUM_VERSION))
             {
                 BannerContainer.Visibility = System.Windows.Visibility.Collapsed;
             }

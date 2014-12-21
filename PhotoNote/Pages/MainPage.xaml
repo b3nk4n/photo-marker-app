@@ -126,7 +126,7 @@
 			</Border>
 
             <!-- bigger click region -->
-            <Rectangle VerticalAlignment="Top" HorizontalAlignment="Right" Tap="AdCloseTapped" Width="60" Height="80" Fill="#01000000"/>
+            <Rectangle VerticalAlignment="Top" HorizontalAlignment="Right" Tap="AdCloseTapped" Width="30" Height="30" Fill="#01000000"/>
         </Grid>
         
 
