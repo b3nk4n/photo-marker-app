@@ -56,15 +56,6 @@ namespace PhotoNote.Pages
         /// </summary>
         private bool _imageInAnimationPlayed;
 
-        /// <summary>
-        /// Blocks multiple Show() calls, which can rise an Exception:
-        /// <remarks>
-        /// BUGSENSE: 15.12.14
-        /// Photo Note (1.0.0.0): Not allowed to call Show() multiple times before an invocation returns
-        /// </remarks>
-        /// </summary>
-        private bool _multipleShowBlocker = false;
-
         // Konstruktor
         public MainPage()
         {
@@ -131,14 +122,17 @@ namespace PhotoNote.Pages
 
             FallbackOfflineBanner.Tap += (s, e) =>
             {
-                if (_multipleShowBlocker)
-                    return;
-                _multipleShowBlocker = true;
                 var task = new MarketplaceDetailTask();
                 task.ContentType = MarketplaceContentType.Applications;
                 task.ContentIdentifier = "ac39aa30-c9b1-4dc6-af2d-1cc17d9807cc";
-                task.Show();
-                _multipleShowBlocker = false;
+                try
+                {
+                    task.Show();
+                }
+                catch (InvalidOperationException)
+                {
+                    // BugSense: Not allowed to call Show() multiple times before an invocation returns.
+                }
             };
 
             if (FallbackOfflineBanner.AdvertsCount == 0)
@@ -254,12 +248,14 @@ namespace PhotoNote.Pages
 
         private void ChoosePhotoClicked(object sender, RoutedEventArgs e)
         {
-            if (_multipleShowBlocker)
-                return;
-            _multipleShowBlocker = true;
-            // choose photo
-            photoTask.Show();
-            _multipleShowBlocker = false;
+            try
+            {
+                photoTask.Show();
+            }
+            catch (InvalidOperationException)
+            {
+                // BugSense: Not allowed to call Show() multiple times before an invocation returns.
+            }
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
