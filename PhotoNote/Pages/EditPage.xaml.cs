@@ -17,6 +17,9 @@ using PhotoNote.Helpers;
 using PhotoNote.Controls;
 using PhoneKit.Framework.Storage;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Text;
+using System.Globalization;
 
 namespace PhotoNote.Pages
 {
@@ -202,7 +205,9 @@ namespace PhotoNote.Pages
                     return;
                 }
                 
-                RestoreState();
+                if (e.NavigationMode == NavigationMode.New)
+                    RestoreState();
+
                 LoadSettings();
             }
         }
@@ -234,6 +239,7 @@ namespace PhotoNote.Pages
 
         private void RestoreState()
         {
+            // popup state
             var showPenToolbar = PhoneStateHelper.LoadValue<bool>(PEN_POPUP_VISIBLE_KEY, false);
             PhoneStateHelper.DeleteValue(PEN_POPUP_VISIBLE_KEY);
             if (showPenToolbar)
@@ -241,21 +247,66 @@ namespace PhotoNote.Pages
                 ShowPenToolbar(false);
             }
 
-            var strokes = PhoneStateHelper.LoadValue<StrokeCollection>(PEN_DATA_KEY);
+            // strokes
+            var strokeData = PhoneStateHelper.LoadValue<string>(PEN_DATA_KEY);
             PhoneStateHelper.DeleteValue(PEN_DATA_KEY);
-            if (strokes != null)
+            if (!string.IsNullOrEmpty(strokeData))
             {
-                InkControl.Strokes = strokes;
+                var strokes = strokeData.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var stroke in strokes)
+                {
+                    var strokeParams = stroke.Split('|');
+
+                    var myStroke = new Stroke();
+                    myStroke.DrawingAttributes.Color = HexToColor(strokeParams[0]);
+                    myStroke.DrawingAttributes.Height = double.Parse(strokeParams[1], CultureInfo.InvariantCulture);
+                    myStroke.DrawingAttributes.Width = double.Parse(strokeParams[2], CultureInfo.InvariantCulture);
+
+                    var pointList = strokeParams[3].Split('$');
+                    foreach (var pointPair in pointList)
+                    {
+                        var pointPairList = pointPair.Split('_');
+                        var x = Convert.ToDouble(pointPairList[0], CultureInfo.InvariantCulture);
+                        var y = Convert.ToDouble(pointPairList[1], CultureInfo.InvariantCulture);
+
+                        myStroke.StylusPoints.Add(new StylusPoint(x, y));
+                    }
+
+                    InkControl.Strokes.Add(myStroke);
+                }
             }
+        }
+
+        private static Color HexToColor(string hexString)
+        {
+            string cleanString = hexString.Replace("-", String.Empty).Substring(1);
+
+            var bytes = Enumerable.Range(0, cleanString.Length)
+                           .Where(x => x % 2 == 0)
+                           .Select(x => Convert.ToByte(cleanString.Substring(x, 2), 16))
+                           .ToArray();
+
+            return System.Windows.Media.Color.FromArgb(bytes[0], bytes[1], bytes[2], bytes[3]);
         }
 
         private void SaveState()
         {
+            // popup state
             PhoneStateHelper.SaveValue(PEN_POPUP_VISIBLE_KEY, _isPenToolbarVisible);
             
+            // strokes
             if (InkControl.Strokes.Count > 0)
             {
-                PhoneStateHelper.SaveValue(PEN_DATA_KEY, InkControl.Strokes);
+                StringBuilder strokeData = new StringBuilder();
+                foreach (var stroke in InkControl.Strokes)
+                {
+                    strokeData.AppendLine(String.Format("{0}|{1}|{2}|{3}",
+                        stroke.DrawingAttributes.Color.ToString(),
+                        stroke.DrawingAttributes.Height.ToString(CultureInfo.InvariantCulture),
+                        stroke.DrawingAttributes.Width.ToString(CultureInfo.InvariantCulture),
+                        String.Join("$", stroke.StylusPoints.Select(p => String.Format("{0}_{1}", p.X.ToString(CultureInfo.InvariantCulture), p.Y.ToString(CultureInfo.InvariantCulture))))));
+                }
+                PhoneStateHelper.SaveValue(PEN_DATA_KEY, strokeData.ToString());
             }
         }
 
