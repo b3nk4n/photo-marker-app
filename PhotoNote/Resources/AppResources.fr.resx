@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ResourceFlowDirection" xml:space="preserve">
+    <value>LeftToRight</value>
+    <comment>Controls the FlowDirection for all elements in the RootFrame. Set to the traditional direction of this resource file's language</comment>
+  </data>
+  <data name="ResourceLanguage" xml:space="preserve">
+    <value>fr</value>
+    <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>a propos</value>
+    <comment>AboutPage</comment>
+  </data>
+  <data name="ApplicationAuthor" xml:space="preserve">
+    <value>par benjamin Sautermeiser</value>
+    <comment>AboutPage</comment>
+  </data>
+  <data name="ApplicationDescription" xml:space="preserve">
+    <value>Cette application est une extension du Hub Photo de Windows Phone pour prendre des notes sur vos photos ou mettre en évidence les parties les plus importantes.</value>
+    <comment>AboutPage</comment>
+  </data>
+  <data name="ApplicationTitle" xml:space="preserve">
+    <value>Photo Marker</value>
+    <comment>General</comment>
+  </data>
+  <data name="ApplicationVersion" xml:space="preserve">
+    <value>1.1.1</value>
+    <comment>General</comment>
+  </data>
+  <data name="Contributors" xml:space="preserve">
+    <value>Contributeurs</value>
+    <comment>AboutPage</comment>
+  </data>
+  <data name="MoreApps" xml:space="preserve">
+    <value>plus d'applications</value>
+    <comment>AboutPage</comment>
+  </data>
+  <data name="PrivacyInfo" xml:space="preserve">
+    <value>info. de confidentialité</value>
+    <comment>About Page</comment>
+  </data>
+  <data name="RateAndReview" xml:space="preserve">
+    <value>evaluer et donner un avis</value>
+    <comment>AboutPage</comment>
+  </data>
+  <data name="SupportAndFeedback" xml:space="preserve">
+    <value>aide et retour</value>
+    <comment>AboutPage</comment>
+  </data>
+  <data name="FeedbackEmail" xml:space="preserve">
+    <value>apps@bsautermeister.de</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="InfoChoosePhoto" xml:space="preserve">
+    <value>sélectionnez une photo que vous souhaitez modifier ...</value>
+    <comment>MainPage</comment>
+  </data>
+  <data name="AppBarSave" xml:space="preserve">
+    <value>enregistrer</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="AppBarSelectPicture" xml:space="preserve">
+    <value>selectionner</value>
+    <comment>Edit Page</comment>
+  </data>
+  <data name="InAppStoreLoading" xml:space="preserve">
+    <value>Chargement…</value>
+    <comment>InAppStorePage</comment>
+  </data>
+  <data name="InAppStoreNoProducts" xml:space="preserve">
+    <value>L'achat n'est pas possible. S’il vous plaît réessayez plus tard.</value>
+    <comment>InAppStorePage</comment>
+  </data>
+  <data name="InAppStorePurchased" xml:space="preserve">
+    <value>achat</value>
+    <comment>InAppStorePage</comment>
+  </data>
+  <data name="InAppStoreTitle" xml:space="preserve">
+    <value>in-app store</value>
+    <comment>InAppStorePage</comment>
+  </data>
+  <data name="MessageBoxNoInfo" xml:space="preserve">
+    <value>Le lancement de l'application photo pas pu être démarré. Je suis vraiment désolé!</value>
+    <comment>MessageBox</comment>
+  </data>
+  <data name="MessageBoxWarning" xml:space="preserve">
+    <value>Attention</value>
+    <comment>MessageBox</comment>
+  </data>
+  <data name="ShowPhotoInfo" xml:space="preserve">
+    <value>voir les information de l'image</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="Info1" xml:space="preserve">
+    <value>Ouvrez votre bibliothèque et sélectionnez une image</value>
+    <comment>MainPage-Info</comment>
+  </data>
+  <data name="Info2" xml:space="preserve">
+    <value>Sélectionnez 'modifier'</value>
+    <comment>MainPage-Info</comment>
+  </data>
+  <data name="Info3Close" xml:space="preserve">
+    <value>'</value>
+    <comment>MainPage-Info</comment>
+  </data>
+  <data name="Info3Open" xml:space="preserve">
+    <value>Sélectionnez '</value>
+    <comment>MainPage-Info</comment>
+  </data>
+  <data name="Info4" xml:space="preserve">
+    <value>La photo peut être modifiée instantanément ...</value>
+    <comment>MainPage-Info</comment>
+  </data>
+  <data name="AppBarUndo" xml:space="preserve">
+    <value>effacer</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="Share" xml:space="preserve">
+    <value>partager</value>
+    <comment>General</comment>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>modifier</value>
+    <comment>General</comment>
+  </data>
+  <data name="AppBarPen" xml:space="preserve">
+    <value>marquer</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="MessageBoxNoSave" xml:space="preserve">
+    <value>Impossible d'enregistrer la photo. Je suis réellement désolé!</value>
+    <comment>MessageBox</comment>
+  </data>
+  <data name="MessageBoxUnknownError" xml:space="preserve">
+    <value>Oups! Tout s'est mal passé. Je suis vraiment désolé!</value>
+    <comment>MessageBox</comment>
+  </data>
+  <data name="SavingPicuture" xml:space="preserve">
+    <value>Sauvegarde en cours….</value>
+    <comment>EditPage</comment>
+  </data>
+</root>
