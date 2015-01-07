@@ -39,7 +39,8 @@ namespace PhotoNote.Controls
                 new ContributorModel("/Assets/Languages/spanish.png", "Atteneri Cimadevilla"),
                 new ContributorModel("/Assets/Languages/italiano.png", "Antonio"),
                 new ContributorModel("/Assets/Languages/french.png", "Bernard Monon"),
-                new ContributorModel("/Assets/Languages/russia.png", "Александр Чуркин")
+                new ContributorModel("/Assets/Languages/russia.png", "Александр Чуркин"),
+                new ContributorModel("/Assets/Languages/arabic.png", "Rafael Yousuf")
             });
         }
     }
