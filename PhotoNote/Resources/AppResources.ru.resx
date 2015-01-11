@@ -134,7 +134,7 @@
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationDescription" xml:space="preserve">
-    <value>Это приложение расширяет функции Photo-Hub Windows Phone 8,  чтобы можно было быстро и легко делать заметки на ваши фотографии или выделить наиболее важные детали.</value>
+    <value>Это приложение расширяет функции Photo Hub Windows Phone 8,  чтобы можно было легко и быстро делать заметки на ваши фотографии или выделять наиболее важные детали.</value>
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationTitle" xml:space="preserve">
@@ -198,7 +198,7 @@
     <comment>InAppStorePage</comment>
   </data>
   <data name="MessageBoxNoInfo" xml:space="preserve">
-    <value>Приложение информация об изображении не может быть запущено. Мне очень жаль!</value>
+    <value>Приложение Photo-Info не может быть запущено. Мне очень жаль!</value>
     <comment>MessageBox</comment>
   </data>
   <data name="MessageBoxWarning" xml:space="preserve">
@@ -210,23 +210,23 @@
     <comment>EditPage</comment>
   </data>
   <data name="Info1" xml:space="preserve">
-    <value>Открыть библиотеку и выбрать</value>
+    <value>Откройте библиотеку и выберите</value>
     <comment>MainPage-Info</comment>
   </data>
   <data name="Info2" xml:space="preserve">
-    <value>Выбрать опции редактирования</value>
+    <value>Нажмите "Правка"</value>
     <comment>MainPage-Info</comment>
   </data>
   <data name="Info3Close" xml:space="preserve">
-    <value>'</value>
+    <value>"</value>
     <comment>MainPage-Info</comment>
   </data>
   <data name="Info3Open" xml:space="preserve">
-    <value>Выбрать '</value>
+    <value>Выберите "</value>
     <comment>MainPage-Info</comment>
   </data>
   <data name="Info4" xml:space="preserve">
-    <value>Фотографии могли быть отредактированными мгновенно…</value>
+    <value>выберите изображение, которое вы хотели бы изменить…</value>
     <comment>MainPage-Info</comment>
   </data>
   <data name="AppBarUndo" xml:space="preserve">
@@ -234,11 +234,11 @@
     <comment>EditPage</comment>
   </data>
   <data name="Share" xml:space="preserve">
-    <value>Отправить</value>
+    <value>Поделиться</value>
     <comment>General</comment>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Изменить</value>
+    <value>Правка</value>
     <comment>General</comment>
   </data>
   <data name="AppBarPen" xml:space="preserve">
