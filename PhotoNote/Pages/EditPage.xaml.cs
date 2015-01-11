@@ -205,7 +205,8 @@ namespace PhotoNote.Pages
                     return;
                 }
                 
-                if (e.NavigationMode == NavigationMode.New)
+                if (e.NavigationMode == NavigationMode.Back &&
+                    !e.IsNavigationInitiator) // to ensure this is only called after tombstone
                     RestoreState();
 
                 LoadSettings();
