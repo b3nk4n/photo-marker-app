@@ -107,7 +107,6 @@ namespace PhotoNote.Pages
                     return;
 
                 fileNameToOpen = Path.GetFileName(pr.OriginalFileName);
-                MessageBox.Show(string.Format("{0}\n{1}", pr.OriginalFileName, fileNameToOpen), "!!!!", MessageBoxButton.OK);
                 _delayedNavigaionTimer.Start();
             };
 
