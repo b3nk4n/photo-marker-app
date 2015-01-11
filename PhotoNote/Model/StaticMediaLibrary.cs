@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Media;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Media.PhoneExtensions;
+using System.IO;
 
 namespace PhotoNote.Model
 {
@@ -51,22 +54,32 @@ namespace PhotoNote.Model
                         return new EditPicture(pic);
                     }
                 }
-                Debug.WriteLine("pic: " + fileName);
+
+                // second try, because sometime the file extenstion was not applied, but is very unrealiable, but should hit a file.
+                foreach (var pic in StaticMediaLibrary.Instance.Pictures)
+                {
+                    var picFullName = Path.GetFileName(pic.GetPath());
+
+                    if (picFullName == fileName)
+                    {
+                        return new EditPicture(pic);
+                    }
+                }
+
+                // third try, because sometime the file extenstion was not applied, but is very unrealiable, but should hit a file.
+                foreach (var pic in StaticMediaLibrary.Instance.Pictures)
+                {
+                    var nameWithoutCounter = RemoveImageCopyCounter(fileName);
+                    if (pic.Name.Contains(fileName) || fileName.Contains(pic.Name) ||
+                        pic.Name.Contains(nameWithoutCounter) || pic.Name.Contains(nameWithoutCounter))
+                    {
+                        return new EditPicture(pic);
+                    }
+                }
             }
             catch (InvalidOperationException ioex)
             {
                 Debug.WriteLine("Could not retrieve photo from library with error: " + ioex.Message);
-            }
-
-            // second try, because sometime the file extenstion was not applied.
-            foreach (var pic in StaticMediaLibrary.Instance.Pictures)
-            {
-                var nameWithoutCounter = RemoveImageCopyCounter(fileName);
-                if (pic.Name.Contains(fileName) || fileName.Contains(pic.Name) ||
-                    pic.Name.Contains(nameWithoutCounter) || pic.Name.Contains(nameWithoutCounter))
-                {
-                    return new EditPicture(pic);
-                }
             }
             return null;
         }
@@ -78,8 +91,33 @@ namespace PhotoNote.Model
                 int i = 0;
                 foreach (var pic in StaticMediaLibrary.Instance.Pictures)
                 {
-                    Debug.WriteLine(pic.Name + " <> " + fileName);
                     if (pic.Name == fileName)
+                    {
+                        return i;
+                    }
+                    i++;
+                }
+
+                // second try, because sometime the file extenstion was not applied, but is very unrealiable, but should hit a file.
+                i = 0;
+                foreach (var pic in StaticMediaLibrary.Instance.Pictures)
+                {
+                    var picFullName = Path.GetFileName(pic.GetPath());
+
+                    if (picFullName == fileName)
+                    {
+                        return i;
+                    }
+                    i++;
+                }
+
+                // second try, because sometime the file extenstion was not applied.
+                i = 0;
+                foreach (var pic in StaticMediaLibrary.Instance.Pictures)
+                {
+                    var nameWithoutCounter = RemoveImageCopyCounter(fileName);
+                    if (pic.Name.Contains(fileName) || fileName.Contains(pic.Name) ||
+                        pic.Name.Contains(nameWithoutCounter) || pic.Name.Contains(nameWithoutCounter))
                     {
                         return i;
                     }
@@ -91,18 +129,6 @@ namespace PhotoNote.Model
                 Debug.WriteLine("Could not retrieve photo from library with error: " + ioex.Message);
             }
 
-            // second try, because sometime the file extenstion was not applied.
-            int j = 0;
-            foreach (var pic in StaticMediaLibrary.Instance.Pictures)
-            {
-                var nameWithoutCounter = RemoveImageCopyCounter(fileName);
-                if (pic.Name.Contains(fileName) || fileName.Contains(pic.Name) ||
-                    pic.Name.Contains(nameWithoutCounter) || pic.Name.Contains(nameWithoutCounter))
-                {
-                    return j;
-                }
-                j++;
-            }
             return -1;
         }
 
