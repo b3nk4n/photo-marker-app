@@ -65,15 +65,6 @@ namespace PhotoNote.Pages
             ApplicationBar.Opacity = 0.99;
 
             // undo
-            _appBarZoomButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.magnify.png", UriKind.Relative));
-            _appBarZoomButton.Text = AppResources.AppBarZoom;
-            _appBarZoomButton.Click += (s, e) =>
-            {
-                ToggleZoom();
-            };
-            ApplicationBar.Buttons.Add(_appBarZoomButton);
-
-            // undo
             ApplicationBarIconButton appBarUndoButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.undo.curve.png", UriKind.Relative));
             appBarUndoButton.Text = AppResources.AppBarUndo;
             appBarUndoButton.Click += (s, e) =>
@@ -97,6 +88,15 @@ namespace PhotoNote.Pages
                 }
             };
             ApplicationBar.Buttons.Add(appBarPenButton);
+
+            // zoom
+            _appBarZoomButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.magnify.png", UriKind.Relative));
+            _appBarZoomButton.Text = AppResources.AppBarZoom;
+            _appBarZoomButton.Click += (s, e) =>
+            {
+                ToggleZoom();
+            };
+            ApplicationBar.Buttons.Add(_appBarZoomButton);
 
             // save
             ApplicationBarIconButton appBarSaveButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.save.png", UriKind.Relative));
@@ -618,11 +618,11 @@ namespace PhotoNote.Pages
 
         private void UpdateZoomAppBarIcon()
         {
-            if (_zoom == 2.0)
+            if (_zoom == 3.0)
             {
                 _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify3.png", UriKind.Relative);
             }
-            else if (_zoom == 3.0)
+            else if (_zoom == 2.0)
             {
                 _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify2.png", UriKind.Relative);
             }
