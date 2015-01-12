@@ -13,7 +13,7 @@
         
         <conv:ToUpperCaseConverter x:Key="ToUpperCaseConverter" />
         
-        <ControlTemplate x:Key="EmptyButtonControlTemplate" TargetType="Button">
+        <ControlTemplate x:Key="EmptyButtonControlTemplate" TargetType="ButtonBase">
             <Border  Background="{TemplateBinding Background}">
                 <Grid Margin="12" toolkit:TiltEffect.IsTiltEnabled="True">
                     <ContentPresenter />

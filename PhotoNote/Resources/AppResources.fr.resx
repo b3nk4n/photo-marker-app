@@ -257,4 +257,8 @@
     <value>Sauvegarde en cours….</value>
     <comment>EditPage</comment>
   </data>
+  <data name="AppBarZoom" xml:space="preserve">
+    <value>zoom</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

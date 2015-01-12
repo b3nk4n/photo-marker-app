@@ -257,4 +257,8 @@
     <value>جاري حفظ الصوره...</value>
     <comment>EditPage</comment>
   </data>
+  <data name="AppBarZoom" xml:space="preserve">
+    <value>زوم</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

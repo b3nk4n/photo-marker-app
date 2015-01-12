@@ -257,4 +257,8 @@
     <value>Сохранение изображения…</value>
     <comment>EditPage</comment>
   </data>
+  <data name="AppBarZoom" xml:space="preserve">
+    <value>зум</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

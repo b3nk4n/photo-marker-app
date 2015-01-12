@@ -137,6 +137,10 @@
     <value>Rückgängig</value>
     <comment>EditPage</comment>
   </data>
+  <data name="AppBarZoom" xml:space="preserve">
+    <value>Zoom</value>
+    <comment>EditPage</comment>
+  </data>
   <data name="ApplicationAuthor" xml:space="preserve">
     <value>von Benjamin Sautermeister</value>
     <comment>AboutPage</comment>

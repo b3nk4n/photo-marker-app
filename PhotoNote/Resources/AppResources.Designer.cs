@@ -106,6 +106,15 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die zoom ähnelt.
+        /// </summary>
+        public static string AppBarZoom {
+            get {
+                return ResourceManager.GetString("AppBarZoom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die by Benjamin Sautermeister ähnelt.
         /// </summary>
         public static string ApplicationAuthor {

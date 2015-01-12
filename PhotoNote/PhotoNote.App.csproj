@@ -176,6 +176,9 @@
     <Content Include="Assets\AppBar\appbar.draw.marker.png" />
     <Content Include="Assets\AppBar\appbar.edit.png" />
     <Content Include="Assets\AppBar\appbar.image.select.png" />
+    <Content Include="Assets\AppBar\appbar.magnify.png" />
+    <Content Include="Assets\AppBar\appbar.magnify2.png" />
+    <Content Include="Assets\AppBar\appbar.magnify3.png" />
     <Content Include="Assets\AppBar\appbar.save.png" />
     <Content Include="Assets\AppBar\appbar.undo.curve.png" />
     <Content Include="Assets\AppBar\appbar.share.png" />

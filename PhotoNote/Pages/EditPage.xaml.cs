@@ -27,6 +27,8 @@ namespace PhotoNote.Pages
     {
         private EditPicture _editImage;
 
+        ApplicationBarIconButton _appBarZoomButton;
+
         private Random rand = new Random();
 
         private static readonly ScaleTransform NEUTRAL_SCALE = new ScaleTransform();
@@ -35,6 +37,17 @@ namespace PhotoNote.Pages
 
         private const string PEN_POPUP_VISIBLE_KEY = "_pen_popup_visible_";
         private const string PEN_DATA_KEY = "_pen_data_";
+
+        private const string ZOOM_KEY = "_zoom_";
+        private const string TRANSLATION_X_KEY = "_trans_x_";
+        private const string TRANSLATION_Y_KEY = "_trans_y_";
+
+        private double _zoom = 1.0;
+        private double _translateX;
+        private double _translateY;
+
+        private const double ZOOM_MAX = 3.0;
+        private const double MOVE_STEP = 12.0;
 
         public EditPage()
         {
@@ -51,6 +64,14 @@ namespace PhotoNote.Pages
             ApplicationBar = new ApplicationBar();
             ApplicationBar.Opacity = 0.99;
 
+            // undo
+            _appBarZoomButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.magnify.png", UriKind.Relative));
+            _appBarZoomButton.Text = AppResources.AppBarZoom;
+            _appBarZoomButton.Click += (s, e) =>
+            {
+                ToggleZoom();
+            };
+            ApplicationBar.Buttons.Add(_appBarZoomButton);
 
             // undo
             ApplicationBarIconButton appBarUndoButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.undo.curve.png", UriKind.Relative));
@@ -165,6 +186,10 @@ namespace PhotoNote.Pages
         {
             base.OnNavigatedTo(e);
 
+            if (e.NavigationMode == NavigationMode.Back &&
+                    !e.IsNavigationInitiator) // to ensure this is only called after tombstone
+                RestoreState();
+
             // query string lookup
             bool success = false;
             if (NavigationContext.QueryString != null)
@@ -204,10 +229,6 @@ namespace PhotoNote.Pages
                     NavigationHelper.BackToMainPageWithHistoryClear(NavigationService);
                     return;
                 }
-                
-                if (e.NavigationMode == NavigationMode.Back &&
-                    !e.IsNavigationInitiator) // to ensure this is only called after tombstone
-                    RestoreState();
 
                 LoadSettings();
             }
@@ -247,6 +268,19 @@ namespace PhotoNote.Pages
             {
                 ShowPenToolbar(false);
             }
+
+            // zoom
+            var zoomLevel = PhoneStateHelper.LoadValue<double>(ZOOM_KEY, 1.0);
+            PhoneStateHelper.DeleteValue(ZOOM_KEY);
+            _zoom = zoomLevel;
+
+            // translation
+            var transX = PhoneStateHelper.LoadValue<double>(TRANSLATION_X_KEY, 0.0);
+            PhoneStateHelper.DeleteValue(TRANSLATION_X_KEY);
+            _translateX = transX;
+            var transY = PhoneStateHelper.LoadValue<double>(TRANSLATION_Y_KEY, 0.0);
+            PhoneStateHelper.DeleteValue(TRANSLATION_Y_KEY);
+            _translateY = transY;
 
             // strokes
             var strokeData = PhoneStateHelper.LoadValue<string>(PEN_DATA_KEY);
@@ -294,6 +328,13 @@ namespace PhotoNote.Pages
         {
             // popup state
             PhoneStateHelper.SaveValue(PEN_POPUP_VISIBLE_KEY, _isPenToolbarVisible);
+
+            // zoom
+            PhoneStateHelper.SaveValue(ZOOM_KEY, _zoom);
+
+            // translation
+            PhoneStateHelper.SaveValue(TRANSLATION_X_KEY, _translateX);
+            PhoneStateHelper.SaveValue(TRANSLATION_Y_KEY, _translateY);
             
             // strokes
             if (InkControl.Strokes.Count > 0)
@@ -328,6 +369,8 @@ namespace PhotoNote.Pages
 
                 img.SetSource(imageStream);
 
+                UpdateMoveButtonVisibility();
+                UpdateZoomAppBarIcon();
                 UpdateImageOrientationAndScale();
 
                 EditImageControl.Source = img;
@@ -350,13 +393,47 @@ namespace PhotoNote.Pages
             InkControl.Width = neutralScaleFactor * _editImage.Width;
             InkControl.Height = neutralScaleFactor * _editImage.Height;
 
+            // check and adjust translation/move
+            var renderedImageWidth = scale * _editImage.Width * _zoom;
+            var renderedImageHeight = scale * _editImage.Height * _zoom;
+            var deltaMaxX = (renderedImageWidth - GetViewportBounds().Width) / 2.0;
+            var deltaMaxY = (renderedImageHeight - GetViewportBounds().Height) / 2.0;
+
+            if (deltaMaxX > 0)
+            {
+                if (_translateX < -deltaMaxX)
+                    _translateX = -deltaMaxX;
+                else if (_translateX > deltaMaxX)
+                    _translateX = deltaMaxX;
+            }
+            
+            if (deltaMaxY > 0)
+            {
+                if (_translateY < -deltaMaxY)
+                    _translateY = -deltaMaxY;
+                else if (_translateY > deltaMaxY)
+                    _translateY = deltaMaxY;
+            }
+            
+
+            // scale
+            EditImageControl.RenderTransform = new CompositeTransform
+            {
+                ScaleX = _zoom,
+                ScaleY = _zoom,
+                TranslateX = _translateX,
+                TranslateY = _translateY
+            };
+
             // check if upper-scaling is required
             if (scale != neutralScaleFactor)
             {
-                InkControl.RenderTransform = new ScaleTransform
+                InkControl.RenderTransform = new CompositeTransform
                 {
-                    ScaleX = scale / neutralScaleFactor,
-                    ScaleY = scale / neutralScaleFactor
+                    ScaleX = scale / neutralScaleFactor * _zoom,
+                    ScaleY = scale / neutralScaleFactor * _zoom,
+                    TranslateX = _translateX,
+                    TranslateY = _translateY
                 };
             }
             else
@@ -485,6 +562,76 @@ namespace PhotoNote.Pages
             }
         }
 
+        private void ToggleZoom()
+        {
+            _zoom += 1;
+
+            if (_zoom > ZOOM_MAX)
+            {
+                _zoom = 1.0;
+
+                // reset translation
+                _translateX = 0;
+                _translateY = 0;
+            }
+
+            UpdateMoveButtonVisibility();
+            UpdateZoomAppBarIcon();
+            UpdateImageOrientationAndScale();
+        }
+
+        private void UpdateMoveButtonVisibility()
+        {
+            if (HasNoImage())
+                return;
+
+            var scale = GetScaleFactorOfOrientation();
+
+            // check and adjust translation/move
+            var renderedImageWidth = scale * _editImage.Width * _zoom;
+            var renderedImageHeight = scale * _editImage.Height * _zoom;
+            var deltaMaxX = (renderedImageWidth - GetViewportBounds().Width) / 2.0;
+            var deltaMaxY = (renderedImageHeight - GetViewportBounds().Height) / 2.0;
+
+            if (deltaMaxX > 0)
+            {
+                MoveLeft.Visibility = Visibility.Visible;
+                MoveRight.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                MoveLeft.Visibility = Visibility.Collapsed;
+                MoveRight.Visibility = Visibility.Collapsed;
+            }
+
+            if (deltaMaxY > 0)
+            {
+                MoveUp.Visibility = Visibility.Visible;
+                MoveDown.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                MoveUp.Visibility = Visibility.Collapsed;
+                MoveDown.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void UpdateZoomAppBarIcon()
+        {
+            if (_zoom == 2.0)
+            {
+                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify3.png", UriKind.Relative);
+            }
+            else if (_zoom == 3.0)
+            {
+                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify2.png", UriKind.Relative);
+            }
+            else
+            {
+                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify.png", UriKind.Relative);
+            }
+        }
+
         #endregion
 
         #region Orientation Events
@@ -560,6 +707,30 @@ namespace PhotoNote.Pages
             _isPenToolbarVisible = false;
 
             SaveSettings();
+        }
+
+        private void MoveLeftClicked(object sender, RoutedEventArgs e)
+        {
+            _translateX += MOVE_STEP * _zoom;
+            UpdateImageOrientationAndScale();
+        }
+
+        private void MoveRightClicked(object sender, RoutedEventArgs e)
+        {
+            _translateX -= MOVE_STEP * _zoom;
+            UpdateImageOrientationAndScale();
+        }
+
+        private void MoveUpClicked(object sender, RoutedEventArgs e)
+        {
+            _translateY += MOVE_STEP * _zoom;
+            UpdateImageOrientationAndScale();
+        }
+
+        private void MoveDownClicked(object sender, RoutedEventArgs e)
+        {
+            _translateY -= MOVE_STEP * _zoom;
+            UpdateImageOrientationAndScale();
         }
     }
 }
