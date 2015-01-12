@@ -90,7 +90,7 @@ namespace PhotoNote.Pages
             ApplicationBar.Buttons.Add(appBarPenButton);
 
             // zoom
-            _appBarZoomButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.magnify.png", UriKind.Relative));
+            _appBarZoomButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.magnify.add.png", UriKind.Relative));
             _appBarZoomButton.Text = AppResources.AppBarZoom;
             _appBarZoomButton.Click += (s, e) =>
             {
@@ -426,8 +426,8 @@ namespace PhotoNote.Pages
             };
 
             // check if upper-scaling is required
-            if (scale != neutralScaleFactor)
-            {
+            //if (scale != neutralScaleFactor)
+            //{
                 InkControl.RenderTransform = new CompositeTransform
                 {
                     ScaleX = scale / neutralScaleFactor * _zoom,
@@ -435,11 +435,11 @@ namespace PhotoNote.Pages
                     TranslateX = _translateX,
                     TranslateY = _translateY
                 };
-            }
-            else
-            {
-                InkControl.RenderTransform = NEUTRAL_SCALE;
-            }
+            //}
+            //else
+            //{
+            //    InkControl.RenderTransform = NEUTRAL_SCALE;
+            //}
 
             SetBoundary(InkControl.Width, InkControl.Height);
         }
@@ -628,7 +628,7 @@ namespace PhotoNote.Pages
             }
             else
             {
-                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify.png", UriKind.Relative);
+                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify.add.png", UriKind.Relative);
             }
         }
 
@@ -656,6 +656,27 @@ namespace PhotoNote.Pages
                 VisualStateManager.GoToState(this, "LandscapeRight", true);
             }
 
+            // reset translate when necessary
+            if (!HasNoImage())
+            {
+                var scale = GetScaleFactorOfOrientation();
+
+                // check and adjust translation/move
+                var renderedImageWidth = scale * _editImage.Width * _zoom;
+                var renderedImageHeight = scale * _editImage.Height * _zoom;
+
+                var viewport = GetViewportBounds();
+                if (renderedImageHeight <= viewport.Height)
+                {
+                    _translateY = 0;
+                }
+                if (renderedImageWidth <= viewport.Width)
+                {
+                    _translateX = 0;
+                }
+            }
+
+            UpdateMoveButtonVisibility();
             UpdateImageOrientationAndScale();
         }
 
