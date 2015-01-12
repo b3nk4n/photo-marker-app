@@ -55,12 +55,13 @@ namespace PhotoNote.Model
                     }
                 }
 
-                // second try, because sometime the file extenstion was not applied, but is very unrealiable, but should hit a file.
+                // second try without extension.
+                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
                 foreach (var pic in StaticMediaLibrary.Instance.Pictures)
                 {
-                    var picFullName = Path.GetFileName(pic.GetPath());
+                    var picNameWithoutExtension = Path.GetFileNameWithoutExtension(pic.GetPath());
 
-                    if (picFullName == fileName)
+                    if (picNameWithoutExtension == fileNameWithoutExtension)
                     {
                         return new EditPicture(pic);
                     }
@@ -98,13 +99,14 @@ namespace PhotoNote.Model
                     i++;
                 }
 
-                // second try, because sometime the file extenstion was not applied, but is very unrealiable, but should hit a file.
+                // second trywithout extension.
                 i = 0;
+                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
                 foreach (var pic in StaticMediaLibrary.Instance.Pictures)
                 {
-                    var picFullName = Path.GetFileName(pic.GetPath());
+                    var picFullNameWithoutExtension = Path.GetFileNameWithoutExtension(pic.GetPath());
 
-                    if (picFullName == fileName)
+                    if (picFullNameWithoutExtension == fileNameWithoutExtension)
                     {
                         return i;
                     }
