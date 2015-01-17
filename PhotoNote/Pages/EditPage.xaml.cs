@@ -11,7 +11,6 @@ using System.Windows.Input;
 using System.Windows.Ink;
 using System.Windows.Media;
 using PhoneKit.Framework.Core.Graphics;
-using System.IO;
 using PhotoNote.Resources;
 using PhotoNote.Helpers;
 using PhotoNote.Controls;
@@ -20,6 +19,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Text;
 using System.Globalization;
+using System.IO;
 
 namespace PhotoNote.Pages
 {
@@ -718,6 +718,8 @@ namespace PhotoNote.Pages
                 PenToolbarLandscape.Visibility = System.Windows.Visibility.Visible;
             }
 
+            LoadColorHistory();
+
             VisualStateManager.GoToState(this, "Displayed", useTransition);
             _isPenToolbarVisible = true;
         }
@@ -731,6 +733,41 @@ namespace PhotoNote.Pages
             _isPenToolbarVisible = false;
 
             SaveSettings();
+            SaveColorHistory();
+        }
+
+        private void LoadColorHistory()
+        {
+            var historyColors = AppSettings.ColorHistory.Value;
+
+            if (historyColors.Count < AppConstants.COLOR_HISTORY_SIZE)
+                return; // should never occure
+
+            ColorHistory1.Fill = new SolidColorBrush(historyColors[0]);
+            ColorHistory2.Fill = new SolidColorBrush(historyColors[1]);
+            ColorHistory3.Fill = new SolidColorBrush(historyColors[2]);
+            ColorHistory4.Fill = new SolidColorBrush(historyColors[3]);
+            ColorHistory5.Fill = new SolidColorBrush(historyColors[4]);
+            ColorHistory6.Fill = new SolidColorBrush(historyColors[5]);
+        }
+
+        private void SaveColorHistory()
+        {
+            var historyColors = AppSettings.ColorHistory.Value;
+            var currentColor = this.ColorPicker.Color;
+
+            // add current color and clear it if already in list to be in front
+            if (historyColors.Contains(currentColor))
+            {
+                historyColors.Remove(currentColor);
+            }
+            historyColors.Insert(0, currentColor);
+
+            // ensure history size
+            if (historyColors.Count > AppConstants.COLOR_HISTORY_SIZE)
+            {
+                historyColors.RemoveAt(historyColors.Count - 1);
+            }
         }
 
         private void MoveLeftClicked(object sender, RoutedEventArgs e)
@@ -755,6 +792,20 @@ namespace PhotoNote.Pages
         {
             _translateY -= MOVE_STEP * _zoom;
             UpdateImageOrientationAndScale();
+        }
+
+        private void HistoryColorSelected(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            System.Windows.Shapes.Rectangle rect = sender as System.Windows.Shapes.Rectangle;
+
+            if (rect != null)
+            {
+                SolidColorBrush solidColor = rect.Fill as SolidColorBrush;
+
+                if (solidColor != null) {
+                    ColorPicker.Color = solidColor.Color;
+                }
+            }
         }
     }
 }

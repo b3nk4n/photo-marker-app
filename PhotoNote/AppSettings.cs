@@ -27,5 +27,10 @@ namespace PhotoNote
         /// The pen thickness.
         /// </summary>
         public static StoredObject<double> PenThickness = new StoredObject<double>("_pen_thickness_", 14.0);
+
+        /// <summary>
+        /// The stored color history.
+        /// </summary>
+        public static StoredObject<List<Color>> ColorHistory = new StoredObject<List<Color>>("_color_hist_", new List<Color>{ Colors.Red, Colors.Green, Colors.Blue, Colors.Yellow, Colors.Black, Colors.White });
     }
 }

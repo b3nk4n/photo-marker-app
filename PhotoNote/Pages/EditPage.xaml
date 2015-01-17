@@ -290,7 +290,15 @@
                 </Button>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,0">
                     <StackPanel Margin="12">
-                        <coding:ColorPicker x:Name="ColorPicker" Height="200" Width="220"  Margin="10,12,0,12" Style="{StaticResource CustomColorPickerStyle}" />
+                        <coding:ColorPicker x:Name="ColorPicker" Height="198" Width="220"  Margin="10,12,0,12" Style="{StaticResource CustomColorPickerStyle}" />
+                    </StackPanel>
+                    <StackPanel Margin="-4,20,0,20">
+                        <Rectangle x:Name="ColorHistory1" Fill="Red" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                        <Rectangle x:Name="ColorHistory2" Fill="Green" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                        <Rectangle x:Name="ColorHistory3" Fill="Blue" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                        <Rectangle x:Name="ColorHistory4" Fill="Yellow" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                        <Rectangle x:Name="ColorHistory5" Fill="Black" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                        <Rectangle x:Name="ColorHistory6" Fill="White" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
                     </StackPanel>
                     <StackPanel Margin="10,24,6,12">
                         <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 19,19L 25.3333,19L 25.3333,25.3333L 31.6667,25.3333L 31.6667,19L 38,19L 38,25.3333L 44.3333,25.3333L 44.3333,19L 50.6667,19L 50.6667,25.3333L 57,25.3333L 57,31.6667L 50.6667,31.6667L 50.6667,38L 57,38L 57,44.3333L 50.6667,44.3333L 50.6667,50.6667L 57,50.6667L 57,57L 50.6667,57L 50.6667,50.6667L 44.3333,50.6667L 44.3333,57L 38,57L 38,50.6667L 31.6667,50.6667L 31.6667,57L 25.3333,57L 25.3333,50.6667L 19,50.6667L 19,44.3333L 25.3333,44.3333L 25.3333,38L 19,38L 19,31.6667L 25.3333,31.6667L 25.3333,25.3333L 19,25.3333L 19,19 Z M 50.6667,38L 44.3333,38L 44.3333,44.3333L 50.6667,44.3333L 50.6667,38 Z M 50.6667,25.3333L 44.3333,25.3333L 44.3333,31.6667L 50.6667,31.6667L 50.6667,25.3333 Z M 44.3333,44.3333L 38,44.3333L 38,50.6667L 44.3333,50.6667L 44.3333,44.3333 Z M 38,44.3333L 38,38L 31.6667,38L 31.6667,44.3333L 38,44.3333 Z M 31.6667,44.3333L 25.3333,44.3333L 25.3333,50.6667L 31.6667,50.6667L 31.6667,44.3333 Z M 44.3333,31.6667L 38,31.6667L 38,38L 44.3333,38L 44.3333,31.6667 Z M 38,31.6667L 38,25.3333L 31.6667,25.3333L 31.6666,31.6667L 38,31.6667 Z M 31.6666,31.6667L 25.3333,31.6667L 25.3333,38L 31.6667,38L 31.6666,31.6667 Z ">
@@ -346,9 +354,17 @@
                         <Slider x:Name="OpacitySliderLandscape" Foreground="{Binding ElementName=ColorPickerLandscape, Path=SolidColorBrush}" Margin="-4,0,0,-28"
                                 Value="{Binding ElementName=OpacitySlider, Path=Value, Mode=TwoWay}" Minimum="0.2" Maximum="1" SmallChange="0.1" LargeChange="0.1" Width="184" VerticalAlignment="Center" Style="{StaticResource CustomSliderStyle}" />
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal"  Margin="20,0,20,-4">
+                        <Rectangle Fill="{Binding ElementName=ColorHistory1, Path=Fill}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                        <Rectangle Fill="{Binding ElementName=ColorHistory2, Path=Fill}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                        <Rectangle Fill="{Binding ElementName=ColorHistory3, Path=Fill}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                        <Rectangle Fill="{Binding ElementName=ColorHistory4, Path=Fill}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                        <Rectangle Fill="{Binding ElementName=ColorHistory5, Path=Fill}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                        <Rectangle Fill="{Binding ElementName=ColorHistory6, Path=Fill}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                    </StackPanel>
                     <StackPanel Margin="12">
                         <coding:ColorPicker x:Name="ColorPickerLandscape" Color="{Binding ElementName=ColorPicker, Path=Color, Mode=TwoWay}"
-                                            Height="200" Width="220"  Margin="0,12,0,12" Style="{StaticResource CustomColorPickerStyle}" RenderTransformOrigin="0.5,0.5">
+                                            Height="198" Width="220"  Margin="0,12,0,12" Style="{StaticResource CustomColorPickerStyle}" RenderTransformOrigin="0.5,0.5">
                             <coding:ColorPicker.RenderTransform>
                                 <RotateTransform Angle="-90" />
                             </coding:ColorPicker.RenderTransform>

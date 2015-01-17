@@ -31,5 +31,10 @@ namespace PhotoNote
         /// The photo prefix to recognize edited photos in the library.
         /// </summary>
         public const string IMAGE_PREFIX = "PhotoNote_";
+
+        /// <summary>
+        /// The size of the color history.
+        /// </summary>
+        public const int COLOR_HISTORY_SIZE = 6;
     }
 }
