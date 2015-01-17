@@ -27,6 +27,14 @@ namespace PhotoNote.Model
             }
         }
 
+        /// <summary>
+        /// Updates the library and its items by reinstantiating the object.
+        /// Remark: New photos are available not before the MediaLibrary is reinitialized.
+        /// </summary>
+        public static void Update() {
+             _mediaLibrary = new MediaLibrary();
+        }
+
         public static EditPicture GetImageFromToken(string token)
         {
             Picture image = null;

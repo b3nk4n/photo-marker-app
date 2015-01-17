@@ -212,6 +212,9 @@ namespace PhotoNote.Pages
                 {
                     var selectedFileName = NavigationContext.QueryString[AppConstants.PARAM_SELECTED_FILE_NAME];
 
+                    // Update new content (e.g. when user took a new photo)
+                    StaticMediaLibrary.Update();
+
                     var image = StaticMediaLibrary.GetImageFromFileName(selectedFileName);
                     if (image != null)
                     {
