@@ -740,6 +740,14 @@ namespace PhotoNote.Pages
         {
             var historyColors = AppSettings.ColorHistory.Value;
 
+            // BUGSENSE: Object reference not set to an instance of an object.
+            //           21.01.15
+            if (historyColors == null)
+            {
+                // load defaults
+                historyColors = AppSettings.ColorHistory.DefaultValue;
+            }
+
             if (historyColors.Count < AppConstants.COLOR_HISTORY_SIZE)
                 return; // should never occure
 
