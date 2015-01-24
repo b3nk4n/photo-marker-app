@@ -41,7 +41,8 @@ namespace PhotoNote.Controls
                 new ContributorModel("/Assets/Languages/french.png", "Bernard Monon"),
                 new ContributorModel("/Assets/Languages/russia.png", "Александр Чуркин"),
                 new ContributorModel("/Assets/Languages/arabic.png", "Rafael Yousuf"),
-                new ContributorModel("/Assets/Languages/persian.png", "Mahmud Karimi")
+                new ContributorModel("/Assets/Languages/persian.png", "Mahmud Karimi"),
+                new ContributorModel("/Assets/Languages/vietnam.png", "Dương Duy Nhật")
             });
         }
     }

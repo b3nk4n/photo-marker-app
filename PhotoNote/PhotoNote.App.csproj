@@ -15,7 +15,7 @@
     <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <SilverlightApplication>true</SilverlightApplication>
-    <SupportedCultures>de%3bes%3bit%3bfr%3bru%3bar%3bfa-IR</SupportedCultures>
+    <SupportedCultures>de%3bes%3bit%3bfr%3bru%3bar%3bfa-IR%3bvi</SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
     <XapFilename>PhotoNote_$(Configuration)_$(Platform).xap</XapFilename>
@@ -199,6 +199,7 @@
     <Content Include="Assets\Languages\persian.png" />
     <Content Include="Assets\Languages\russia.png" />
     <Content Include="Assets\Languages\spanish.png" />
+    <Content Include="Assets\Languages\vietnam.png" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -224,6 +225,7 @@
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\AppResources.ru.resx" />
+    <EmbeddedResource Include="Resources\AppResources.vi.resx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\PhoneKit.Framework\PhoneKit.Framework.Core\PhoneKit.Framework.Core.csproj">

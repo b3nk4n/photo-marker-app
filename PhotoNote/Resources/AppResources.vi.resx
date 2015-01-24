@@ -122,19 +122,19 @@
     <comment>Controls the FlowDirection for all elements in the RootFrame. Set to the traditional direction of this resource file's language</comment>
   </data>
   <data name="ResourceLanguage" xml:space="preserve">
-    <value>fr</value>
+    <value>vi</value>
     <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
   </data>
   <data name="AboutTitle" xml:space="preserve">
-    <value>a propos</value>
+    <value>Giới thiệu</value>
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationAuthor" xml:space="preserve">
-    <value>par benjamin Sautermeiser</value>
+    <value>Bởi Benjamin Sautermeister</value>
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationDescription" xml:space="preserve">
-    <value>Cette application est une extension du Hub Photo de Windows Phone pour prendre des notes sur vos photos ou mettre en évidence les parties les plus importantes.</value>
+    <value>Ứng dụng cho phép mở rộng các trung tâm hình ảnh của Windows Phone. Từ đó kích hoạt một chức năng để nhanh chóng và dễ dàng ghi chép vào hình ảnh của bạn hoặc làm nổi bật những phần quan trọng nhất.</value>
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationTitle" xml:space="preserve">
@@ -146,23 +146,23 @@
     <comment>General</comment>
   </data>
   <data name="Contributors" xml:space="preserve">
-    <value>Contributeurs</value>
+    <value>Cộng tác viên</value>
     <comment>AboutPage</comment>
   </data>
   <data name="MoreApps" xml:space="preserve">
-    <value>plus d'applications</value>
+    <value>Thêm nhiều ứng dụng</value>
     <comment>AboutPage</comment>
   </data>
   <data name="PrivacyInfo" xml:space="preserve">
-    <value>info. de confidentialité</value>
+    <value>Thông tin bảo mật</value>
     <comment>About Page</comment>
   </data>
   <data name="RateAndReview" xml:space="preserve">
-    <value>evaluer et donner un avis</value>
+    <value>Xếp hạng và đánh giá</value>
     <comment>AboutPage</comment>
   </data>
   <data name="SupportAndFeedback" xml:space="preserve">
-    <value>aide et retour</value>
+    <value>Hỗ trợ và phản hồi</value>
     <comment>AboutPage</comment>
   </data>
   <data name="FeedbackEmail" xml:space="preserve">
@@ -170,95 +170,95 @@
     <comment>FeedbackDialogControl</comment>
   </data>
   <data name="InfoChoosePhoto" xml:space="preserve">
-    <value>sélectionnez une photo que vous souhaitez modifier ...</value>
+    <value>Lựa chọn một hình ảnh mà bạn muốn chỉnh sửa...</value>
     <comment>MainPage</comment>
   </data>
   <data name="AppBarSave" xml:space="preserve">
-    <value>enregistrer</value>
+    <value>Lưu</value>
     <comment>EditPage</comment>
   </data>
   <data name="AppBarSelectPicture" xml:space="preserve">
-    <value>photos</value>
+    <value>Lựa chọn</value>
     <comment>Edit Page</comment>
   </data>
   <data name="InAppStoreLoading" xml:space="preserve">
-    <value>Chargement…</value>
+    <value>Đang tải …</value>
     <comment>InAppStorePage</comment>
   </data>
   <data name="InAppStoreNoProducts" xml:space="preserve">
-    <value>L'achat n'est pas possible. S’il vous plaît réessayez plus tard.</value>
+    <value>Hiện tại không có trong ứng dụng mua hàng có sẵn . Vui lòng thử lại sau.</value>
     <comment>InAppStorePage</comment>
   </data>
   <data name="InAppStorePurchased" xml:space="preserve">
-    <value>achat</value>
+    <value>Đã mua</value>
     <comment>InAppStorePage</comment>
   </data>
   <data name="InAppStoreTitle" xml:space="preserve">
-    <value>in-app store</value>
+    <value>Cửa hàng trong ứng dụng</value>
     <comment>InAppStorePage</comment>
   </data>
   <data name="MessageBoxNoInfo" xml:space="preserve">
-    <value>Le lancement de l'application photo pas pu être démarré. Je suis vraiment désolé!</value>
+    <value>Việc khởi động của ứng dụng thông tin hình ảnh không thể được bắt đầu. Rất xin lỗi bạn!</value>
     <comment>MessageBox</comment>
   </data>
   <data name="MessageBoxWarning" xml:space="preserve">
-    <value>Attention</value>
+    <value>Cảnh báo</value>
     <comment>MessageBox</comment>
   </data>
   <data name="ShowPhotoInfo" xml:space="preserve">
-    <value>voir les information de l'image</value>
+    <value>Hiển thị thông tin hình ảnh</value>
     <comment>EditPage</comment>
   </data>
   <data name="Info1" xml:space="preserve">
-    <value>Ouvrez votre bibliothèque et sélectionnez une image</value>
+    <value>Mở thư viện và chọn một hình ảnh</value>
     <comment>MainPage-Info</comment>
   </data>
   <data name="Info2" xml:space="preserve">
-    <value>Sélectionnez 'modifier'</value>
+    <value>Lựa chọn chỉnh sửa</value>
     <comment>MainPage-Info</comment>
   </data>
   <data name="Info3Close" xml:space="preserve">
-    <value>'</value>
+    <value>"</value>
     <comment>MainPage-Info</comment>
   </data>
   <data name="Info3Open" xml:space="preserve">
-    <value>Sélectionnez '</value>
+    <value>Chọn "</value>
     <comment>MainPage-Info</comment>
   </data>
   <data name="Info4" xml:space="preserve">
-    <value>La photo peut être modifiée instantanément ...</value>
+    <value>Các hình ảnh có thể được chỉnh sửa ngay lập tức…</value>
     <comment>MainPage-Info</comment>
   </data>
   <data name="AppBarUndo" xml:space="preserve">
-    <value>effacer</value>
+    <value>Hoàn tác</value>
     <comment>EditPage</comment>
   </data>
   <data name="Share" xml:space="preserve">
-    <value>partager</value>
+    <value>Chia sẻ</value>
     <comment>General</comment>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>modifier</value>
+    <value>Chỉnh sửa</value>
     <comment>General</comment>
   </data>
   <data name="AppBarPen" xml:space="preserve">
-    <value>marquer</value>
+    <value>Đánh dấu</value>
     <comment>EditPage</comment>
   </data>
   <data name="MessageBoxNoSave" xml:space="preserve">
-    <value>Impossible d'enregistrer la photo. Je suis réellement désolé!</value>
+    <value>Không thể lưu được hình ảnh. Rất xin lỗi bạn!</value>
     <comment>MessageBox</comment>
   </data>
   <data name="MessageBoxUnknownError" xml:space="preserve">
-    <value>Oups! Tout s'est mal passé. Je suis vraiment désolé!</value>
+    <value>Rất tiếc! Về bất cứ điều gì đã xảy ra. Rất xin lỗi bạn!</value>
     <comment>MessageBox</comment>
   </data>
   <data name="SavingPicuture" xml:space="preserve">
-    <value>Sauvegarde en cours….</value>
+    <value>Lưu ảnh…</value>
     <comment>EditPage</comment>
   </data>
   <data name="AppBarZoom" xml:space="preserve">
-    <value>zoom</value>
+    <value>Phóng to</value>
     <comment>EditPage</comment>
   </data>
 </root>
