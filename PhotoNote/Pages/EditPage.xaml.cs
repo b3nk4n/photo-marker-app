@@ -53,6 +53,11 @@ namespace PhotoNote.Pages
         {
             InitializeComponent();
             BuildLocalizedApplicationBar();
+
+            Loaded += (s, e) => {
+                // FIXME: there might be the case that there can be crashed when accessing UI-Controls in OnNavigatedTo()
+                //        these should be accessed in Loaded() event instad. See BugSense errors (e.g. in UpdateMoveButtonVisibility()).
+            };
         }
 
         /// <summary>
