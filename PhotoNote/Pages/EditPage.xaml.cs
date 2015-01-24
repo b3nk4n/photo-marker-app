@@ -508,9 +508,6 @@ namespace PhotoNote.Pages
         //A new stroke object named MyStroke is created. MyStroke is added to the StrokeCollection of the InkPresenter named MyIP
         private void MyIP_MouseLeftButtonDown(object sender, MouseEventArgs e)
         {
-            if (_isPenToolbarVisible)
-                return;
-
             InkControl.CaptureMouse();
             StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
             MyStylusPointCollection.Add(e.StylusDevice.GetStylusPoints(InkControl));
@@ -531,9 +528,6 @@ namespace PhotoNote.Pages
         //StylusPoint objects are collected from the MouseEventArgs and added to MyStroke. 
         private void MyIP_MouseMove(object sender, MouseEventArgs e)
         {
-            if (_isPenToolbarVisible)
-                return;
-
             if (_activeStroke != null)
             {
                 var stylusPoints = e.StylusDevice.GetStylusPoints(InkControl);
@@ -545,6 +539,16 @@ namespace PhotoNote.Pages
         //MyStroke is completed
         private void MyIP_LostMouseCapture(object sender, MouseEventArgs e)
         {
+            if (_isPenToolbarVisible)
+            {
+                // close the toolbar and do not draw anything when there was quite like a tap.
+                if (_activeStroke.StylusPoints.Count < 3)
+                {
+                    _activeStroke.StylusPoints.Clear();
+                    HidePenToolbar();
+                }
+            }
+
             _activeStroke = null;
         }
 

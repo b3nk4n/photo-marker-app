@@ -251,7 +251,7 @@
         <!--ContentPanel - zusätzliche Inhalte hier platzieren-->
 		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="0,0,0,72">
             
-			<Grid x:Name="EditImageContainer" Width="480" Height="728" Tap="ClosedPenToobarTapped">
+			<Grid x:Name="EditImageContainer" Width="480" Height="728">
 				<Grid x:Name="RenderContainer">
 
                     <Image x:Name="EditImageControl"  VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" />
