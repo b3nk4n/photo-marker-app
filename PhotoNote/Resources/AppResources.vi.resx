@@ -134,7 +134,7 @@
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationDescription" xml:space="preserve">
-    <value>Ứng dụng cho phép mở rộng các trung tâm hình ảnh của Windows Phone. Từ đó kích hoạt một chức năng để nhanh chóng và dễ dàng ghi chép vào hình ảnh của bạn hoặc làm nổi bật những phần quan trọng nhất.</value>
+    <value>Ứng dụng này cho phép truy cập vào các trung tâm hình ảnh của Windows Phone. Từ đó kích hoạt một chức năng để có thể nhanh chóng và dễ dàng ghi chép vào hình ảnh hoặc làm nổi bật những phần quan trọng nhất trong tấm hình của bạn.</value>
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationTitle" xml:space="preserve">
@@ -150,7 +150,7 @@
     <comment>AboutPage</comment>
   </data>
   <data name="MoreApps" xml:space="preserve">
-    <value>Thêm nhiều ứng dụng</value>
+    <value>Những ứng dụng khác</value>
     <comment>AboutPage</comment>
   </data>
   <data name="PrivacyInfo" xml:space="preserve">
@@ -226,7 +226,7 @@
     <comment>MainPage-Info</comment>
   </data>
   <data name="Info4" xml:space="preserve">
-    <value>Các hình ảnh có thể được chỉnh sửa ngay lập tức…</value>
+    <value>Hình ảnh có thể được chỉnh sửa ngay…</value>
     <comment>MainPage-Info</comment>
   </data>
   <data name="AppBarUndo" xml:space="preserve">
@@ -254,7 +254,7 @@
     <comment>MessageBox</comment>
   </data>
   <data name="SavingPicuture" xml:space="preserve">
-    <value>Lưu ảnh…</value>
+    <value>Đang lưu ảnh…</value>
     <comment>EditPage</comment>
   </data>
   <data name="AppBarZoom" xml:space="preserve">
