@@ -134,7 +134,7 @@
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationDescription" xml:space="preserve">
-    <value>Ứng dụng này cho phép truy cập vào các trung tâm hình ảnh của Windows Phone. Từ đó kích hoạt một chức năng để có thể nhanh chóng và dễ dàng ghi chép vào hình ảnh hoặc làm nổi bật những phần quan trọng nhất trong tấm hình của bạn.</value>
+    <value>Ứng dụng cho phép truy cập vào các trung tâm hình ảnh của Windows Phone. Từ đó kích hoạt một chức năng để có thể nhanh chóng và dễ dàng ghi chép vào hình ảnh hoặc làm nổi bật những phần quan trọng nhất trong tấm hình của bạn.</value>
     <comment>AboutPage</comment>
   </data>
   <data name="ApplicationTitle" xml:space="preserve">
@@ -150,7 +150,7 @@
     <comment>AboutPage</comment>
   </data>
   <data name="MoreApps" xml:space="preserve">
-    <value>Những ứng dụng khác</value>
+    <value>Các ứng dụng khác</value>
     <comment>AboutPage</comment>
   </data>
   <data name="PrivacyInfo" xml:space="preserve">
