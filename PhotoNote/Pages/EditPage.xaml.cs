@@ -306,14 +306,18 @@ namespace PhotoNote.Pages
                     myStroke.DrawingAttributes.Width = double.Parse(strokeParams[2], CultureInfo.InvariantCulture);
 
                     var pointList = strokeParams[3].Split('$');
-                    foreach (var pointPair in pointList)
+                    if (pointList.Length == 2)
                     {
-                        var pointPairList = pointPair.Split('_');
-                        var x = Convert.ToDouble(pointPairList[0], CultureInfo.InvariantCulture);
-                        var y = Convert.ToDouble(pointPairList[1], CultureInfo.InvariantCulture);
+                        foreach (var pointPair in pointList)
+                        {
+                            var pointPairList = pointPair.Split('_');
+                            var x = Convert.ToDouble(pointPairList[0], CultureInfo.InvariantCulture);
+                            var y = Convert.ToDouble(pointPairList[1], CultureInfo.InvariantCulture);
 
-                        myStroke.StylusPoints.Add(new StylusPoint(x, y));
+                            myStroke.StylusPoints.Add(new StylusPoint(x, y));
+                        }
                     }
+                    
 
                     InkControl.Strokes.Add(myStroke);
                 }
@@ -544,7 +548,7 @@ namespace PhotoNote.Pages
                 // close the toolbar and do not draw anything when there was quite like a tap.
                 if (_activeStroke.StylusPoints.Count < 3)
                 {
-                    _activeStroke.StylusPoints.Clear();
+                    InkControl.Strokes.Remove(_activeStroke);
                     HidePenToolbar();
                 }
             }

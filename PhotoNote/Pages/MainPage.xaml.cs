@@ -65,7 +65,6 @@ namespace PhotoNote.Pages
             {
                 _mainViewModel.Update();
                 
-
                 if (!_imageInAnimationPlayed)
                 {
                     HideAllImages();
@@ -167,6 +166,7 @@ namespace PhotoNote.Pages
 
             if (NavigationContext.QueryString.ContainsKey(AppConstants.PARAM_CLEAR_HISTORY))
             {
+                // clear back-history
                 while (NavigationService.CanGoBack)
                     NavigationService.RemoveBackEntry();
             }
