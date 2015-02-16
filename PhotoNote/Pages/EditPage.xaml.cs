@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Globalization;
 using System.IO;
+using Microsoft.Xna.Framework;
 
 namespace PhotoNote.Pages
 {
@@ -48,6 +49,13 @@ namespace PhotoNote.Pages
 
         private const double ZOOM_MAX = 3.0;
         private const double MOVE_STEP = 12.0;
+
+        public enum DrawMode
+        {
+            Normal, Line, Arrow, Ellipse, Rectangle
+        }
+
+        private DrawMode _drawMode = DrawMode.Normal;
 
         public EditPage()
         {
@@ -324,7 +332,7 @@ namespace PhotoNote.Pages
             }
         }
 
-        private static Color HexToColor(string hexString)
+        private static System.Windows.Media.Color HexToColor(string hexString)
         {
             string cleanString = hexString.Replace("-", String.Empty).Substring(1);
 
@@ -522,7 +530,7 @@ namespace PhotoNote.Pages
             _activeStroke = new Stroke(MyStylusPointCollection);
             _activeStroke.DrawingAttributes = new DrawingAttributes
             {
-                Color = Color.FromArgb((byte)(255 * opacity), color.R, color.G, color.B),
+                Color = System.Windows.Media.Color.FromArgb((byte)(255 * opacity), color.R, color.G, color.B),
                 Height = size,
                 Width = size,
             };
@@ -534,8 +542,37 @@ namespace PhotoNote.Pages
         {
             if (_activeStroke != null)
             {
-                var stylusPoints = e.StylusDevice.GetStylusPoints(InkControl);
-                _activeStroke.StylusPoints.Add(stylusPoints);
+                var stylusPoint = e.StylusDevice.GetStylusPoints(InkControl).First();
+
+                switch (_drawMode)
+                {
+                    case DrawMode.Normal:
+                        _activeStroke.StylusPoints.Add(stylusPoint);
+                        break;
+                    case DrawMode.Line:
+                    case DrawMode.Arrow:
+                        if (_activeStroke.StylusPoints.Count > 1)
+                        {
+                            _activeStroke.StylusPoints.RemoveAt(1);
+                        }
+                        _activeStroke.StylusPoints.Add(stylusPoint);
+                        break;
+                    case DrawMode.Ellipse:
+                        break;
+                    case DrawMode.Rectangle:
+                        while (_activeStroke.StylusPoints.Count > 1)
+                        {
+                            _activeStroke.StylusPoints.RemoveAt(1);
+                        }
+                        var startPoint = _activeStroke.StylusPoints.First();
+                        _activeStroke.StylusPoints.Add(new StylusPoint(stylusPoint.X, startPoint.Y));
+                        _activeStroke.StylusPoints.Add(stylusPoint);
+                        _activeStroke.StylusPoints.Add(new StylusPoint(startPoint.X, stylusPoint.Y));
+                        _activeStroke.StylusPoints.Add(startPoint);
+                        break;
+                    default:
+                        break;
+                }
             }
                 
         }
@@ -553,7 +590,50 @@ namespace PhotoNote.Pages
                 }
             }
 
+            if (_drawMode == DrawMode.Arrow)
+            {
+                if (_activeStroke.StylusPoints.Count > 1)
+                {
+                    var start = _activeStroke.StylusPoints[0];
+                    var startVec = new Vector2((float)start.X, (float)start.Y);
+                    var end = _activeStroke.StylusPoints[1];
+                    var endVec = new Vector2((float)end.X, (float)end.Y);
+
+                    var arrowDirection = endVec - startVec;
+                    float shoulderLength = GetShoulderLength(arrowDirection.Length(), (float)AppSettings.PenThickness.Value);
+                    arrowDirection.Normalize();
+
+                    var leftShoulder = Rotate(arrowDirection,  3 * MathHelper.PiOver4);
+                    var leftShoulderEndPoint = endVec + leftShoulder * shoulderLength;
+                    var rightShoulder = Rotate(arrowDirection, 5 * MathHelper.PiOver4);
+                    var rightShoulderEndPoint = endVec + rightShoulder * shoulderLength;
+
+                    _activeStroke.StylusPoints.Add(new StylusPoint(leftShoulderEndPoint.X, leftShoulderEndPoint.Y));
+                    _activeStroke.StylusPoints.Add(end);
+                    _activeStroke.StylusPoints.Add(new StylusPoint(rightShoulderEndPoint.X, rightShoulderEndPoint.Y));
+                }
+                else
+                {
+                    // remove, because an arrow direction could not be determined
+                    InkControl.Strokes.Remove(_activeStroke);
+                }
+            }
+
             _activeStroke = null;
+        }
+
+        private float GetShoulderLength(float length, float thickness)
+        {
+            float result = 50;
+            result = Math.Min(length / 2, result);
+            result = Math.Min(thickness * 4, result);
+            return result;
+        }
+
+        private Vector2 Rotate(Vector2 vec, float radians)
+        {
+            var transformed = Vector2.Transform(vec, Microsoft.Xna.Framework.Matrix.CreateRotationZ(radians));
+            return transformed;
         }
 
         //Set the Clip property of the inkpresenter so that the strokes

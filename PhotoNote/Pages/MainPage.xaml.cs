@@ -63,7 +63,8 @@ namespace PhotoNote.Pages
 
             Loaded += (s, e) =>
             {
-                _mainViewModel.Update();
+                if (_mainViewModel != null)
+                    _mainViewModel.Update();
                 
                 if (!_imageInAnimationPlayed)
                 {
