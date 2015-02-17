@@ -23,6 +23,7 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Collections.Generic;
 
 namespace PhotoNote.Pages
 {
@@ -53,7 +54,7 @@ namespace PhotoNote.Pages
         private const double ZOOM_MAX = 3.0;
         private const double MOVE_STEP = 12.0;
 
-        private DrawMode _drawMode = DrawMode.Normal;
+        private DrawMode _currentDrawMode = DrawMode.Normal;
 
         public EditPage()
         {
@@ -64,7 +65,7 @@ namespace PhotoNote.Pages
                 // FIXME: there might be the case that there can be crashed when accessing UI-Controls in OnNavigatedTo()
                 //        these should be accessed in Loaded() event instad. See BugSense errors (e.g. in UpdateMoveButtonVisibility()).
 
-                SetTogglesToMode(_drawMode);
+                SetTogglesToMode(_currentDrawMode);
             };
         }
 
@@ -247,6 +248,7 @@ namespace PhotoNote.Pages
                 }
 
                 LoadSettings();
+                LoadColorHistory();
             }
         }
 
@@ -259,6 +261,9 @@ namespace PhotoNote.Pages
             {
                 SaveState();
             }
+
+            SaveSettings();
+            SaveColorHistory();
         }
 
         private void LoadSettings()
@@ -266,7 +271,7 @@ namespace PhotoNote.Pages
             this.ColorPicker.Color = AppSettings.PenColor.Value;
             this.OpacitySlider.Value = AppSettings.PenOpacity.Value;
             this.ThicknessSlider.Value = AppSettings.PenThickness.Value;
-            this._drawMode = AppSettings.DrawMode.Value;
+            _currentDrawMode = AppSettings.DrawMode.Value;
         }
 
         private void SaveSettings()
@@ -274,7 +279,7 @@ namespace PhotoNote.Pages
             AppSettings.PenColor.Value = this.ColorPicker.Color;
             AppSettings.PenOpacity.Value = this.OpacitySlider.Value;
             AppSettings.PenThickness.Value = this.ThicknessSlider.Value;
-            AppSettings.DrawMode.Value = this._drawMode;
+            AppSettings.DrawMode.Value = this._currentDrawMode;
         }
 
         private void RestoreState()
@@ -542,7 +547,7 @@ namespace PhotoNote.Pages
 
             var stylusPoint = e.StylusDevice.GetStylusPoints(InkControl).First();
 
-            switch (_drawMode)
+            switch (_currentDrawMode)
             {
                 case DrawMode.Normal:
                     _activeStroke.StylusPoints.Add(stylusPoint);
@@ -583,9 +588,9 @@ namespace PhotoNote.Pages
         {
             StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
             MyStylusPointCollection.Add(new StylusPoint(_centerStart.X, _centerStart.Y));
-            var opacity = AppSettings.PenOpacity.Value;
-            var color = AppSettings.PenColor.Value;
-            var size = AppSettings.PenThickness.Value;
+            var opacity = OpacitySlider.Value;
+            var color = ColorPicker.Color;
+            var size = ThicknessSlider.Value;
             var stroke = new Stroke(MyStylusPointCollection);
             stroke.DrawingAttributes = new DrawingAttributes
             {
@@ -593,6 +598,8 @@ namespace PhotoNote.Pages
                 Height = size,
                 Width = size,
             };
+            UpdateColorHistory();
+            UpdateColorHistoryUI();
             return stroke;
         }
 
@@ -623,22 +630,22 @@ namespace PhotoNote.Pages
                     if (_activeStroke != null)
                         InkControl.Strokes.Remove(_activeStroke);
                     HidePenToolbar();
+                    _activeStroke = null;
+                    return;
                 }
             }
-            else
-            {
-                // delayed display of first point, that the point is not visible
-                // when tapping on the screen to close the toolbar
-                if (_activeStroke == null)
-                {
-                    _activeStroke = StartStroke();
-                    InkControl.Strokes.Add(_activeStroke);
-                }
 
-                if (_drawMode == DrawMode.Arrow)
-                {
-                    FinishArrow();
-                }
+            // delayed display of first point, that the point is not visible
+            // when tapping on the screen to close the toolbar
+            if (_activeStroke == null)
+            {
+                _activeStroke = StartStroke();
+                InkControl.Strokes.Add(_activeStroke);
+            }
+
+            if (_currentDrawMode == DrawMode.Arrow)
+            {
+                FinishArrow();
             }
 
             _activeStroke = null;
@@ -654,7 +661,7 @@ namespace PhotoNote.Pages
                 var endVec = new Vector2((float)end.X, (float)end.Y);
 
                 var arrowDirection = endVec - startVec;
-                float shoulderLength = GetShoulderLength(arrowDirection.Length(), (float)AppSettings.PenThickness.Value);
+                float shoulderLength = GetShoulderLength(arrowDirection.Length(), (float)ThicknessSlider.Value);
                 arrowDirection.Normalize();
 
                 var leftShoulder = RotateVector(arrowDirection, 3 * MathHelper.PiOver4);
@@ -862,7 +869,7 @@ namespace PhotoNote.Pages
                 PenToolbarLandscape.Visibility = System.Windows.Visibility.Visible;
             }
 
-            LoadColorHistory();
+            //LoadColorHistory();
 
             VisualStateManager.GoToState(this, "Displayed", useTransition);
             _isPenToolbarVisible = true;
@@ -876,9 +883,11 @@ namespace PhotoNote.Pages
             VisualStateManager.GoToState(this, "Normal", true);
             _isPenToolbarVisible = false;
 
-            SaveSettings();
-            SaveColorHistory();
+            //SaveSettings();
+            //SaveColorHistory(); // TODO: remove ok?
         }
+
+        private List<System.Windows.Media.Color> _colorHistory;
 
         private void LoadColorHistory()
         {
@@ -891,9 +900,19 @@ namespace PhotoNote.Pages
                 // load defaults
                 historyColors = AppSettings.ColorHistory.DefaultValue;
             }
+            _colorHistory = historyColors;
+            UpdateColorHistoryUI();
+        }
 
-            if (historyColors.Count < AppConstants.COLOR_HISTORY_SIZE)
-                return; // should never occure
+        private void UpdateColorHistoryUI()
+        {
+            var historyColors = _colorHistory;
+
+            if (historyColors == null)
+            {
+                // load defaults
+                historyColors = AppSettings.ColorHistory.DefaultValue;
+            }
 
             ColorHistory1.Fill = new SolidColorBrush(historyColors[0]);
             ColorHistory2.Fill = new SolidColorBrush(historyColors[1]);
@@ -903,23 +922,31 @@ namespace PhotoNote.Pages
             ColorHistory6.Fill = new SolidColorBrush(historyColors[5]);
         }
 
-        private void SaveColorHistory()
+        private void UpdateColorHistory()
         {
-            var historyColors = AppSettings.ColorHistory.Value;
             var currentColor = this.ColorPicker.Color;
 
             // add current color and clear it if already in list to be in front
-            if (historyColors.Contains(currentColor))
+            if (_colorHistory[0] == currentColor)
             {
-                historyColors.Remove(currentColor);
+                return;
             }
-            historyColors.Insert(0, currentColor);
+            else if (_colorHistory.Contains(currentColor))
+            {
+                _colorHistory.Remove(currentColor);
+            }
+            _colorHistory.Insert(0, currentColor);
 
             // ensure history size
-            if (historyColors.Count > AppConstants.COLOR_HISTORY_SIZE)
+            if (_colorHistory.Count > AppConstants.COLOR_HISTORY_SIZE)
             {
-                historyColors.RemoveAt(historyColors.Count - 1);
+                _colorHistory.RemoveAt(_colorHistory.Count - 1);
             }
+        }
+
+        private void SaveColorHistory()
+        {
+            AppSettings.ColorHistory.Value = _colorHistory;
         }
 
         private void MoveLeftClicked(object sender, RoutedEventArgs e)
@@ -986,7 +1013,7 @@ namespace PhotoNote.Pages
             RectanglePen.Unchecked -= PenModeToggled;
 
             // set mode
-            _drawMode = mode;
+            _currentDrawMode = mode;
 
             // update UI
             switch (mode)
