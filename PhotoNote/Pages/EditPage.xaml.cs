@@ -196,12 +196,15 @@ namespace PhotoNote.Pages
             return success;
         }
 
+        private bool returnedFromTombstone = true; // flag to determine a tombstone
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
             if (e.NavigationMode == NavigationMode.Back &&
-                    !e.IsNavigationInitiator) // to ensure this is only called after tombstone
+                    !e.IsNavigationInitiator &&
+                returnedFromTombstone) // to ensure this is only called after tombstone
                 RestoreState();
 
             // query string lookup
@@ -250,6 +253,8 @@ namespace PhotoNote.Pages
                 LoadSettings();
                 LoadColorHistory();
             }
+
+            returnedFromTombstone = false;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
