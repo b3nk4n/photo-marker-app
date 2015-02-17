@@ -371,9 +371,10 @@ namespace PhotoNote.Pages
                 {
                     strokeData.AppendLine(String.Format("{0}|{1}|{2}|{3}",
                         stroke.DrawingAttributes.Color.ToString(),
-                        stroke.DrawingAttributes.Height.ToString(CultureInfo.InvariantCulture),
-                        stroke.DrawingAttributes.Width.ToString(CultureInfo.InvariantCulture),
-                        String.Join("$", stroke.StylusPoints.Select(p => String.Format("{0}_{1}", p.X.ToString(CultureInfo.InvariantCulture), p.Y.ToString(CultureInfo.InvariantCulture))))));
+                        stroke.DrawingAttributes.Height.ToString("0.00", 
+                        CultureInfo.InvariantCulture),
+                        stroke.DrawingAttributes.Width.ToString("0.00", CultureInfo.InvariantCulture),
+                        String.Join("$", stroke.StylusPoints.Select(p => String.Format("{0}_{1}", p.X.ToString("0.00", CultureInfo.InvariantCulture), p.Y.ToString("0.00", CultureInfo.InvariantCulture))))));
                 }
                 PhoneStateHelper.SaveValue(PEN_DATA_KEY, strokeData.ToString());
             }
@@ -609,7 +610,7 @@ namespace PhotoNote.Pages
             if (_isPenToolbarVisible)
             {
                 // close the toolbar and do not draw anything when there was quite like a tap.
-                if (_activeStroke.StylusPoints.Count < 3)
+                if (_activeStroke.StylusPoints.Count < 2)
                 {
                     InkControl.Strokes.Remove(_activeStroke);
                     HidePenToolbar();
