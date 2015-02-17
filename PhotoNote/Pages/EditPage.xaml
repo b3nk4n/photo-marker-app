@@ -394,12 +394,15 @@
                 <Path Width="24" Height="18" Margin="2" Stretch="Fill" Fill="{StaticResource PhoneBackgroundBrush}" Data="F1 M 37.8516,39.5833L 52.1016,24.9375L 52.1016,35.2292L 37.8516,50.2708L 23.6016,35.2292L 23.6016,24.9375L 37.8516,39.5833 Z "/>
             </RepeatButton>
 
-            <Grid x:Name="PenToolbar" Height="360" VerticalAlignment="Bottom" Background="{StaticResource PhoneChromeBrush}" RenderTransformOrigin="0.5,0.5"  Visibility="Visible">
+            <Grid x:Name="PenToolbar" Height="360" VerticalAlignment="Bottom" Background="{StaticResource PhoneChromeBrush}" RenderTransformOrigin="0.5,0.5"  Visibility="Collapsed">
 				<Grid.RenderTransform>
 					<CompositeTransform TranslateY="600"/>
 				</Grid.RenderTransform>
                 <Button VerticalAlignment="Top" HorizontalAlignment="Right" Template="{StaticResource EmptyButtonControlTemplate}" Background="{StaticResource PhoneChromeBrush}" Tap="ClosedPenToobarTapped">
-                    <Path Width="24" Height="18" Margin="2" Stretch="Fill" Opacity="0.5" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 37.8516,39.5833L 52.1016,24.9375L 52.1016,35.2292L 37.8516,50.2708L 23.6016,35.2292L 23.6016,24.9375L 37.8516,39.5833 Z "/>
+                    <Grid Margin="0,-44,0,0">
+                        <Ellipse Width="67" Height="67" Fill="{StaticResource PhoneChromeBrush}"/>
+                        <Path Width="28" Height="22" Margin="2" Stretch="Fill" Opacity="0.5" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 37.8516,39.5833L 52.1016,24.9375L 52.1016,35.2292L 37.8516,50.2708L 23.6016,35.2292L 23.6016,24.9375L 37.8516,39.5833 Z "/>
+                    </Grid>
                 </Button>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,0">
                     <StackPanel Margin="12">
@@ -430,25 +433,25 @@
                         <Slider x:Name="ThicknessSlider" Foreground="{Binding ElementName=ColorPicker, Path=SolidColorBrush}"
                                 Minimum="3" Maximum="45" SmallChange="1" LargeChange="1" Orientation="Vertical" Height="184" Width="64" VerticalAlignment="Top" Style="{StaticResource CustomSliderStyle}" />
                     </StackPanel>
-                    <StackPanel Margin="0,24">
-                        <ToggleButton x:Name="NormalPen" Style="{StaticResource CustomToggleButtonStyle}" Tag="Normal" Checked="PenModeToggled">
+                    <StackPanel Margin="0,24,16,24">
+                        <ToggleButton x:Name="NormalPen" Style="{StaticResource CustomToggleButtonStyle}" Tag="Normal" Checked="PenModeToggled" Unchecked="PenModeToggled">
                             <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 58,18C 58,18 33,24 33,33C 33,42 46,41 46,45C 46,49 22,55 18,56L 19,59C 19,59 49,53 49,45C 49,37 36,40 36,33C 36,26 59,21 59,21L 58,18 Z " StrokeThickness="0.5" Stroke="{StaticResource PhoneForegroundBrush}"/>
                         </ToggleButton>
-                        <ToggleButton x:Name="ArrowPen" Style="{StaticResource CustomToggleButtonStyle}" Tag="Arrow" Checked="PenModeToggled">
+                        <ToggleButton x:Name="ArrowPen" Style="{StaticResource CustomToggleButtonStyle}" Tag="Arrow" Checked="PenModeToggled" Unchecked="PenModeToggled">
                             <Path Width="28" Height="24" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 23,55L 18,55L 18,50L 21,50L 53,24L 53,21L 58,21L 58,26L 55,26L 23,52L 23,55 Z M 54,22L 54,25L 57,25L 57,22L 54,22 Z M 19,51L 19,54L 22,54L 22,51L 19,51 Z M 38,25 52,25 53,24 53,22 38,22 Z M 55,26 54,27 54,41 57,41 57,26 Z" StrokeThickness="0.5" Stroke="{StaticResource PhoneForegroundBrush}"/>
                         </ToggleButton>
-                        <ToggleButton x:Name="LinePen" Style="{StaticResource CustomToggleButtonStyle}" Tag="Line" Checked="PenModeToggled">
+                        <ToggleButton x:Name="LinePen" Style="{StaticResource CustomToggleButtonStyle}" Tag="Line" Checked="PenModeToggled" Unchecked="PenModeToggled">
                             <Path Width="28" Height="24" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 23,55L 18,55L 18,50L 21,50L 53,24L 53,21L 58,21L 58,26L 55,26L 23,52L 23,55 Z M 54,22L 54,25L 57,25L 57,22L 54,22 Z M 19,51L 19,54L 22,54L 22,51L 19,51 Z " StrokeThickness="0.5" Stroke="{StaticResource PhoneForegroundBrush}"/>
                         </ToggleButton>
-                        <ToggleButton x:Name="CirclePen" Style="{StaticResource CustomToggleButtonStyle}" Tag="Circle" Checked="PenModeToggled">
+                        <ToggleButton x:Name="CirclePen" Style="{StaticResource CustomToggleButtonStyle}" Tag="Circle" Checked="PenModeToggled" Unchecked="PenModeToggled">
                             <Path Width="28" Height="26" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 38,36C 36.8954,36 36,36.8954 36,38C 36,39.1046 36.8954,40 38,40C 39.1046,40 40,39.1046 40,38C 40,36.8954 39.1046,36 38,36 Z M 38,34C 40.2091,34 42,35.7909 42,38C 42,40.2091 40.2091,42 38,42C 35.7909,42 34,40.2091 34,38C 34,35.7909 35.7909,34 38,34 Z M 57.75,36C 56.6454,36 55.75,36.8954 55.75,38C 55.75,39.1046 56.6454,40 57.75,40C 58.8546,40 59.75,39.1046 59.75,38C 59.75,36.8954 58.8546,36 57.75,36 Z M 61.75,38C 61.75,39.9038 60.4199,41.497 58.6383,41.901C 56.8098,51.635 48.265,59 38,59C 26.402,59 17,49.598 17,38C 17,26.402 26.402,17 38,17C 48.265,17 56.8098,24.365 58.6383,34.099C 60.4199,34.503 61.75,36.0962 61.75,38 Z M 53.75,38C 53.75,36.5505 54.521,35.281 55.6754,34.5794C 54.0776,26.2741 46.7715,20 38,20C 28.0589,20 20,28.0589 20,38C 20,47.9411 28.0589,56 38,56C 46.7715,56 54.0776,49.7259 55.6754,41.4206C 54.521,40.719 53.75,39.4496 53.75,38 Z " StrokeThickness="0.5" Stroke="{StaticResource PhoneForegroundBrush}"/>
                         </ToggleButton>
-                        <ToggleButton x:Name="RectanglePen" Style="{StaticResource CustomToggleButtonStyle}" Tag="Rectangle" Checked="PenModeToggled">
+                        <ToggleButton x:Name="RectanglePen" Style="{StaticResource CustomToggleButtonStyle}" Tag="Rectangle" Checked="PenModeToggled" Unchecked="PenModeToggled">
                             <Path Width="28" Height="23" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 23,28L 23,29L 22,29L 22,47L 23,47L 23,48L 53,48L 53,47L 54,47L 54,29L 53,29L 53,28L 23,28 Z M 58,47L 58,52L 53,52L 53,51L 23,51L 23,52L 18,52L 18,47L 19,47L 19,29L 18,29L 18,24L 23,24L 23,25L 53,25L 53,24L 58,24L 58,29L 57,29L 57,47L 58,47 Z M 19,25L 19,28L 22,28L 22,25L 19,25 Z M 54,25L 54,28L 57,28L 57,25L 54,25 Z M 19,48L 19,51L 22,51L 22,48L 19,48 Z M 54,48L 54,51L 57,51L 57,48L 54,48 Z " StrokeThickness="0.5" Stroke="{StaticResource PhoneForegroundBrush}"/>
                         </ToggleButton>
                     </StackPanel>
                 </StackPanel>
-                <Grid Margin="0,-32,0,0" VerticalAlignment="Top">
+                <Grid Margin="12,-32,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <Ellipse Width="67" Height="67" Fill="{StaticResource PhoneChromeBrush}"/>
                     <Ellipse Width="53" Height="53" Fill="White"/>
                     <Ellipse Height="1" Width="1" Fill="{Binding SolidColorBrush, ElementName=ColorPicker}" Opacity="{Binding Value, ElementName=OpacitySlider}" RenderTransformOrigin="0.5,0.5">
@@ -459,15 +462,18 @@
                 </Grid>
             </Grid>
 
-            <Grid x:Name="PenToolbarLandscape" Width="360" HorizontalAlignment="Right" Background="{StaticResource PhoneChromeBrush}" RenderTransformOrigin="0.5,0.5" Visibility="Visible">
+            <Grid x:Name="PenToolbarLandscape" Width="360" HorizontalAlignment="Right" Background="{StaticResource PhoneChromeBrush}" RenderTransformOrigin="0.5,0.5" Visibility="Collapsed">
                 <Grid.RenderTransform>
                     <CompositeTransform TranslateX="600"/>
                 </Grid.RenderTransform>
                 <Button VerticalAlignment="Top" HorizontalAlignment="Left" Template="{StaticResource EmptyButtonControlTemplate}" Background="{StaticResource PhoneChromeBrush}" Tap="ClosedPenToobarTapped">
-                    <Path Width="18" Height="24" Margin="2" Stretch="Fill" Opacity="0.5" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 39.8307,37.6042L 36.6641,34.4375L 25.1849,23.3542L 35.4766,23.3542L 50.5182,37.6042L 35.4766,51.8542L 25.1849,51.8542L 36.6641,40.7708L 39.8307,37.6042 Z "/>
+                    <Grid Margin="-44,0,0,0">
+                        <Ellipse Width="67" Height="67" Fill="{StaticResource PhoneChromeBrush}"/>
+                        <Path Width="22" Height="28" Margin="2" Stretch="Fill" Opacity="0.5" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 39.8307,37.6042L 36.6641,34.4375L 25.1849,23.3542L 35.4766,23.3542L 50.5182,37.6042L 35.4766,51.8542L 25.1849,51.8542L 36.6641,40.7708L 39.8307,37.6042 Z "/>
+                    </Grid>
                 </Button>
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="18,0,0,0">
-                    <StackPanel Orientation="Horizontal" Margin="22,0">
+                    <StackPanel Orientation="Horizontal" Margin="22,6,22,6">
                         <ToggleButton Style="{StaticResource CustomToggleButtonStyle}" IsChecked="{Binding ElementName=NormalPen, Path=IsChecked, Mode=TwoWay}">
                             <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 58,18C 58,18 33,24 33,33C 33,42 46,41 46,45C 46,49 22,55 18,56L 19,59C 19,59 49,53 49,45C 49,37 36,40 36,33C 36,26 59,21 59,21L 58,18 Z " StrokeThickness="0.5" Stroke="{StaticResource PhoneForegroundBrush}"/>
                         </ToggleButton>
@@ -518,7 +524,7 @@
                         </coding:ColorPicker>
                     </StackPanel>
                 </StackPanel>
-                <Grid Margin="-32,0,0,0" HorizontalAlignment="Left">
+                <Grid Margin="-32,0,0,12" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                     <Ellipse Width="67" Height="67" Fill="{StaticResource PhoneChromeBrush}"/>
                     <Ellipse Width="53" Height="53" Fill="White"/>
                     <Ellipse Height="1" Width="1" Fill="{Binding SolidColorBrush, ElementName=ColorPickerLandscape}" Opacity="{Binding Value, ElementName=OpacitySliderLandscape}" RenderTransformOrigin="0.5,0.5">

@@ -948,6 +948,18 @@ namespace PhotoNote.Pages
 
         private void SetTogglesToMode(DrawMode mode)
         {
+            // unregister events
+            NormalPen.Checked -= PenModeToggled;
+            ArrowPen.Checked -= PenModeToggled;
+            LinePen.Checked -= PenModeToggled;
+            CirclePen.Checked -= PenModeToggled;
+            RectanglePen.Checked -= PenModeToggled;
+            NormalPen.Unchecked -= PenModeToggled;
+            ArrowPen.Unchecked -= PenModeToggled;
+            LinePen.Unchecked -= PenModeToggled;
+            CirclePen.Unchecked -= PenModeToggled;
+            RectanglePen.Unchecked -= PenModeToggled;
+
             // set mode
             _drawMode = mode;
 
@@ -1005,7 +1017,18 @@ namespace PhotoNote.Pages
                     CirclePen.IsChecked = false;
                     break;
             }
-        }
 
+            // reregister events
+            NormalPen.Checked += PenModeToggled;
+            ArrowPen.Checked += PenModeToggled;
+            LinePen.Checked += PenModeToggled;
+            CirclePen.Checked += PenModeToggled;
+            RectanglePen.Checked += PenModeToggled;
+            NormalPen.Unchecked += PenModeToggled;
+            ArrowPen.Unchecked += PenModeToggled;
+            LinePen.Unchecked += PenModeToggled;
+            CirclePen.Unchecked += PenModeToggled;
+            RectanglePen.Unchecked += PenModeToggled;
+        }
     }
 }
