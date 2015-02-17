@@ -526,66 +526,71 @@ namespace PhotoNote.Pages
             InkControl.CaptureMouse();
             StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
             var touchPoint = e.StylusDevice.GetStylusPoints(InkControl).First();
-            MyStylusPointCollection.Add(touchPoint);
+            //MyStylusPointCollection.Add(touchPoint);
             _centerStart = new Vector2((float)touchPoint.X, (float)touchPoint.Y);
 
-            var opacity = AppSettings.PenOpacity.Value;
-            var color = AppSettings.PenColor.Value;
-            var size = AppSettings.PenThickness.Value;
-            _activeStroke = new Stroke(MyStylusPointCollection);
-            _activeStroke.DrawingAttributes = new DrawingAttributes
-            {
-                Color = System.Windows.Media.Color.FromArgb((byte)(255 * opacity), color.R, color.G, color.B),
-                Height = size,
-                Width = size,
-            };
-            InkControl.Strokes.Add(_activeStroke);
+            
         }
 
         //StylusPoint objects are collected from the MouseEventArgs and added to MyStroke. 
         private void MyIP_MouseMove(object sender, MouseEventArgs e)
         {
-            if (_activeStroke != null)
+            // delayed display of first point, that the point is not visible
+            // when tapping on the screen to close the toolbar
+            if (_activeStroke == null)
             {
-                var stylusPoint = e.StylusDevice.GetStylusPoints(InkControl).First();
-
-                switch (_drawMode)
+                StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
+                MyStylusPointCollection.Add(new StylusPoint(_centerStart.X, _centerStart.Y));
+                var opacity = AppSettings.PenOpacity.Value;
+                var color = AppSettings.PenColor.Value;
+                var size = AppSettings.PenThickness.Value;
+                _activeStroke = new Stroke(MyStylusPointCollection);
+                _activeStroke.DrawingAttributes = new DrawingAttributes
                 {
-                    case DrawMode.Normal:
-                        _activeStroke.StylusPoints.Add(stylusPoint);
-                        break;
-                    case DrawMode.Line:
-                    case DrawMode.Arrow:
-                        if (_activeStroke.StylusPoints.Count > 1)
-                        {
-                            _activeStroke.StylusPoints.RemoveAt(1);
-                        }
-                        _activeStroke.StylusPoints.Add(stylusPoint);
-                        break;
-                    case DrawMode.Circle:
-                        while (_activeStroke.StylusPoints.Count > 0)
-                        {
-                            _activeStroke.StylusPoints.RemoveAt(0);
-                        }
-                        var touchLocation = new Vector2((float)stylusPoint.X, (float)stylusPoint.Y);
-                        RenderCircle(_activeStroke, _centerStart, touchLocation);
-                        break;
-                    case DrawMode.Rectangle:
-                        while (_activeStroke.StylusPoints.Count > 1)
-                        {
-                            _activeStroke.StylusPoints.RemoveAt(1);
-                        }
-                        var startPoint = _activeStroke.StylusPoints.First();
-                        _activeStroke.StylusPoints.Add(new StylusPoint(stylusPoint.X, startPoint.Y));
-                        _activeStroke.StylusPoints.Add(stylusPoint);
-                        _activeStroke.StylusPoints.Add(new StylusPoint(startPoint.X, stylusPoint.Y));
-                        _activeStroke.StylusPoints.Add(startPoint);
-                        break;
-                    default:
-                        break;
-                }
+                    Color = System.Windows.Media.Color.FromArgb((byte)(255 * opacity), color.R, color.G, color.B),
+                    Height = size,
+                    Width = size,
+                };
+                InkControl.Strokes.Add(_activeStroke);
             }
-                
+
+            var stylusPoint = e.StylusDevice.GetStylusPoints(InkControl).First();
+
+            switch (_drawMode)
+            {
+                case DrawMode.Normal:
+                    _activeStroke.StylusPoints.Add(stylusPoint);
+                    break;
+                case DrawMode.Line:
+                case DrawMode.Arrow:
+                    if (_activeStroke.StylusPoints.Count > 1)
+                    {
+                        _activeStroke.StylusPoints.RemoveAt(1);
+                    }
+                    _activeStroke.StylusPoints.Add(stylusPoint);
+                    break;
+                case DrawMode.Circle:
+                    while (_activeStroke.StylusPoints.Count > 0)
+                    {
+                        _activeStroke.StylusPoints.RemoveAt(0);
+                    }
+                    var touchLocation = new Vector2((float)stylusPoint.X, (float)stylusPoint.Y);
+                    RenderCircle(_activeStroke, _centerStart, touchLocation);
+                    break;
+                case DrawMode.Rectangle:
+                    while (_activeStroke.StylusPoints.Count > 1)
+                    {
+                        _activeStroke.StylusPoints.RemoveAt(1);
+                    }
+                    var startPoint = _activeStroke.StylusPoints.First();
+                    _activeStroke.StylusPoints.Add(new StylusPoint(stylusPoint.X, startPoint.Y));
+                    _activeStroke.StylusPoints.Add(stylusPoint);
+                    _activeStroke.StylusPoints.Add(new StylusPoint(startPoint.X, stylusPoint.Y));
+                    _activeStroke.StylusPoints.Add(startPoint);
+                    break;
+                default:
+                    break;
+            }  
         }
 
         private void RenderCircle(Stroke activeStroke, Vector2 centerStart, Vector2 touchLocation)
