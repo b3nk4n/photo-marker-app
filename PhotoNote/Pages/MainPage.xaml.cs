@@ -138,12 +138,11 @@ namespace PhotoNote.Pages
             if (FallbackOfflineBanner.AdvertsCount == 0)
             {
                 List<AdvertData> advertList = new List<AdvertData>();
-                advertList.Add(new AdvertData(new Uri("/Assets/Banner/Bash0r_adduplex.png", UriKind.Relative), AdvertData.ActionTypes.AppId, "e43a2937-b0e2-461e-92de-cf33c1360f73"));
-                advertList.Add(new AdvertData(new Uri("/Assets/Banner/Photo-Info_adduplex4_5.png", UriKind.Relative), AdvertData.ActionTypes.AppId, "ac39aa30-c9b1-4dc6-af2d-1cc17d9807cc"));
-                advertList.Add(new AdvertData(new Uri("/Assets/Banner/Photo-Pin_adduplex.png", UriKind.Relative), AdvertData.ActionTypes.AppId, "3fccaf02-d103-4444-8a5b-587f8d2c93f5"));
-                advertList.Add(new AdvertData(new Uri("/Assets/Banner/pocketBRAIN_adduplex.png", UriKind.Relative), AdvertData.ActionTypes.AppId, "ad1227e4-9f80-4967-957f-6db140dc0c90"));
-                advertList.Add(new AdvertData(new Uri("/Assets/Banner/powernAPP_adduplex.png", UriKind.Relative), AdvertData.ActionTypes.AppId, "92740dff-b2e1-4813-b08b-c6429df03356"));
-                advertList.Add(new AdvertData(new Uri("/Assets/Banner/ScribbleHunter_adduplex_4.png", UriKind.Relative), AdvertData.ActionTypes.AppId, "ed250596-e670-4d22-aee1-8ed0a08c411f"));
+                advertList.Add(new AdvertData(new Uri("/Assets/Banner/Banner_Bash0r.png", UriKind.Relative), AdvertData.ActionTypes.AppId, "e43a2937-b0e2-461e-92de-cf33c1360f73"));
+                advertList.Add(new AdvertData(new Uri("/Assets/Banner/Banner_PhotoInfo.png", UriKind.Relative), AdvertData.ActionTypes.AppId, "ac39aa30-c9b1-4dc6-af2d-1cc17d9807cc"));
+                advertList.Add(new AdvertData(new Uri("/Assets/Banner/Banner_pocketBRAIN.png", UriKind.Relative), AdvertData.ActionTypes.AppId, "ad1227e4-9f80-4967-957f-6db140dc0c90"));
+                advertList.Add(new AdvertData(new Uri("/Assets/Banner/Banner_powernAPP.png", UriKind.Relative), AdvertData.ActionTypes.AppId, "92740dff-b2e1-4813-b08b-c6429df03356"));
+                advertList.Add(new AdvertData(new Uri("/Assets/Banner/Banner_ScribbleHunter.png", UriKind.Relative), AdvertData.ActionTypes.AppId, "ed250596-e670-4d22-aee1-8ed0a08c411f"));
                 advertList.ShuffleList();
 
                 foreach (var advert in advertList)

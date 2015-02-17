@@ -159,6 +159,119 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
+		<Style x:Key="PhoneButtonBase" TargetType="ButtonBase">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="BorderBrush" Value="{StaticResource PhoneForegroundBrush}"/>
+			<Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>
+			<Setter Property="BorderThickness" Value="{StaticResource PhoneBorderThickness}"/>
+			<Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiBold}"/>
+			<Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMedium}"/>
+			<Setter Property="Padding" Value="10,5,10,6"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ButtonBase">
+						<Grid Background="Transparent">
+							<VisualStateManager.VisualStateGroups>
+								<VisualStateGroup x:Name="CommonStates">
+									<VisualState x:Name="Normal"/>
+									<VisualState x:Name="MouseOver"/>
+									<VisualState x:Name="Pressed">
+										<Storyboard>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentContainer">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneButtonBasePressedForegroundBrush}"/>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="ButtonBackground">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneAccentBrush}"/>
+											</ObjectAnimationUsingKeyFrames>
+										</Storyboard>
+									</VisualState>
+									<VisualState x:Name="Disabled">
+										<Storyboard>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentContainer">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneDisabledBrush}"/>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ButtonBackground">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneDisabledBrush}"/>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="ButtonBackground">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="Transparent"/>
+											</ObjectAnimationUsingKeyFrames>
+										</Storyboard>
+									</VisualState>
+								</VisualStateGroup>
+							</VisualStateManager.VisualStateGroups>
+							<Border x:Name="ButtonBackground" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="0" Margin="{StaticResource PhoneTouchTargetOverhang}">
+								<ContentControl x:Name="ContentContainer" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+							</Border>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		
+        <Style x:Key="CustomToggleButtonStyle" BasedOn="{StaticResource PhoneButtonBase}" TargetType="ToggleButton">
+			<Setter Property="Padding" Value="2"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ToggleButton">
+						<Grid Background="Transparent">
+							<VisualStateManager.VisualStateGroups>
+								<VisualStateGroup x:Name="CommonStates">
+									<VisualState x:Name="Normal"/>
+									<VisualState x:Name="Disabled">
+										<Storyboard>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="EnabledBackground">
+												<DiscreteObjectKeyFrame KeyTime="0">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Collapsed</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="DisabledBackground">
+												<DiscreteObjectKeyFrame KeyTime="0">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Visible</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+										</Storyboard>
+									</VisualState>
+								</VisualStateGroup>
+								<VisualStateGroup x:Name="CheckStates">
+									<VisualState x:Name="Unchecked"/>
+									<VisualState x:Name="Checked">
+										<Storyboard>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="EnabledBackgroundColor">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneForegroundBrush}"/>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="EnabledContent">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneBackgroundBrush}"/>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="DisabledBackground">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneDisabledBrush}"/>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="DisabledBackground">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneDisabledBrush}"/>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="DisabledContent">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneBackgroundBrush}"/>
+											</ObjectAnimationUsingKeyFrames>
+										</Storyboard>
+									</VisualState>
+								</VisualStateGroup>
+							</VisualStateManager.VisualStateGroups>
+                            <Border x:Name="EnabledBackgroundColor" Opacity="0.5" Background="{TemplateBinding Background}" Height="40" Width="40" />
+							<Border x:Name="EnabledBackground" Height="40" Width="40">
+								<ContentControl x:Name="EnabledContent" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+							</Border>
+							<Border x:Name="DisabledBackground" BorderBrush="{StaticResource PhoneDisabledBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="Transparent" IsHitTestVisible="False" Margin="{StaticResource PhoneTouchTargetOverhang}" Visibility="Collapsed">
+								<ContentControl x:Name="DisabledContent" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="{StaticResource PhoneDisabledBrush}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+							</Border>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 	</phone:PhoneApplicationPage.Resources>
 	<phone:PhoneApplicationPage.FontFamily>
 		<StaticResource ResourceKey="PhoneFontFamilyNormal"/>
@@ -281,7 +394,7 @@
                 <Path Width="24" Height="18" Margin="2" Stretch="Fill" Fill="{StaticResource PhoneBackgroundBrush}" Data="F1 M 37.8516,39.5833L 52.1016,24.9375L 52.1016,35.2292L 37.8516,50.2708L 23.6016,35.2292L 23.6016,24.9375L 37.8516,39.5833 Z "/>
             </RepeatButton>
 
-            <Grid x:Name="PenToolbar" Height="360" VerticalAlignment="Bottom" Background="{StaticResource PhoneChromeBrush}" RenderTransformOrigin="0.5,0.5"  Visibility="Collapsed">
+            <Grid x:Name="PenToolbar" Height="360" VerticalAlignment="Bottom" Background="{StaticResource PhoneChromeBrush}" RenderTransformOrigin="0.5,0.5"  Visibility="Visible">
 				<Grid.RenderTransform>
 					<CompositeTransform TranslateY="600"/>
 				</Grid.RenderTransform>
@@ -317,6 +430,23 @@
                         <Slider x:Name="ThicknessSlider" Foreground="{Binding ElementName=ColorPicker, Path=SolidColorBrush}"
                                 Minimum="3" Maximum="45" SmallChange="1" LargeChange="1" Orientation="Vertical" Height="184" Width="64" VerticalAlignment="Top" Style="{StaticResource CustomSliderStyle}" />
                     </StackPanel>
+                    <StackPanel Margin="0,24">
+                        <ToggleButton x:Name="NormalPen" Style="{StaticResource CustomToggleButtonStyle}" Tag="Normal" Checked="PenModeToggled">
+                            <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 58,18C 58,18 33,24 33,33C 33,42 46,41 46,45C 46,49 22,55 18,56L 19,59C 19,59 49,53 49,45C 49,37 36,40 36,33C 36,26 59,21 59,21L 58,18 Z " StrokeThickness="0.5" Stroke="{StaticResource PhoneForegroundBrush}"/>
+                        </ToggleButton>
+                        <ToggleButton x:Name="ArrowPen" Style="{StaticResource CustomToggleButtonStyle}" Tag="Arrow" Checked="PenModeToggled">
+                            <Path Width="28" Height="24" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 23,55L 18,55L 18,50L 21,50L 53,24L 53,21L 58,21L 58,26L 55,26L 23,52L 23,55 Z M 54,22L 54,25L 57,25L 57,22L 54,22 Z M 19,51L 19,54L 22,54L 22,51L 19,51 Z M 38,25 52,25 53,24 53,22 38,22 Z M 55,26 54,27 54,41 57,41 57,26 Z" StrokeThickness="0.5" Stroke="{StaticResource PhoneForegroundBrush}"/>
+                        </ToggleButton>
+                        <ToggleButton x:Name="LinePen" Style="{StaticResource CustomToggleButtonStyle}" Tag="Line" Checked="PenModeToggled">
+                            <Path Width="28" Height="24" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 23,55L 18,55L 18,50L 21,50L 53,24L 53,21L 58,21L 58,26L 55,26L 23,52L 23,55 Z M 54,22L 54,25L 57,25L 57,22L 54,22 Z M 19,51L 19,54L 22,54L 22,51L 19,51 Z " StrokeThickness="0.5" Stroke="{StaticResource PhoneForegroundBrush}"/>
+                        </ToggleButton>
+                        <ToggleButton x:Name="CirclePen" Style="{StaticResource CustomToggleButtonStyle}" Tag="Circle" Checked="PenModeToggled">
+                            <Path Width="28" Height="26" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 38,36C 36.8954,36 36,36.8954 36,38C 36,39.1046 36.8954,40 38,40C 39.1046,40 40,39.1046 40,38C 40,36.8954 39.1046,36 38,36 Z M 38,34C 40.2091,34 42,35.7909 42,38C 42,40.2091 40.2091,42 38,42C 35.7909,42 34,40.2091 34,38C 34,35.7909 35.7909,34 38,34 Z M 57.75,36C 56.6454,36 55.75,36.8954 55.75,38C 55.75,39.1046 56.6454,40 57.75,40C 58.8546,40 59.75,39.1046 59.75,38C 59.75,36.8954 58.8546,36 57.75,36 Z M 61.75,38C 61.75,39.9038 60.4199,41.497 58.6383,41.901C 56.8098,51.635 48.265,59 38,59C 26.402,59 17,49.598 17,38C 17,26.402 26.402,17 38,17C 48.265,17 56.8098,24.365 58.6383,34.099C 60.4199,34.503 61.75,36.0962 61.75,38 Z M 53.75,38C 53.75,36.5505 54.521,35.281 55.6754,34.5794C 54.0776,26.2741 46.7715,20 38,20C 28.0589,20 20,28.0589 20,38C 20,47.9411 28.0589,56 38,56C 46.7715,56 54.0776,49.7259 55.6754,41.4206C 54.521,40.719 53.75,39.4496 53.75,38 Z " StrokeThickness="0.5" Stroke="{StaticResource PhoneForegroundBrush}"/>
+                        </ToggleButton>
+                        <ToggleButton x:Name="RectanglePen" Style="{StaticResource CustomToggleButtonStyle}" Tag="Rectangle" Checked="PenModeToggled">
+                            <Path Width="28" Height="23" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 23,28L 23,29L 22,29L 22,47L 23,47L 23,48L 53,48L 53,47L 54,47L 54,29L 53,29L 53,28L 23,28 Z M 58,47L 58,52L 53,52L 53,51L 23,51L 23,52L 18,52L 18,47L 19,47L 19,29L 18,29L 18,24L 23,24L 23,25L 53,25L 53,24L 58,24L 58,29L 57,29L 57,47L 58,47 Z M 19,25L 19,28L 22,28L 22,25L 19,25 Z M 54,25L 54,28L 57,28L 57,25L 54,25 Z M 19,48L 19,51L 22,51L 22,48L 19,48 Z M 54,48L 54,51L 57,51L 57,48L 54,48 Z " StrokeThickness="0.5" Stroke="{StaticResource PhoneForegroundBrush}"/>
+                        </ToggleButton>
+                    </StackPanel>
                 </StackPanel>
                 <Grid Margin="0,-32,0,0" VerticalAlignment="Top">
                     <Ellipse Width="67" Height="67" Fill="{StaticResource PhoneChromeBrush}"/>
@@ -329,7 +459,7 @@
                 </Grid>
             </Grid>
 
-            <Grid x:Name="PenToolbarLandscape" Width="360" HorizontalAlignment="Right" Background="{StaticResource PhoneChromeBrush}" RenderTransformOrigin="0.5,0.5" Visibility="Collapsed">
+            <Grid x:Name="PenToolbarLandscape" Width="360" HorizontalAlignment="Right" Background="{StaticResource PhoneChromeBrush}" RenderTransformOrigin="0.5,0.5" Visibility="Visible">
                 <Grid.RenderTransform>
                     <CompositeTransform TranslateX="600"/>
                 </Grid.RenderTransform>
@@ -337,6 +467,23 @@
                     <Path Width="18" Height="24" Margin="2" Stretch="Fill" Opacity="0.5" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 39.8307,37.6042L 36.6641,34.4375L 25.1849,23.3542L 35.4766,23.3542L 50.5182,37.6042L 35.4766,51.8542L 25.1849,51.8542L 36.6641,40.7708L 39.8307,37.6042 Z "/>
                 </Button>
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="18,0,0,0">
+                    <StackPanel Orientation="Horizontal" Margin="22,0">
+                        <ToggleButton Style="{StaticResource CustomToggleButtonStyle}" IsChecked="{Binding ElementName=NormalPen, Path=IsChecked, Mode=TwoWay}">
+                            <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 58,18C 58,18 33,24 33,33C 33,42 46,41 46,45C 46,49 22,55 18,56L 19,59C 19,59 49,53 49,45C 49,37 36,40 36,33C 36,26 59,21 59,21L 58,18 Z " StrokeThickness="0.5" Stroke="{StaticResource PhoneForegroundBrush}"/>
+                        </ToggleButton>
+                        <ToggleButton Style="{StaticResource CustomToggleButtonStyle}" IsChecked="{Binding ElementName=ArrowPen, Path=IsChecked, Mode=TwoWay}">
+                            <Path Width="28" Height="24" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 23,55L 18,55L 18,50L 21,50L 53,24L 53,21L 58,21L 58,26L 55,26L 23,52L 23,55 Z M 54,22L 54,25L 57,25L 57,22L 54,22 Z M 19,51L 19,54L 22,54L 22,51L 19,51 Z M 38,25 52,25 53,24 53,22 38,22 Z M 55,26 54,27 54,41 57,41 57,26 Z" StrokeThickness="0.5" Stroke="{StaticResource PhoneForegroundBrush}"/>
+                        </ToggleButton>
+                        <ToggleButton Style="{StaticResource CustomToggleButtonStyle}" IsChecked="{Binding ElementName=LinePen, Path=IsChecked, Mode=TwoWay}">
+                            <Path Width="28" Height="24" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 23,55L 18,55L 18,50L 21,50L 53,24L 53,21L 58,21L 58,26L 55,26L 23,52L 23,55 Z M 54,22L 54,25L 57,25L 57,22L 54,22 Z M 19,51L 19,54L 22,54L 22,51L 19,51 Z " StrokeThickness="0.5" Stroke="{StaticResource PhoneForegroundBrush}"/>
+                        </ToggleButton>
+                        <ToggleButton Style="{StaticResource CustomToggleButtonStyle}" IsChecked="{Binding ElementName=CirclePen, Path=IsChecked, Mode=TwoWay}">
+                            <Path Width="28" Height="26" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 38,36C 36.8954,36 36,36.8954 36,38C 36,39.1046 36.8954,40 38,40C 39.1046,40 40,39.1046 40,38C 40,36.8954 39.1046,36 38,36 Z M 38,34C 40.2091,34 42,35.7909 42,38C 42,40.2091 40.2091,42 38,42C 35.7909,42 34,40.2091 34,38C 34,35.7909 35.7909,34 38,34 Z M 57.75,36C 56.6454,36 55.75,36.8954 55.75,38C 55.75,39.1046 56.6454,40 57.75,40C 58.8546,40 59.75,39.1046 59.75,38C 59.75,36.8954 58.8546,36 57.75,36 Z M 61.75,38C 61.75,39.9038 60.4199,41.497 58.6383,41.901C 56.8098,51.635 48.265,59 38,59C 26.402,59 17,49.598 17,38C 17,26.402 26.402,17 38,17C 48.265,17 56.8098,24.365 58.6383,34.099C 60.4199,34.503 61.75,36.0962 61.75,38 Z M 53.75,38C 53.75,36.5505 54.521,35.281 55.6754,34.5794C 54.0776,26.2741 46.7715,20 38,20C 28.0589,20 20,28.0589 20,38C 20,47.9411 28.0589,56 38,56C 46.7715,56 54.0776,49.7259 55.6754,41.4206C 54.521,40.719 53.75,39.4496 53.75,38 Z " StrokeThickness="0.5" Stroke="{StaticResource PhoneForegroundBrush}"/>
+                        </ToggleButton>
+                        <ToggleButton Style="{StaticResource CustomToggleButtonStyle}" IsChecked="{Binding ElementName=RectanglePen, Path=IsChecked, Mode=TwoWay}">
+                            <Path Width="28" Height="23" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 23,28L 23,29L 22,29L 22,47L 23,47L 23,48L 53,48L 53,47L 54,47L 54,29L 53,29L 53,28L 23,28 Z M 58,47L 58,52L 53,52L 53,51L 23,51L 23,52L 18,52L 18,47L 19,47L 19,29L 18,29L 18,24L 23,24L 23,25L 53,25L 53,24L 58,24L 58,29L 57,29L 57,47L 58,47 Z M 19,25L 19,28L 22,28L 22,25L 19,25 Z M 54,25L 54,28L 57,28L 57,25L 54,25 Z M 19,48L 19,51L 22,51L 22,48L 19,48 Z M 54,48L 54,51L 57,51L 57,48L 54,48 Z " StrokeThickness="0.5" Stroke="{StaticResource PhoneForegroundBrush}"/>
+                        </ToggleButton>
+                    </StackPanel>
                     <StackPanel Margin="6" Orientation="Horizontal" HorizontalAlignment="Center">
                         <Path Margin="12,0,0,0" Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 20.5833,55.4167L 49.0833,55.4167L 45.9167,52.25L 25.3333,52.25L 31.6667,49.0833L 25.3333,42.75L 22.1667,49.875C 22.1667,49.875 15.8333,55.4167 20.5833,55.4167 Z M 36.4166,47.5L 26.9166,38L 26.9166,41.1667L 33.25,47.5L 36.4166,47.5 Z M 28.8958,37.6042L 36.8125,45.5209C 38.3958,47.1042 42.75,42.75 42.75,42.75L 31.6666,31.6667C 26.9166,36.4167 28.8958,37.6042 28.8958,37.6042 Z M 44.3333,41.1667L 65.6868,16.8593C 63.2289,13.6452 60.224,10.8717 56.8112,8.67772L 33.25,30.0834L 44.3333,41.1667 Z "/>
                         <Slider x:Name="ThicknessSliderLandscape" Foreground="{Binding ElementName=ColorPickerLandscape, Path=SolidColorBrush}" Margin="-4,0,0,-28"

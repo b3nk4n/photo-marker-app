@@ -32,5 +32,10 @@ namespace PhotoNote
         /// The stored color history.
         /// </summary>
         public static StoredObject<List<Color>> ColorHistory = new StoredObject<List<Color>>("_color_hist_", new List<Color>{ Colors.Red, Colors.Green, Colors.Blue, Colors.Yellow, Colors.Black, Colors.White });
+
+        /// <summary>
+        /// The pen color.
+        /// </summary>
+        public static StoredObject<PhotoNote.DrawMode> DrawMode = new StoredObject<DrawMode>("_draw_mode_", PhotoNote.DrawMode.Normal);
     }
 }

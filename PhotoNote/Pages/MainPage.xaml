@@ -117,8 +117,8 @@
         <!-- Advertisment -->
         <Grid x:Name="BannerContainer" Width="480" Height="80"  VerticalAlignment="Top" HorizontalAlignment="Center"
 			Visibility="Collapsed">
-            <adverts:OfflineAdControl x:Name="FallbackOfflineBanner" Height="80" Width="480" />
             <adverts:MsDuplexAdControl x:Name="BannerControl" Width="480" Height="80" AdDuplexAppId="129407" MsApplicationId="5683e018-013e-478e-b03f-0caf0d12b6e5" MsAdUnitId="197953" />
+            <adverts:OfflineAdControl x:Name="FallbackOfflineBanner" Height="80" Width="480" />
 
 			<Border x:Name="RemoveAdButton" Background="{StaticResource PhoneAccentBrush}" Width="26" Height="26" Opacity="0.9" Margin="1"
 				VerticalAlignment="Top" HorizontalAlignment="Right">

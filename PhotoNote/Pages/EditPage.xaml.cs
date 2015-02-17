@@ -21,6 +21,8 @@ using System.Text;
 using System.Globalization;
 using System.IO;
 using Microsoft.Xna.Framework;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace PhotoNote.Pages
 {
@@ -38,6 +40,7 @@ namespace PhotoNote.Pages
 
         private const string PEN_POPUP_VISIBLE_KEY = "_pen_popup_visible_";
         private const string PEN_DATA_KEY = "_pen_data_";
+        private const string CENTER_START_KEY = "_center_start_";
 
         private const string ZOOM_KEY = "_zoom_";
         private const string TRANSLATION_X_KEY = "_trans_x_";
@@ -50,11 +53,6 @@ namespace PhotoNote.Pages
         private const double ZOOM_MAX = 3.0;
         private const double MOVE_STEP = 12.0;
 
-        public enum DrawMode
-        {
-            Normal, Line, Arrow, Ellipse, Rectangle
-        }
-
         private DrawMode _drawMode = DrawMode.Normal;
 
         public EditPage()
@@ -65,6 +63,8 @@ namespace PhotoNote.Pages
             Loaded += (s, e) => {
                 // FIXME: there might be the case that there can be crashed when accessing UI-Controls in OnNavigatedTo()
                 //        these should be accessed in Loaded() event instad. See BugSense errors (e.g. in UpdateMoveButtonVisibility()).
+
+                SetTogglesToMode(_drawMode);
             };
         }
 
@@ -266,6 +266,7 @@ namespace PhotoNote.Pages
             this.ColorPicker.Color = AppSettings.PenColor.Value;
             this.OpacitySlider.Value = AppSettings.PenOpacity.Value;
             this.ThicknessSlider.Value = AppSettings.PenThickness.Value;
+            this._drawMode = AppSettings.DrawMode.Value;
         }
 
         private void SaveSettings()
@@ -273,6 +274,7 @@ namespace PhotoNote.Pages
             AppSettings.PenColor.Value = this.ColorPicker.Color;
             AppSettings.PenOpacity.Value = this.OpacitySlider.Value;
             AppSettings.PenThickness.Value = this.ThicknessSlider.Value;
+            AppSettings.DrawMode.Value = this._drawMode;
         }
 
         private void RestoreState()
@@ -314,22 +316,27 @@ namespace PhotoNote.Pages
                     myStroke.DrawingAttributes.Width = double.Parse(strokeParams[2], CultureInfo.InvariantCulture);
 
                     var pointList = strokeParams[3].Split('$');
-                    if (pointList.Length == 2)
+                    
+                    foreach (var pointPair in pointList)
                     {
-                        foreach (var pointPair in pointList)
+                        var pointPairList = pointPair.Split('_');
+                        if (pointPairList.Length == 2)
                         {
-                            var pointPairList = pointPair.Split('_');
                             var x = Convert.ToDouble(pointPairList[0], CultureInfo.InvariantCulture);
                             var y = Convert.ToDouble(pointPairList[1], CultureInfo.InvariantCulture);
 
                             myStroke.StylusPoints.Add(new StylusPoint(x, y));
                         }
                     }
-                    
 
                     InkControl.Strokes.Add(myStroke);
                 }
             }
+
+            // center start
+            var centerStart = PhoneStateHelper.LoadValue<Vector2>(CENTER_START_KEY, new Vector2());
+            PhoneStateHelper.DeleteValue(CENTER_START_KEY);
+            _centerStart = centerStart;
         }
 
         private static System.Windows.Media.Color HexToColor(string hexString)
@@ -370,6 +377,9 @@ namespace PhotoNote.Pages
                 }
                 PhoneStateHelper.SaveValue(PEN_DATA_KEY, strokeData.ToString());
             }
+
+            // center start (cirlce)
+            PhoneStateHelper.SaveValue(CENTER_START_KEY, _centerStart);
         }
 
         private bool UpdatePicture(EditPicture pic)
@@ -433,8 +443,7 @@ namespace PhotoNote.Pages
                     _translateY = -deltaMaxY;
                 else if (_translateY > deltaMaxY)
                     _translateY = deltaMaxY;
-            }
-            
+            }  
 
             // scale
             EditImageControl.RenderTransform = new CompositeTransform
@@ -445,21 +454,13 @@ namespace PhotoNote.Pages
                 TranslateY = _translateY
             };
 
-            // check if upper-scaling is required
-            //if (scale != neutralScaleFactor)
-            //{
-                InkControl.RenderTransform = new CompositeTransform
-                {
-                    ScaleX = scale / neutralScaleFactor * _zoom,
-                    ScaleY = scale / neutralScaleFactor * _zoom,
-                    TranslateX = _translateX,
-                    TranslateY = _translateY
-                };
-            //}
-            //else
-            //{
-            //    InkControl.RenderTransform = NEUTRAL_SCALE;
-            //}
+            InkControl.RenderTransform = new CompositeTransform
+            {
+                ScaleX = scale / neutralScaleFactor * _zoom,
+                ScaleY = scale / neutralScaleFactor * _zoom,
+                TranslateX = _translateX,
+                TranslateY = _translateY
+            };
 
             SetBoundary(InkControl.Width, InkControl.Height);
         }
@@ -516,13 +517,16 @@ namespace PhotoNote.Pages
         #region  INK REGION
 
         private Stroke _activeStroke;
+        private Vector2 _centerStart;
 
         //A new stroke object named MyStroke is created. MyStroke is added to the StrokeCollection of the InkPresenter named MyIP
         private void MyIP_MouseLeftButtonDown(object sender, MouseEventArgs e)
         {
             InkControl.CaptureMouse();
             StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
-            MyStylusPointCollection.Add(e.StylusDevice.GetStylusPoints(InkControl));
+            var touchPoint = e.StylusDevice.GetStylusPoints(InkControl).First();
+            MyStylusPointCollection.Add(touchPoint);
+            _centerStart = new Vector2((float)touchPoint.X, (float)touchPoint.Y);
 
             var opacity = AppSettings.PenOpacity.Value;
             var color = AppSettings.PenColor.Value;
@@ -557,7 +561,13 @@ namespace PhotoNote.Pages
                         }
                         _activeStroke.StylusPoints.Add(stylusPoint);
                         break;
-                    case DrawMode.Ellipse:
+                    case DrawMode.Circle:
+                        while (_activeStroke.StylusPoints.Count > 0)
+                        {
+                            _activeStroke.StylusPoints.RemoveAt(0);
+                        }
+                        var touchLocation = new Vector2((float)stylusPoint.X, (float)stylusPoint.Y);
+                        RenderCircle(_activeStroke, _centerStart, touchLocation);
                         break;
                     case DrawMode.Rectangle:
                         while (_activeStroke.StylusPoints.Count > 1)
@@ -575,6 +585,22 @@ namespace PhotoNote.Pages
                 }
             }
                 
+        }
+
+        private void RenderCircle(Stroke activeStroke, Vector2 centerStart, Vector2 touchLocation)
+        {
+            var radiusVec = touchLocation - centerStart;
+            var radius = radiusVec.Length();
+            var partsPerHalf = 10 + radius / 8;
+            Debug.WriteLine(partsPerHalf);
+
+            _activeStroke.StylusPoints.Add(new StylusPoint(touchLocation.X, touchLocation.Y));
+            for (float i = 0; i <= 2 * MathHelper.Pi; i += MathHelper.Pi / partsPerHalf)
+            {
+                var nextLocation = centerStart + RotateVector(radiusVec, i);
+                _activeStroke.StylusPoints.Add(new StylusPoint(nextLocation.X, nextLocation.Y));
+            }
+            _activeStroke.StylusPoints.Add(new StylusPoint(touchLocation.X, touchLocation.Y));
         }
 
         //MyStroke is completed
@@ -603,9 +629,9 @@ namespace PhotoNote.Pages
                     float shoulderLength = GetShoulderLength(arrowDirection.Length(), (float)AppSettings.PenThickness.Value);
                     arrowDirection.Normalize();
 
-                    var leftShoulder = Rotate(arrowDirection,  3 * MathHelper.PiOver4);
+                    var leftShoulder = RotateVector(arrowDirection,  3 * MathHelper.PiOver4);
                     var leftShoulderEndPoint = endVec + leftShoulder * shoulderLength;
-                    var rightShoulder = Rotate(arrowDirection, 5 * MathHelper.PiOver4);
+                    var rightShoulder = RotateVector(arrowDirection, 5 * MathHelper.PiOver4);
                     var rightShoulderEndPoint = endVec + rightShoulder * shoulderLength;
 
                     _activeStroke.StylusPoints.Add(new StylusPoint(leftShoulderEndPoint.X, leftShoulderEndPoint.Y));
@@ -630,7 +656,7 @@ namespace PhotoNote.Pages
             return result;
         }
 
-        private Vector2 Rotate(Vector2 vec, float radians)
+        private Vector2 RotateVector(Vector2 vec, float radians)
         {
             var transformed = Vector2.Transform(vec, Microsoft.Xna.Framework.Matrix.CreateRotationZ(radians));
             return transformed;
@@ -908,5 +934,78 @@ namespace PhotoNote.Pages
                 }
             }
         }
+
+        private void PenModeToggled(object sender, RoutedEventArgs e)
+        {
+            var toggle = sender as ToggleButton;
+
+            if (toggle != null)
+            {
+                var toggledMode = (DrawMode)Enum.Parse(typeof(DrawMode), (string)toggle.Tag);
+                SetTogglesToMode(toggledMode);
+            }
+        }
+
+        private void SetTogglesToMode(DrawMode mode)
+        {
+            // set mode
+            _drawMode = mode;
+
+            // update UI
+            switch (mode)
+            {
+                case DrawMode.Normal:
+                    if (!NormalPen.IsChecked.Value)
+                    {
+                        NormalPen.IsChecked = true;
+                    }
+                    ArrowPen.IsChecked = false;
+                    LinePen.IsChecked = false;
+                    CirclePen.IsChecked = false;
+                    RectanglePen.IsChecked = false;
+                    break;
+                case DrawMode.Line:
+                    if (!LinePen.IsChecked.Value)
+                    {
+                        LinePen.IsChecked = true;
+                    }
+                    NormalPen.IsChecked = false;
+                    ArrowPen.IsChecked = false;
+                    CirclePen.IsChecked = false;
+                    RectanglePen.IsChecked = false;
+                    break;
+                case DrawMode.Arrow:
+                    if (!ArrowPen.IsChecked.Value)
+                    {
+                        ArrowPen.IsChecked = true;
+                    }
+                    NormalPen.IsChecked = false;
+                    LinePen.IsChecked = false;
+                    CirclePen.IsChecked = false;
+                    RectanglePen.IsChecked = false;
+                    break;
+                case DrawMode.Circle:
+                    if (!CirclePen.IsChecked.Value)
+                    {
+                        CirclePen.IsChecked = true;
+                    }
+                    NormalPen.IsChecked = false;
+                    ArrowPen.IsChecked = false;
+                    LinePen.IsChecked = false;
+                    RectanglePen.IsChecked = false;
+                    break;
+                case DrawMode.Rectangle:
+                    if (!RectanglePen.IsChecked.Value)
+                    {
+                        RectanglePen.IsChecked = true;
+                    }
+                    NormalPen.IsChecked = false;
+                    ArrowPen.IsChecked = false;
+                    LinePen.IsChecked = false;
+                    CirclePen.IsChecked = false;
+                    break;
+            }
+        }
+
     }
 }

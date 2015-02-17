@@ -103,6 +103,7 @@
     <Compile Include="Controls\LocalizedAboutControl.cs" />
     <Compile Include="Controls\LocalizedInAppStoreControl.cs" />
     <Compile Include="CustomUriMapper.cs" />
+    <Compile Include="DrawMode.cs" />
     <Compile Include="Helpers\LauncherHelper.cs" />
     <Compile Include="Helpers\NavigationHelper.cs" />
     <Compile Include="LocalizedStrings.cs" />
@@ -183,12 +184,11 @@
     <Content Include="Assets\AppBar\appbar.undo.curve.png" />
     <Content Include="Assets\AppBar\appbar.share.png" />
     <Content Include="Assets\ApplicationIcon.png" />
-    <Content Include="Assets\Banner\Photo-Pin_adduplex.png" />
-    <Content Include="Assets\Banner\powernAPP_adduplex.png" />
-    <Content Include="Assets\Banner\Bash0r_adduplex.png" />
-    <Content Include="Assets\Banner\Photo-Info_adduplex4_5.png" />
-    <Content Include="Assets\Banner\pocketBRAIN_adduplex.png" />
-    <Content Include="Assets\Banner\ScribbleHunter_adduplex_4.png" />
+    <Content Include="Assets\Banner\Banner_pocketBRAIN.png" />
+    <Content Include="Assets\Banner\Banner_Bash0r.png" />
+    <Content Include="Assets\Banner\Banner_PhotoInfo.png" />
+    <Content Include="Assets\Banner\Banner_powernAPP.png" />
+    <Content Include="Assets\Banner\Banner_ScribbleHunter.png" />
     <Content Include="Assets\Images\1.jpg" />
     <Content Include="Assets\Images\2.jpg" />
     <Content Include="Assets\Images\3.jpg" />
