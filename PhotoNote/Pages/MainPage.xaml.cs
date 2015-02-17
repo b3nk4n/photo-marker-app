@@ -76,7 +76,7 @@ namespace PhotoNote.Pages
 
             BuildLocalizedApplicationBar();
 
-            _delayedNavigaionTimer.Interval = TimeSpan.FromMilliseconds(1);
+            _delayedNavigaionTimer.Interval = TimeSpan.FromMilliseconds(10);
             _delayedNavigaionTimer.Tick += (s, e) =>
             {
                 _delayedNavigaionTimer.Stop();
@@ -94,7 +94,8 @@ namespace PhotoNote.Pages
                     return;
 
                 _infoControl = new InfoControl();
-                this.LayoutRoot.Children.Add(_infoControl);
+                //this.LayoutRoot.Children.Add(_infoControl);
+                this.LayoutRoot.Children.Insert(this.LayoutRoot.Children.Count - 2, _infoControl);
                 Grid.SetRow(_infoControl, 0);
                 Grid.SetRowSpan(_infoControl, 3);
             };
@@ -105,6 +106,9 @@ namespace PhotoNote.Pages
             {
                 if (pr.Error != null || pr.TaskResult != TaskResult.OK)
                     return;
+
+                // block screen (just because it looks better)
+                ScreenBlocker.Visibility = Visibility.Visible;
 
                 fileNameToOpen = Path.GetFileName(pr.OriginalFileName);
                 _delayedNavigaionTimer.Start();
@@ -198,6 +202,13 @@ namespace PhotoNote.Pages
             EmptyButton.Visibility = (!res) ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+
+            ScreenBlocker.Visibility = Visibility.Collapsed;
+        }
+
         private void HideAllImages()
         {
             b1.Opacity = b2.Opacity = b3.Opacity = b4.Opacity = b5.Opacity = b6.Opacity = 0.0;
@@ -217,15 +228,7 @@ namespace PhotoNote.Pages
             appBarTileButton.Text = AppResources.AppBarSelectPicture;
             appBarTileButton.Click += (s, e) =>
             {
-                try
-                {
-                    photoTask.Show();
-                }
-                catch (InvalidOperationException)
-                {
-                    // suppress multiple Show() calls:
-                    // reported via Email error report (24.11.2014)
-                }
+                ShowPhotoTask();
             };
             ApplicationBar.Buttons.Add(appBarTileButton);
 
@@ -248,6 +251,11 @@ namespace PhotoNote.Pages
 
         private void ChoosePhotoClicked(object sender, RoutedEventArgs e)
         {
+            ShowPhotoTask();
+        }
+
+        private void ShowPhotoTask()
+        {
             try
             {
                 photoTask.Show();
@@ -255,6 +263,8 @@ namespace PhotoNote.Pages
             catch (InvalidOperationException)
             {
                 // BugSense: Not allowed to call Show() multiple times before an invocation returns.
+                // suppress multiple Show() calls:
+                // reported via Email error report (24.11.2014)
             }
         }
 

@@ -255,6 +255,8 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
+        
+        <Rectangle x:Name="ScreenBlocker" Height="800" Grid.RowSpan="4" Fill="{StaticResource PhoneBackgroundBrush}" Visibility="Collapsed" /> 
 
         <!-- Info Control will be created here... -->
 
