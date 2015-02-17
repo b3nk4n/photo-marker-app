@@ -526,10 +526,7 @@ namespace PhotoNote.Pages
             InkControl.CaptureMouse();
             StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
             var touchPoint = e.StylusDevice.GetStylusPoints(InkControl).First();
-            //MyStylusPointCollection.Add(touchPoint);
             _centerStart = new Vector2((float)touchPoint.X, (float)touchPoint.Y);
-
-            
         }
 
         //StylusPoint objects are collected from the MouseEventArgs and added to MyStroke. 
@@ -539,18 +536,7 @@ namespace PhotoNote.Pages
             // when tapping on the screen to close the toolbar
             if (_activeStroke == null)
             {
-                StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
-                MyStylusPointCollection.Add(new StylusPoint(_centerStart.X, _centerStart.Y));
-                var opacity = AppSettings.PenOpacity.Value;
-                var color = AppSettings.PenColor.Value;
-                var size = AppSettings.PenThickness.Value;
-                _activeStroke = new Stroke(MyStylusPointCollection);
-                _activeStroke.DrawingAttributes = new DrawingAttributes
-                {
-                    Color = System.Windows.Media.Color.FromArgb((byte)(255 * opacity), color.R, color.G, color.B),
-                    Height = size,
-                    Width = size,
-                };
+                _activeStroke = StartStroke();
                 InkControl.Strokes.Add(_activeStroke);
             }
 
@@ -593,6 +579,23 @@ namespace PhotoNote.Pages
             }  
         }
 
+        private Stroke StartStroke()
+        {
+            StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
+            MyStylusPointCollection.Add(new StylusPoint(_centerStart.X, _centerStart.Y));
+            var opacity = AppSettings.PenOpacity.Value;
+            var color = AppSettings.PenColor.Value;
+            var size = AppSettings.PenThickness.Value;
+            var stroke = new Stroke(MyStylusPointCollection);
+            stroke.DrawingAttributes = new DrawingAttributes
+            {
+                Color = System.Windows.Media.Color.FromArgb((byte)(255 * opacity), color.R, color.G, color.B),
+                Height = size,
+                Width = size,
+            };
+            return stroke;
+        }
+
         private void RenderCircle(Stroke activeStroke, Vector2 centerStart, Vector2 touchLocation)
         {
             var radiusVec = touchLocation - centerStart;
@@ -615,43 +618,59 @@ namespace PhotoNote.Pages
             if (_isPenToolbarVisible)
             {
                 // close the toolbar and do not draw anything when there was quite like a tap.
-                if (_activeStroke.StylusPoints.Count < 2)
+                if (_activeStroke == null || _activeStroke.StylusPoints.Count < 2)
                 {
-                    InkControl.Strokes.Remove(_activeStroke);
+                    if (_activeStroke != null)
+                        InkControl.Strokes.Remove(_activeStroke);
                     HidePenToolbar();
                 }
             }
-
-            if (_drawMode == DrawMode.Arrow)
+            else
             {
-                if (_activeStroke.StylusPoints.Count > 1)
+                // delayed display of first point, that the point is not visible
+                // when tapping on the screen to close the toolbar
+                if (_activeStroke == null)
                 {
-                    var start = _activeStroke.StylusPoints[0];
-                    var startVec = new Vector2((float)start.X, (float)start.Y);
-                    var end = _activeStroke.StylusPoints[1];
-                    var endVec = new Vector2((float)end.X, (float)end.Y);
-
-                    var arrowDirection = endVec - startVec;
-                    float shoulderLength = GetShoulderLength(arrowDirection.Length(), (float)AppSettings.PenThickness.Value);
-                    arrowDirection.Normalize();
-
-                    var leftShoulder = RotateVector(arrowDirection,  3 * MathHelper.PiOver4);
-                    var leftShoulderEndPoint = endVec + leftShoulder * shoulderLength;
-                    var rightShoulder = RotateVector(arrowDirection, 5 * MathHelper.PiOver4);
-                    var rightShoulderEndPoint = endVec + rightShoulder * shoulderLength;
-
-                    _activeStroke.StylusPoints.Add(new StylusPoint(leftShoulderEndPoint.X, leftShoulderEndPoint.Y));
-                    _activeStroke.StylusPoints.Add(end);
-                    _activeStroke.StylusPoints.Add(new StylusPoint(rightShoulderEndPoint.X, rightShoulderEndPoint.Y));
+                    _activeStroke = StartStroke();
+                    InkControl.Strokes.Add(_activeStroke);
                 }
-                else
+
+                if (_drawMode == DrawMode.Arrow)
                 {
-                    // remove, because an arrow direction could not be determined
-                    InkControl.Strokes.Remove(_activeStroke);
+                    FinishArrow();
                 }
             }
 
             _activeStroke = null;
+        }
+
+        private void FinishArrow()
+        {
+            if (_activeStroke.StylusPoints.Count > 1)
+            {
+                var start = _activeStroke.StylusPoints[0];
+                var startVec = new Vector2((float)start.X, (float)start.Y);
+                var end = _activeStroke.StylusPoints[1];
+                var endVec = new Vector2((float)end.X, (float)end.Y);
+
+                var arrowDirection = endVec - startVec;
+                float shoulderLength = GetShoulderLength(arrowDirection.Length(), (float)AppSettings.PenThickness.Value);
+                arrowDirection.Normalize();
+
+                var leftShoulder = RotateVector(arrowDirection, 3 * MathHelper.PiOver4);
+                var leftShoulderEndPoint = endVec + leftShoulder * shoulderLength;
+                var rightShoulder = RotateVector(arrowDirection, 5 * MathHelper.PiOver4);
+                var rightShoulderEndPoint = endVec + rightShoulder * shoulderLength;
+
+                _activeStroke.StylusPoints.Add(new StylusPoint(leftShoulderEndPoint.X, leftShoulderEndPoint.Y));
+                _activeStroke.StylusPoints.Add(end);
+                _activeStroke.StylusPoints.Add(new StylusPoint(rightShoulderEndPoint.X, rightShoulderEndPoint.Y));
+            }
+            else
+            {
+                // remove, because an arrow direction could not be determined
+                InkControl.Strokes.Remove(_activeStroke);
+            }
         }
 
         private float GetShoulderLength(float length, float thickness)
