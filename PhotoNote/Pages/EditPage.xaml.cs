@@ -597,7 +597,6 @@ namespace PhotoNote.Pages
             var radiusVec = touchLocation - centerStart;
             var radius = radiusVec.Length();
             var partsPerHalf = 10 + radius / 8;
-            Debug.WriteLine(partsPerHalf);
 
             _activeStroke.StylusPoints.Add(new StylusPoint(touchLocation.X, touchLocation.Y));
             for (float i = 0; i <= 2 * MathHelper.Pi; i += MathHelper.Pi / partsPerHalf)
