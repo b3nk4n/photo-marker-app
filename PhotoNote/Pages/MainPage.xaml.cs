@@ -95,7 +95,7 @@ namespace PhotoNote.Pages
 
                 _infoControl = new InfoControl();
                 //this.LayoutRoot.Children.Add(_infoControl);
-                this.LayoutRoot.Children.Insert(this.LayoutRoot.Children.Count - 2, _infoControl);
+                this.LayoutRoot.Children.Insert(this.LayoutRoot.Children.Count - 1, _infoControl);
                 Grid.SetRow(_infoControl, 0);
                 Grid.SetRowSpan(_infoControl, 3);
             };
