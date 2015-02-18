@@ -2,6 +2,7 @@
 using Microsoft.Phone.Tasks;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Media.PhoneExtensions;
+using PhoneKit.Framework.Graphics;
 using System.IO;
 using System.Windows.Media;
 
@@ -9,11 +10,11 @@ namespace PhotoNote.Model
 {
     public class EditPicture
     {
-        private Picture _image;
+        private RobustPicture _image;
 
         public EditPicture(Picture image)
         {
-            _image = image;
+            _image = new RobustPicture(image);
         }
 
         public void Share()
@@ -23,35 +24,11 @@ namespace PhotoNote.Model
             shareTask.Show();
         }
 
-        public Stream ThumbnailImageStream
-        {
-            get
-            {
-                return _image.GetThumbnail();
-            }
-        }
-
-        public Stream ImageStream
-        {
-            get
-            {
-                return _image.GetPreviewImage();
-            }
-        }
-
-        public Stream FullImageStream
-        {
-            get
-            {
-                return _image.GetImage();
-            }
-        }
-
         public ImageSource ThumbnailImage
         {
             get
             {
-                return PictureDecoder.DecodeJpeg(_image.GetThumbnail());
+                return _image.ThumbnailImage;
             }
         }
 
@@ -59,7 +36,7 @@ namespace PhotoNote.Model
         {
             get
             {
-                return PictureDecoder.DecodeJpeg(_image.GetPreviewImage());
+                return _image.PreviewImage;
             }
         }
 
@@ -67,7 +44,7 @@ namespace PhotoNote.Model
         {
             get
             {
-                return PictureDecoder.DecodeJpeg(_image.GetImage());
+                return _image.Image;
             }
         }
 
@@ -75,7 +52,7 @@ namespace PhotoNote.Model
         {
             get
             {
-                return _image.GetPath();
+                return _image.InternalPicture.GetPath();
             }
         }
 
@@ -99,7 +76,7 @@ namespace PhotoNote.Model
         {
             get
             {
-                return Path.GetExtension(_image.GetPath()).Replace(".", string.Empty).ToUpper();
+                return Path.GetExtension(ImagePath).Replace(".", string.Empty).ToUpper();
             }
         }
 

@@ -111,23 +111,7 @@ namespace PhotoNote.Pages
         private bool UpdatePicture(EditPicture pic)
         {
             _editImage = pic;
-            BitmapSource img = new BitmapImage();
-            using (var imageStream = pic.ImageStream)
-            {
-                // in case of a not successfully saved image
-                if (imageStream == null)
-                {
-                    ImageControl.Source = null;
-                    _editImage = null;
-                    return false;
-                }
-
-                img.SetSource(imageStream);
-
-                //UpdateImageOrientationAndScale();
-
-                ImageControl.Source = img;
-            }
+            ImageControl.Source = _editImage.FullImage;
             return true;
         }
 

@@ -186,16 +186,7 @@ namespace PhotoNote.ViewModel
             if (index < 0 || index >= _editPictureList.Count)
                 return null;
 
-            BitmapImage image = new BitmapImage();
-            var stream = (lowQuality) ? _editPictureList[index].ThumbnailImageStream : _editPictureList[index].ImageStream;
-            using (var imageStream = _editPictureList[index].ImageStream)
-            {
-                if (imageStream == null)
-                    return null;
-
-                image.SetSource(imageStream);
-                return image;
-            }
+            return (lowQuality) ? _editPictureList[index].ThumbnailImage : _editPictureList[index].Image;
         }
 
         public string PictureName1

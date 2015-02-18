@@ -396,26 +396,10 @@ namespace PhotoNote.Pages
         private bool UpdatePicture(EditPicture pic)
         {
             _editImage = pic;
-            BitmapSource img = new BitmapImage();
-            using (var imageStream = pic.ImageStream)
-            {
-                // in case of a not successfully saved image
-                if (imageStream == null)
-                {
-                    EditImageControl.Source = null;
-                    EditImageContainer.Visibility = System.Windows.Visibility.Collapsed;
-                    _editImage = null;
-                    return false;
-                }
-
-                img.SetSource(imageStream);
-
-                UpdateMoveButtonVisibility();
-                UpdateZoomAppBarIcon();
-                UpdateImageOrientationAndScale();
-
-                EditImageControl.Source = img;
-            }
+            UpdateMoveButtonVisibility();
+            UpdateZoomAppBarIcon();
+            UpdateImageOrientationAndScale();
+            EditImageControl.Source = _editImage.FullImage;
             return true;
         }
 
