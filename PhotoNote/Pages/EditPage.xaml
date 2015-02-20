@@ -367,15 +367,23 @@
 			<Grid x:Name="EditImageContainer" Width="480" Height="728">
 				<Grid x:Name="RenderContainer">
 
-                    <Image x:Name="EditImageControl"  VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5" />
+                    <Image x:Name="EditImageControl"  VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5"
+                           CacheMode="BitmapCache">
+                        <Image.RenderTransform>
+                            <CompositeTransform/>
+                        </Image.RenderTransform>
+                    </Image>
 
-					<InkPresenter x:Name="InkControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5"
+                    <InkPresenter x:Name="InkControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5"
 						MouseLeftButtonDown="MyIP_MouseLeftButtonDown" 
-						LostMouseCapture="MyIP_LostMouseCapture" 
-						MouseMove="MyIP_MouseMove" Background="Transparent">
-						<InkPresenter.RenderTransform>
-							<ScaleTransform />
-						</InkPresenter.RenderTransform>
+						LostMouseCapture="MyIP_LostMouseCapture"
+						MouseMove="MyIP_MouseMove" 
+                        Background="Transparent"
+                        ManipulationStarted="MyIP_ManipulationStarted"
+                        ManipulationDelta="MyIP_ManipulationDelta">
+                        <InkPresenter.RenderTransform>
+                            <CompositeTransform x:Name="PanTransform"/>
+                        </InkPresenter.RenderTransform>
 					</InkPresenter>
 				</Grid>
 			</Grid>

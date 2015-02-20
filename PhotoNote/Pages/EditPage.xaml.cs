@@ -421,41 +421,31 @@ namespace PhotoNote.Pages
             // check and adjust translation/move
             var renderedImageWidth = scale * _editImage.Width * _zoom;
             var renderedImageHeight = scale * _editImage.Height * _zoom;
-            var deltaMaxX = (renderedImageWidth - GetViewportBounds().Width) / 2.0;
-            var deltaMaxY = (renderedImageHeight - GetViewportBounds().Height) / 2.0;
+            var deltaMaxX = Math.Abs((renderedImageWidth - GetViewportBounds().Width) / 2.0);
+            var deltaMaxY = Math.Abs((renderedImageHeight - GetViewportBounds().Height) / 2.0);
 
-            if (deltaMaxX > 0)
-            {
-                if (_translateX < -deltaMaxX)
-                    _translateX = -deltaMaxX;
-                else if (_translateX > deltaMaxX)
-                    _translateX = deltaMaxX;
-            }
+            if (_translateX < -deltaMaxX)
+                _translateX = -deltaMaxX;
+            else if (_translateX > deltaMaxX)
+                _translateX = deltaMaxX;
             
-            if (deltaMaxY > 0)
-            {
-                if (_translateY < -deltaMaxY)
-                    _translateY = -deltaMaxY;
-                else if (_translateY > deltaMaxY)
-                    _translateY = deltaMaxY;
-            }  
+            if (_translateY < -deltaMaxY)
+                _translateY = -deltaMaxY;
+            else if (_translateY > deltaMaxY)
+                _translateY = deltaMaxY;
 
             // scale
-            EditImageControl.RenderTransform = new CompositeTransform
-            {
-                ScaleX = _zoom,
-                ScaleY = _zoom,
-                TranslateX = _translateX,
-                TranslateY = _translateY
-            };
+            var imageTransform = EditImageControl.RenderTransform as CompositeTransform;
+            imageTransform.ScaleX = _zoom;
+            imageTransform.ScaleY = _zoom;
+            imageTransform.TranslateX = _translateX;
+            imageTransform.TranslateY = _translateY;
 
-            InkControl.RenderTransform = new CompositeTransform
-            {
-                ScaleX = scale / neutralScaleFactor * _zoom,
-                ScaleY = scale / neutralScaleFactor * _zoom,
-                TranslateX = _translateX,
-                TranslateY = _translateY
-            };
+            var inkTransform = InkControl.RenderTransform as CompositeTransform;
+            inkTransform.ScaleX = scale / neutralScaleFactor * _zoom;
+            inkTransform.ScaleY = scale / neutralScaleFactor * _zoom;
+            inkTransform.TranslateX = _translateX;
+            inkTransform.TranslateY = _translateY;
 
             SetBoundary(InkControl.Width, InkControl.Height);
         }
@@ -1070,5 +1060,46 @@ namespace PhotoNote.Pages
             CirclePen.Unchecked += PenModeToggled;
             RectanglePen.Unchecked += PenModeToggled;
         }
+
+        #region PinchToZoom/Panning
+
+        private double translationDeltaX;
+        private double translationDeltaY;
+        private double zoomBaseline;
+
+        private void MyIP_ManipulationStarted(object sender, ManipulationStartedEventArgs e)
+        {
+            // init start of manipulation
+            translationDeltaX = e.ManipulationOrigin.X;
+            translationDeltaY = e.ManipulationOrigin.Y;
+            zoomBaseline = _zoom;
+        }
+
+        private void MyIP_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
+        {
+            // First make sure we’re using 2 fingers
+            if (e.PinchManipulation != null)
+            {
+                InkPresenter photo = sender as InkPresenter;
+                CompositeTransform transform = photo.RenderTransform as CompositeTransform;
+
+                double dx = translationDeltaX - e.ManipulationOrigin.X;
+                double dy = translationDeltaY - e.ManipulationOrigin.Y;
+
+                _translateX -= dx * _zoom;
+                _translateY -= dy * _zoom;
+
+                _zoom =  zoomBaseline + (e.PinchManipulation.CumulativeScale -1);
+
+                if (_zoom < 1)
+                    _zoom = 1;
+                else if (_zoom > 3)
+                    _zoom = 3;
+
+                UpdateImageOrientationAndScale();
+            }
+        }
+
+        #endregion
     }
 }
