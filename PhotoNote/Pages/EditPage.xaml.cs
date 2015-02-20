@@ -51,8 +51,8 @@ namespace PhotoNote.Pages
         private double _translateX;
         private double _translateY;
 
+        private const double ZOOM_MIN = 1.0;
         private const double ZOOM_MAX = 3.0;
-        private const double MOVE_STEP = 12.0;
 
         private DrawMode _currentDrawMode = DrawMode.Normal;
 
@@ -396,7 +396,6 @@ namespace PhotoNote.Pages
         private bool UpdatePicture(EditPicture pic)
         {
             _editImage = pic;
-            UpdateMoveButtonVisibility();
             UpdateZoomAppBarIcon();
             UpdateImageOrientationAndScale();
             EditImageControl.Source = _editImage.FullImage;
@@ -499,273 +498,6 @@ namespace PhotoNote.Pages
             return new Size(480, 480);
         }
 
-        #region  INK REGION
-
-        private Stroke _activeStroke;
-        private Vector2 _centerStart;
-
-        //A new stroke object named MyStroke is created. MyStroke is added to the StrokeCollection of the InkPresenter named MyIP
-        private void MyIP_MouseLeftButtonDown(object sender, MouseEventArgs e)
-        {
-            InkControl.CaptureMouse();
-            StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
-            var touchPoint = e.StylusDevice.GetStylusPoints(InkControl).First();
-            _centerStart = new Vector2((float)touchPoint.X, (float)touchPoint.Y);
-        }
-
-        //StylusPoint objects are collected from the MouseEventArgs and added to MyStroke. 
-        private void MyIP_MouseMove(object sender, MouseEventArgs e)
-        {
-            // delayed display of first point, that the point is not visible
-            // when tapping on the screen to close the toolbar
-            if (_activeStroke == null)
-            {
-                _activeStroke = StartStroke();
-                InkControl.Strokes.Add(_activeStroke);
-            }
-
-            var stylusPoint = e.StylusDevice.GetStylusPoints(InkControl).First();
-
-            switch (_currentDrawMode)
-            {
-                case DrawMode.Normal:
-                    _activeStroke.StylusPoints.Add(stylusPoint);
-                    break;
-                case DrawMode.Line:
-                case DrawMode.Arrow:
-                    if (_activeStroke.StylusPoints.Count > 1)
-                    {
-                        _activeStroke.StylusPoints.RemoveAt(1);
-                    }
-                    _activeStroke.StylusPoints.Add(stylusPoint);
-                    break;
-                case DrawMode.Circle:
-                    while (_activeStroke.StylusPoints.Count > 0)
-                    {
-                        _activeStroke.StylusPoints.RemoveAt(0);
-                    }
-                    var touchLocation = new Vector2((float)stylusPoint.X, (float)stylusPoint.Y);
-                    RenderCircle(_activeStroke, _centerStart, touchLocation);
-                    break;
-                case DrawMode.Rectangle:
-                    while (_activeStroke.StylusPoints.Count > 1)
-                    {
-                        _activeStroke.StylusPoints.RemoveAt(1);
-                    }
-                    var startPoint = _activeStroke.StylusPoints.First();
-                    _activeStroke.StylusPoints.Add(new StylusPoint(stylusPoint.X, startPoint.Y));
-                    _activeStroke.StylusPoints.Add(stylusPoint);
-                    _activeStroke.StylusPoints.Add(new StylusPoint(startPoint.X, stylusPoint.Y));
-                    _activeStroke.StylusPoints.Add(startPoint);
-                    break;
-                default:
-                    break;
-            }  
-        }
-
-        private Stroke StartStroke()
-        {
-            StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
-            MyStylusPointCollection.Add(new StylusPoint(_centerStart.X, _centerStart.Y));
-            var opacity = OpacitySlider.Value;
-            var color = ColorPicker.Color;
-            var size = ThicknessSlider.Value;
-            var stroke = new Stroke(MyStylusPointCollection);
-            stroke.DrawingAttributes = new DrawingAttributes
-            {
-                Color = System.Windows.Media.Color.FromArgb((byte)(255 * opacity), color.R, color.G, color.B),
-                Height = size,
-                Width = size,
-            };
-            UpdateColorHistory();
-            UpdateColorHistoryUI();
-            return stroke;
-        }
-
-        private void RenderCircle(Stroke activeStroke, Vector2 centerStart, Vector2 touchLocation)
-        {
-            var radiusVec = touchLocation - centerStart;
-            var radius = radiusVec.Length();
-            var partsPerHalf = 10 + radius / 8;
-
-            _activeStroke.StylusPoints.Add(new StylusPoint(touchLocation.X, touchLocation.Y));
-            for (float i = 0; i <= 2 * MathHelper.Pi; i += MathHelper.Pi / partsPerHalf)
-            {
-                var nextLocation = centerStart + RotateVector(radiusVec, i);
-                _activeStroke.StylusPoints.Add(new StylusPoint(nextLocation.X, nextLocation.Y));
-            }
-            _activeStroke.StylusPoints.Add(new StylusPoint(touchLocation.X, touchLocation.Y));
-        }
-
-        //MyStroke is completed
-        private void MyIP_LostMouseCapture(object sender, MouseEventArgs e)
-        {
-            if (_isPenToolbarVisible)
-            {
-                // close the toolbar and do not draw anything when there was quite like a tap.
-                if (_activeStroke == null || _activeStroke.StylusPoints.Count < 2)
-                {
-                    if (_activeStroke != null)
-                        InkControl.Strokes.Remove(_activeStroke);
-                    HidePenToolbar();
-                    _activeStroke = null;
-                    return;
-                }
-            }
-
-            // delayed display of first point, that the point is not visible
-            // when tapping on the screen to close the toolbar
-            if (_activeStroke == null)
-            {
-                _activeStroke = StartStroke();
-                InkControl.Strokes.Add(_activeStroke);
-            }
-
-            if (_currentDrawMode == DrawMode.Arrow)
-            {
-                FinishArrow();
-            }
-
-            _activeStroke = null;
-        }
-
-        private void FinishArrow()
-        {
-            if (_activeStroke.StylusPoints.Count > 1)
-            {
-                var start = _activeStroke.StylusPoints[0];
-                var startVec = new Vector2((float)start.X, (float)start.Y);
-                var end = _activeStroke.StylusPoints[1];
-                var endVec = new Vector2((float)end.X, (float)end.Y);
-
-                var arrowDirection = endVec - startVec;
-                float shoulderLength = GetShoulderLength(arrowDirection.Length(), (float)ThicknessSlider.Value);
-                arrowDirection.Normalize();
-
-                var leftShoulder = RotateVector(arrowDirection, 3 * MathHelper.PiOver4);
-                var leftShoulderEndPoint = endVec + leftShoulder * shoulderLength;
-                var rightShoulder = RotateVector(arrowDirection, 5 * MathHelper.PiOver4);
-                var rightShoulderEndPoint = endVec + rightShoulder * shoulderLength;
-
-                _activeStroke.StylusPoints.Add(new StylusPoint(leftShoulderEndPoint.X, leftShoulderEndPoint.Y));
-                _activeStroke.StylusPoints.Add(end);
-                _activeStroke.StylusPoints.Add(new StylusPoint(rightShoulderEndPoint.X, rightShoulderEndPoint.Y));
-            }
-            else
-            {
-                // remove, because an arrow direction could not be determined
-                InkControl.Strokes.Remove(_activeStroke);
-            }
-        }
-
-        private float GetShoulderLength(float length, float thickness)
-        {
-            float result = 50;
-            result = Math.Min(length / 2, result);
-            result = Math.Min(thickness * 4, result);
-            return result;
-        }
-
-        private Vector2 RotateVector(Vector2 vec, float radians)
-        {
-            var transformed = Vector2.Transform(vec, Microsoft.Xna.Framework.Matrix.CreateRotationZ(radians));
-            return transformed;
-        }
-
-        //Set the Clip property of the inkpresenter so that the strokes
-        //are contained within the boundary of the inkpresenter
-        private void SetBoundary(double width, double height)
-        {
-            RectangleGeometry MyRectangleGeometry = new RectangleGeometry();
-            MyRectangleGeometry.Rect = new Rect(0, 0, width, height);
-            InkControl.Clip = MyRectangleGeometry;
-        }
-
-        private bool CanUndo()
-        {
-            return _activeStroke == null && InkControl.Strokes.Count > 0;
-        }
-
-        private void Undo()
-        {
-            if (CanUndo())
-            {
-                InkControl.Strokes.RemoveAt(InkControl.Strokes.Count - 1);
-            }
-        }
-
-        private void ToggleZoom()
-        {
-            _zoom += 1;
-
-            if (_zoom > ZOOM_MAX)
-            {
-                _zoom = 1.0;
-
-                // reset translation
-                _translateX = 0;
-                _translateY = 0;
-            }
-
-            UpdateMoveButtonVisibility();
-            UpdateZoomAppBarIcon();
-            UpdateImageOrientationAndScale();
-        }
-
-        private void UpdateMoveButtonVisibility()
-        {
-            if (HasNoImage())
-                return;
-
-            var scale = GetScaleFactorOfOrientation();
-
-            // check and adjust translation/move
-            var renderedImageWidth = scale * _editImage.Width * _zoom;
-            var renderedImageHeight = scale * _editImage.Height * _zoom;
-            var deltaMaxX = (renderedImageWidth - GetViewportBounds().Width) / 2.0;
-            var deltaMaxY = (renderedImageHeight - GetViewportBounds().Height) / 2.0;
-
-            if (deltaMaxX > 0)
-            {
-                MoveLeft.Visibility = Visibility.Visible;
-                MoveRight.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                MoveLeft.Visibility = Visibility.Collapsed;
-                MoveRight.Visibility = Visibility.Collapsed;
-            }
-
-            if (deltaMaxY > 0)
-            {
-                MoveUp.Visibility = Visibility.Visible;
-                MoveDown.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                MoveUp.Visibility = Visibility.Collapsed;
-                MoveDown.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void UpdateZoomAppBarIcon()
-        {
-            if (_zoom == 3.0)
-            {
-                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify3.png", UriKind.Relative);
-            }
-            else if (_zoom == 2.0)
-            {
-                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify2.png", UriKind.Relative);
-            }
-            else
-            {
-                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify.add.png", UriKind.Relative);
-            }
-        }
-
-        #endregion
-
         #region Orientation Events
 
         protected override void OnOrientationChanged(OrientationChangedEventArgs e)
@@ -808,7 +540,6 @@ namespace PhotoNote.Pages
                 }
             }
 
-            UpdateMoveButtonVisibility();
             UpdateImageOrientationAndScale();
         }
 
@@ -927,30 +658,6 @@ namespace PhotoNote.Pages
             AppSettings.ColorHistory.Value = _colorHistory;
         }
 
-        private void MoveLeftClicked(object sender, RoutedEventArgs e)
-        {
-            _translateX += MOVE_STEP * _zoom;
-            UpdateImageOrientationAndScale();
-        }
-
-        private void MoveRightClicked(object sender, RoutedEventArgs e)
-        {
-            _translateX -= MOVE_STEP * _zoom;
-            UpdateImageOrientationAndScale();
-        }
-
-        private void MoveUpClicked(object sender, RoutedEventArgs e)
-        {
-            _translateY += MOVE_STEP * _zoom;
-            UpdateImageOrientationAndScale();
-        }
-
-        private void MoveDownClicked(object sender, RoutedEventArgs e)
-        {
-            _translateY -= MOVE_STEP * _zoom;
-            UpdateImageOrientationAndScale();
-        }
-
         private void HistoryColorSelected(object sender, System.Windows.Input.GestureEventArgs e)
         {
             System.Windows.Shapes.Rectangle rect = sender as System.Windows.Shapes.Rectangle;
@@ -1061,43 +768,329 @@ namespace PhotoNote.Pages
             RectanglePen.Unchecked += PenModeToggled;
         }
 
+        #region  INK REGION
+
+        private Stroke _activeStroke;
+        private Vector2 _centerStart;
+        private int _moveCounter;
+
+        private bool strokeAdded;
+
+        //A new stroke object named MyStroke is created. MyStroke is added to the StrokeCollection of the InkPresenter named MyIP
+        private void MyIP_MouseLeftButtonDown(object sender, MouseEventArgs e)
+        {
+            InkControl.CaptureMouse();
+            StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
+            var touchPoint = e.StylusDevice.GetStylusPoints(InkControl).First();
+            _centerStart = new Vector2((float)touchPoint.X, (float)touchPoint.Y);
+            strokeAdded = false;
+        }
+
+        //StylusPoint objects are collected from the MouseEventArgs and added to MyStroke. 
+        private void MyIP_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_twoFingersActive)
+                return;
+
+            _moveCounter++;
+
+            // delayed display of first point, that the point is not visible
+            // when tapping on the screen to close the toolbar
+            if (_activeStroke == null)
+            {
+                _activeStroke = StartStroke();
+                //InkControl.Strokes.Add(_activeStroke);
+            } else if (!strokeAdded)
+            {
+                InkControl.Strokes.Add(_activeStroke);
+                strokeAdded = true;
+            }
+
+            var stylusPoint = e.StylusDevice.GetStylusPoints(InkControl).First();
+
+            switch (_currentDrawMode)
+            {
+                case DrawMode.Normal:
+                    _activeStroke.StylusPoints.Add(stylusPoint);
+                    break;
+                case DrawMode.Line:
+                case DrawMode.Arrow:
+                    if (_activeStroke.StylusPoints.Count > 1)
+                    {
+                        _activeStroke.StylusPoints.RemoveAt(1);
+                    }
+                    _activeStroke.StylusPoints.Add(stylusPoint);
+                    break;
+                case DrawMode.Circle:
+                    while (_activeStroke.StylusPoints.Count > 0)
+                    {
+                        _activeStroke.StylusPoints.RemoveAt(0);
+                    }
+                    var touchLocation = new Vector2((float)stylusPoint.X, (float)stylusPoint.Y);
+                    RenderCircle(_activeStroke, _centerStart, touchLocation);
+                    break;
+                case DrawMode.Rectangle:
+                    while (_activeStroke.StylusPoints.Count > 1)
+                    {
+                        _activeStroke.StylusPoints.RemoveAt(1);
+                    }
+                    var startPoint = _activeStroke.StylusPoints.First();
+                    _activeStroke.StylusPoints.Add(new StylusPoint(stylusPoint.X, startPoint.Y));
+                    _activeStroke.StylusPoints.Add(stylusPoint);
+                    _activeStroke.StylusPoints.Add(new StylusPoint(startPoint.X, stylusPoint.Y));
+                    _activeStroke.StylusPoints.Add(startPoint);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        //MyStroke is completed
+        private void MyIP_LostMouseCapture(object sender, MouseEventArgs e)
+        {
+            if (_isPenToolbarVisible)
+            {
+                // close the toolbar and do not draw anything when there was quite like a tap.
+                if (_activeStroke == null || _activeStroke.StylusPoints.Count < 2)
+                {
+                    if (_activeStroke != null)
+                        InkControl.Strokes.Remove(_activeStroke);
+                    HidePenToolbar();
+                    _activeStroke = null;
+                    return;
+                }
+            }
+
+            // delayed display of first point, that the point is not visible
+            // when tapping on the screen to close the toolbar
+            if (_activeStroke == null)
+            {
+                _activeStroke = StartStroke();
+
+                if (!_twoFingersActive)
+                {
+                    InkControl.Strokes.Add(_activeStroke);
+                    strokeAdded = true;
+                }
+                    
+            }
+            else if (!strokeAdded)
+            {
+                InkControl.Strokes.Add(_activeStroke);
+            }
+
+            if (_currentDrawMode == DrawMode.Arrow)
+            {
+                FinishArrow();
+            }
+            
+            // remove ink segments when two fingers have been detected shortly after the drawing has begun
+            if (_twoFingersActive && _moveCounter < 3)
+            {
+                InkControl.Strokes.Remove(_activeStroke);
+            }
+
+            _activeStroke = null;
+
+            _twoFingersActive = false;
+            _moveCounter = 0;
+        }
+
+        private Stroke StartStroke()
+        {
+            StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
+            MyStylusPointCollection.Add(new StylusPoint(_centerStart.X, _centerStart.Y));
+            var opacity = OpacitySlider.Value;
+            var color = ColorPicker.Color;
+            var size = ThicknessSlider.Value;
+            var stroke = new Stroke(MyStylusPointCollection);
+            stroke.DrawingAttributes = new DrawingAttributes
+            {
+                Color = System.Windows.Media.Color.FromArgb((byte)(255 * opacity), color.R, color.G, color.B),
+                Height = size,
+                Width = size,
+            };
+            UpdateColorHistory();
+            UpdateColorHistoryUI();
+            return stroke;
+        }
+
+        private void RenderCircle(Stroke activeStroke, Vector2 centerStart, Vector2 touchLocation)
+        {
+            var radiusVec = touchLocation - centerStart;
+            var radius = radiusVec.Length();
+            var partsPerHalf = 10 + radius / 8;
+
+            _activeStroke.StylusPoints.Add(new StylusPoint(touchLocation.X, touchLocation.Y));
+            for (float i = 0; i <= 2 * MathHelper.Pi; i += MathHelper.Pi / partsPerHalf)
+            {
+                var nextLocation = centerStart + RotateVector(radiusVec, i);
+                _activeStroke.StylusPoints.Add(new StylusPoint(nextLocation.X, nextLocation.Y));
+            }
+            _activeStroke.StylusPoints.Add(new StylusPoint(touchLocation.X, touchLocation.Y));
+        }
+
+        private void FinishArrow()
+        {
+            if (_activeStroke.StylusPoints.Count > 1)
+            {
+                var start = _activeStroke.StylusPoints[0];
+                var startVec = new Vector2((float)start.X, (float)start.Y);
+                var end = _activeStroke.StylusPoints[1];
+                var endVec = new Vector2((float)end.X, (float)end.Y);
+
+                var arrowDirection = endVec - startVec;
+                float shoulderLength = GetShoulderLength(arrowDirection.Length(), (float)ThicknessSlider.Value);
+                arrowDirection.Normalize();
+
+                var leftShoulder = RotateVector(arrowDirection, 3 * MathHelper.PiOver4);
+                var leftShoulderEndPoint = endVec + leftShoulder * shoulderLength;
+                var rightShoulder = RotateVector(arrowDirection, 5 * MathHelper.PiOver4);
+                var rightShoulderEndPoint = endVec + rightShoulder * shoulderLength;
+
+                _activeStroke.StylusPoints.Add(new StylusPoint(leftShoulderEndPoint.X, leftShoulderEndPoint.Y));
+                _activeStroke.StylusPoints.Add(end);
+                _activeStroke.StylusPoints.Add(new StylusPoint(rightShoulderEndPoint.X, rightShoulderEndPoint.Y));
+            }
+            else
+            {
+                // remove, because an arrow direction could not be determined
+                InkControl.Strokes.Remove(_activeStroke);
+            }
+        }
+
+        private float GetShoulderLength(float length, float thickness)
+        {
+            float result = 50;
+            result = Math.Min(length / 2, result);
+            result = Math.Min(thickness * 4, result);
+            return result;
+        }
+
+        private Vector2 RotateVector(Vector2 vec, float radians)
+        {
+            var transformed = Vector2.Transform(vec, Microsoft.Xna.Framework.Matrix.CreateRotationZ(radians));
+            return transformed;
+        }
+
+        //Set the Clip property of the inkpresenter so that the strokes
+        //are contained within the boundary of the inkpresenter
+        private void SetBoundary(double width, double height)
+        {
+            RectangleGeometry MyRectangleGeometry = new RectangleGeometry();
+            MyRectangleGeometry.Rect = new Rect(0, 0, width, height);
+            InkControl.Clip = MyRectangleGeometry;
+        }
+
+        private bool CanUndo()
+        {
+            return _activeStroke == null && InkControl.Strokes.Count > 0;
+        }
+
+        private void Undo()
+        {
+            if (CanUndo())
+            {
+                InkControl.Strokes.RemoveAt(InkControl.Strokes.Count - 1);
+            }
+        }
+
+        private void ToggleZoom()
+        {
+            _zoom += 1;
+
+            if (_zoom > ZOOM_MAX)
+            {
+                _zoom = ZOOM_MIN;
+
+                // reset translation
+                _translateX = 0;
+                _translateY = 0;
+            }
+
+            UpdateZoomAppBarIcon();
+            UpdateImageOrientationAndScale();
+        }
+
+        private void UpdateZoomAppBarIcon()
+        {
+            if (_zoom == 3.0)
+            {
+                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify3.png", UriKind.Relative);
+            }
+            else if (_zoom == 2.0)
+            {
+                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify2.png", UriKind.Relative);
+            }
+            else
+            {
+                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify.add.png", UriKind.Relative);
+            }
+        }
+
+        #endregion
+
         #region PinchToZoom/Panning
 
         private double translationDeltaX;
         private double translationDeltaY;
         private double zoomBaseline;
 
+        private bool _twoFingersActive;
+
         private void MyIP_ManipulationStarted(object sender, ManipulationStartedEventArgs e)
         {
             // init start of manipulation
-            translationDeltaX = e.ManipulationOrigin.X;
-            translationDeltaY = e.ManipulationOrigin.Y;
+            translationDeltaX = double.MinValue;
+            translationDeltaY = double.MinValue;
             zoomBaseline = _zoom;
         }
 
         private void MyIP_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
         {
-            // First make sure we’re using 2 fingers
+            // first make sure we re using 2 fingers
             if (e.PinchManipulation != null)
             {
+                _twoFingersActive = true;
+
                 InkPresenter photo = sender as InkPresenter;
                 CompositeTransform transform = photo.RenderTransform as CompositeTransform;
+
+                if (translationDeltaX == double.MinValue || translationDeltaY == double.MinValue)
+                {
+                    translationDeltaX = e.ManipulationOrigin.X;
+                    translationDeltaY = e.ManipulationOrigin.Y;
+                }
 
                 double dx = translationDeltaX - e.ManipulationOrigin.X;
                 double dy = translationDeltaY - e.ManipulationOrigin.Y;
 
-                _translateX -= dx * _zoom;
-                _translateY -= dy * _zoom;
+                //_translateX -= dx * _zoom;
+                //_translateY -= dy * _zoom;
+                _translateX = ExponentialFilter(_translateX, _translateX - dx * _zoom, 0.33);
+                _translateY = ExponentialFilter(_translateY, _translateY - dy * _zoom, 0.33);
 
-                _zoom =  zoomBaseline + (e.PinchManipulation.CumulativeScale -1);
 
-                if (_zoom < 1)
-                    _zoom = 1;
-                else if (_zoom > 3)
-                    _zoom = 3;
+                double zoomDeltaFactor = (e.PinchManipulation.CumulativeScale - 1);
+                if (zoomDeltaFactor < 0)
+                {
+                    zoomDeltaFactor *= _zoom;
+                }
+
+                _zoom = ExponentialFilter(_zoom, zoomBaseline + zoomDeltaFactor, 0.33);
+
+                if (_zoom < ZOOM_MIN)
+                    _zoom = ZOOM_MIN;
+                else if (_zoom > ZOOM_MAX)
+                    _zoom = ZOOM_MAX;
 
                 UpdateImageOrientationAndScale();
             }
+        }
+
+        private double ExponentialFilter(double lastValue, double newValue, double alpha)
+        {
+            return lastValue * (1 - alpha) + newValue * alpha;
         }
 
         #endregion

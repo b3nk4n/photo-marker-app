@@ -363,9 +363,9 @@
 
         <!--ContentPanel - zusätzliche Inhalte hier platzieren-->
 		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="0,0,0,72">
-            
-			<Grid x:Name="EditImageContainer" Width="480" Height="728">
-				<Grid x:Name="RenderContainer">
+
+            <Grid x:Name="EditImageContainer" Width="480" Height="728">
+                <Grid x:Name="RenderContainer">
 
                     <Image x:Name="EditImageControl"  VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5"
                            CacheMode="BitmapCache">
@@ -384,23 +384,9 @@
                         <InkPresenter.RenderTransform>
                             <CompositeTransform x:Name="PanTransform"/>
                         </InkPresenter.RenderTransform>
-					</InkPresenter>
-				</Grid>
-			</Grid>
-            
-            <!-- ZoomMove buttons -->
-            <RepeatButton x:Name="MoveLeft" VerticalAlignment="Center" HorizontalAlignment="Left" Click="MoveLeftClicked" Template="{StaticResource EmptyButtonControlTemplate}" Background="{StaticResource PhoneForegroundBrush}" Opacity="0.66" Visibility="Collapsed">
-                <Path Width="18" Height="24" Margin="2" Stretch="Fill" Fill="{StaticResource PhoneBackgroundBrush}" Data="F1 M 35.8724,37.6042L 39.0391,40.7708L 50.5182,51.8542L 40.2266,51.8542L 25.1849,37.6041L 40.2266,23.3542L 50.5182,23.3542L 39.0391,34.4375L 35.8724,37.6042 Z "/>
-            </RepeatButton>
-            <RepeatButton x:Name="MoveRight" VerticalAlignment="Center" HorizontalAlignment="Right" Click="MoveRightClicked" Template="{StaticResource EmptyButtonControlTemplate}" Background="{StaticResource PhoneForegroundBrush}" Opacity="0.66" Visibility="Collapsed">
-                <Path Width="18" Height="24" Margin="2" Stretch="Fill" Fill="{StaticResource PhoneBackgroundBrush}" Data="F1 M 39.8307,37.6042L 36.6641,34.4375L 25.1849,23.3542L 35.4766,23.3542L 50.5182,37.6042L 35.4766,51.8542L 25.1849,51.8542L 36.6641,40.7708L 39.8307,37.6042 Z "/>
-            </RepeatButton>
-            <RepeatButton x:Name="MoveUp" VerticalAlignment="Top" HorizontalAlignment="Center" Click="MoveUpClicked" Template="{StaticResource EmptyButtonControlTemplate}" Background="{StaticResource PhoneForegroundBrush}" Opacity="0.66" Visibility="Collapsed">
-                <Path Width="24" Height="18" Margin="2" Stretch="Fill" Fill="{StaticResource PhoneBackgroundBrush}" Data="F1 M 37.8516,35.625L 34.6849,38.7917L 23.6016,50.2708L 23.6016,39.9792L 37.8516,24.9375L 52.1016,39.9792L 52.1016,50.2708L 41.0182,38.7917L 37.8516,35.625 Z "/>
-            </RepeatButton>
-            <RepeatButton x:Name="MoveDown" VerticalAlignment="Bottom" HorizontalAlignment="Center" Click="MoveDownClicked" Template="{StaticResource EmptyButtonControlTemplate}" Background="{StaticResource PhoneForegroundBrush}" Opacity="0.66" Visibility="Collapsed">
-                <Path Width="24" Height="18" Margin="2" Stretch="Fill" Fill="{StaticResource PhoneBackgroundBrush}" Data="F1 M 37.8516,39.5833L 52.1016,24.9375L 52.1016,35.2292L 37.8516,50.2708L 23.6016,35.2292L 23.6016,24.9375L 37.8516,39.5833 Z "/>
-            </RepeatButton>
+                    </InkPresenter>
+                </Grid>
+            </Grid>
 
             <Grid x:Name="PenToolbar" Height="360" VerticalAlignment="Bottom" Background="{StaticResource PhoneChromeBrush}" RenderTransformOrigin="0.5,0.5"  Visibility="Collapsed">
 				<Grid.RenderTransform>
