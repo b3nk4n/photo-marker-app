@@ -174,7 +174,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\AppBar\appbar.draw.marker.png" />
+    <Content Include="Assets\AppBar\appbar.draw.marker.Arrow.png" />
+    <Content Include="Assets\AppBar\appbar.draw.marker.Circle.png" />
+    <Content Include="Assets\AppBar\appbar.draw.marker.Line.png" />
+    <Content Include="Assets\AppBar\appbar.draw.marker.Normal.png" />
+    <Content Include="Assets\AppBar\appbar.draw.marker.Rectangle.png" />
     <Content Include="Assets\AppBar\appbar.edit.png" />
     <Content Include="Assets\AppBar\appbar.image.select.png" />
     <Content Include="Assets\AppBar\appbar.magnify.add.png" />

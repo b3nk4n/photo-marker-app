@@ -33,6 +33,8 @@ namespace PhotoNote.Pages
 
         ApplicationBarIconButton _appBarZoomButton;
 
+        ApplicationBarIconButton _appBarPenButton;
+
         private Random rand = new Random();
 
         private static readonly ScaleTransform NEUTRAL_SCALE = new ScaleTransform();
@@ -88,9 +90,9 @@ namespace PhotoNote.Pages
             ApplicationBar.Buttons.Add(appBarUndoButton);
 
             // pen toolbar
-            ApplicationBarIconButton appBarPenButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.draw.marker.png", UriKind.Relative));
-            appBarPenButton.Text = AppResources.AppBarPen;
-            appBarPenButton.Click += (s, e) =>
+            _appBarPenButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.draw.marker.Normal.png", UriKind.Relative));
+            _appBarPenButton.Text = AppResources.AppBarPen;
+            _appBarPenButton.Click += (s, e) =>
             {
                 if (_isPenToolbarVisible)
                 {
@@ -101,7 +103,7 @@ namespace PhotoNote.Pages
                     ShowPenToolbar();
                 }
             };
-            ApplicationBar.Buttons.Add(appBarPenButton);
+            ApplicationBar.Buttons.Add(_appBarPenButton);
 
             // zoom
             _appBarZoomButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.magnify.add.png", UriKind.Relative));
@@ -754,6 +756,10 @@ namespace PhotoNote.Pages
                     CirclePen.IsChecked = false;
                     break;
             }
+
+            // update application bar icon
+            var iconUriString = string.Format("/Assets/AppBar/appbar.draw.marker.{0}.png", mode.ToString());
+            _appBarPenButton.IconUri = new Uri(iconUriString, UriKind.Relative);
 
             // reregister events
             NormalPen.Checked += PenModeToggled;
