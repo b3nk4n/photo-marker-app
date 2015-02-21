@@ -997,9 +997,9 @@ namespace PhotoNote.Pages
 
         private void ToggleZoom()
         {
-            _zoom += 1;
-
-            if (_zoom > ZOOM_MAX)
+            if (_zoom == 1 || _zoom == 2)
+                _zoom++;
+            else
             {
                 _zoom = ZOOM_MIN;
 

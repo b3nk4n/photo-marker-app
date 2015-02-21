@@ -80,6 +80,7 @@ namespace PhotoNote.Pages
 
             BuildLocalizedApplicationBar();
 
+            // Note: a too short delay could result in the problem that NavigationService is still NULL
             _delayedNavigaionTimer.Interval = TimeSpan.FromMilliseconds(200);
             _delayedNavigaionTimer.Tick += _delayedNavigaionTimer_Tick;
 
@@ -116,7 +117,6 @@ namespace PhotoNote.Pages
                 //           PhotoNote.Pages.MainPage.<.ctor>b__1(Object s, EventArgs e)
                 // Reason: tick-delay was to low and event was fired multiple times
             }
-
         }
 
         void photoTask_Completed(object se, PhotoResult pr)
@@ -126,7 +126,6 @@ namespace PhotoNote.Pages
 
             // block screen (just because it looks better)
             ScreenBlocker.Visibility = Visibility.Visible;
-            Debug.WriteLine("photoTask_Completed");
             fileNameToOpen = Path.GetFileName(pr.OriginalFileName);
             _delayedNavigaionTimer.Start();
         }
