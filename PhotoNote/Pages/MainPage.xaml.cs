@@ -17,6 +17,7 @@ using PhotoNote.ViewModel;
 using PhotoNote.Controls;
 using PhoneKit.Framework.Advertising;
 using PhoneKit.Framework.Core.Collections;
+using System.Diagnostics;
 
 namespace PhotoNote.Pages
 {
@@ -25,8 +26,11 @@ namespace PhotoNote.Pages
         /// <summary>
         /// The photo chooser task.
         /// </summary>
-        /// <remarks>Must be defined at class level to work properly in tombstoning.</remarks>
-        private static readonly PhotoChooserTask photoTask = new PhotoChooserTask();
+        /// <remarks>
+        /// Must be defined at class level to work properly in tombstoning.
+        /// BUT: must be NON-STATIC, to ensure the completed event is NOT firing MULTIPLE TIMES!
+        /// </remarks>
+        private readonly PhotoChooserTask photoTask = new PhotoChooserTask();
 
         /// <summary>
         /// The selected file name (for delayed opening).
@@ -76,14 +80,8 @@ namespace PhotoNote.Pages
 
             BuildLocalizedApplicationBar();
 
-            _delayedNavigaionTimer.Interval = TimeSpan.FromMilliseconds(10);
-            _delayedNavigaionTimer.Tick += (s, e) =>
-            {
-                _delayedNavigaionTimer.Stop();
-
-                var uriString = new Uri(string.Format("/Pages/EditPage.xaml?{0}={1}", AppConstants.PARAM_SELECTED_FILE_NAME, fileNameToOpen), UriKind.Relative);
-                NavigationService.Navigate(uriString);
-            };
+            _delayedNavigaionTimer.Interval = TimeSpan.FromMilliseconds(200);
+            _delayedNavigaionTimer.Tick += _delayedNavigaionTimer_Tick;
 
             _delayedInfoTimer.Interval = TimeSpan.FromMilliseconds(3000);
             _delayedInfoTimer.Tick += (s, e) =>
@@ -101,19 +99,36 @@ namespace PhotoNote.Pages
 
             // init photo chooser task
             photoTask.ShowCamera = true;
-            photoTask.Completed += (se, pr) =>
-            {
-                if (pr.Error != null || pr.TaskResult != TaskResult.OK)
-                    return;
-
-                // block screen (just because it looks better)
-                ScreenBlocker.Visibility = Visibility.Visible;
-
-                fileNameToOpen = Path.GetFileName(pr.OriginalFileName);
-                _delayedNavigaionTimer.Start();
-            };
+            photoTask.Completed += photoTask_Completed;
 
             InitializeBannerBehaviour();
+        }
+
+        void _delayedNavigaionTimer_Tick(object sender, EventArgs e)
+        {
+            _delayedNavigaionTimer.Stop();
+
+            var uriString = new Uri(string.Format("/Pages/EditPage.xaml?{0}={1}", AppConstants.PARAM_SELECTED_FILE_NAME, fileNameToOpen), UriKind.Relative);
+            if (NavigationService != null)
+            {
+                NavigationService.Navigate(uriString);
+                // BUGSENSE: Object reference not set to an instance of an object.
+                //           PhotoNote.Pages.MainPage.<.ctor>b__1(Object s, EventArgs e)
+                // Reason: tick-delay was to low and event was fired multiple times
+            }
+
+        }
+
+        void photoTask_Completed(object se, PhotoResult pr)
+        {
+            if (pr.Error != null || pr.TaskResult != TaskResult.OK)
+                return;
+
+            // block screen (just because it looks better)
+            ScreenBlocker.Visibility = Visibility.Visible;
+            Debug.WriteLine("photoTask_Completed");
+            fileNameToOpen = Path.GetFileName(pr.OriginalFileName);
+            _delayedNavigaionTimer.Start();
         }
 
         private void InitializeBannerBehaviour()
