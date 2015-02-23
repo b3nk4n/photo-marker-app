@@ -261,4 +261,12 @@
     <value>Hilfe und Feedback</value>
     <comment>About Page</comment>
   </data>
+  <data name="ZoomPopupText" xml:space="preserve">
+    <value>Mit zwei Fingern kannst du schnell und einfach das Bild vergrößern oder den Ausschnitt bewegen. Damit lassen sich noch präzisere Markierugen setzen.</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="ZoomPopupTitle" xml:space="preserve">
+    <value>Wusstest du schon?</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

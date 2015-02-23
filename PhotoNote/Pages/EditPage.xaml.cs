@@ -24,6 +24,7 @@ using Microsoft.Xna.Framework;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Collections.Generic;
+using PhoneKit.Framework.Core.Storage;
 
 namespace PhotoNote.Pages
 {
@@ -57,6 +58,8 @@ namespace PhotoNote.Pages
         private const double ZOOM_MAX = 3.0;
 
         private DrawMode _currentDrawMode = DrawMode.Normal;
+
+        private static StoredObject<bool> ZoomingInfoShow = new StoredObject<bool>("_zoomingInfo_", false);
 
         public EditPage()
         {
@@ -111,6 +114,12 @@ namespace PhotoNote.Pages
             _appBarZoomButton.Click += (s, e) =>
             {
                 ToggleZoom();
+
+                if (!ZoomingInfoShow.Value)
+                {
+                    ShowZoomingPopup.Begin();
+                    ZoomingInfoShow.Value = true;
+                }
             };
             ApplicationBar.Buttons.Add(_appBarZoomButton);
 

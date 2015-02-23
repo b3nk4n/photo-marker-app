@@ -383,5 +383,23 @@ namespace PhotoNote.Resources {
                 return ResourceManager.GetString("SupportAndFeedback", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Using two fingers you can easily move or zoom the image. This allows faster and even more precise markings. ähnelt.
+        /// </summary>
+        public static string ZoomPopupText {
+            get {
+                return ResourceManager.GetString("ZoomPopupText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Did you know? ähnelt.
+        /// </summary>
+        public static string ZoomPopupTitle {
+            get {
+                return ResourceManager.GetString("ZoomPopupTitle", resourceCulture);
+            }
+        }
     }
 }

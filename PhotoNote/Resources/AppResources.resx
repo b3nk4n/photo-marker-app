@@ -261,4 +261,12 @@
     <value>zoom</value>
     <comment>EditPage</comment>
   </data>
+  <data name="ZoomPopupText" xml:space="preserve">
+    <value>Using two fingers you can easily move or zoom the image. This allows faster and even more precise markings.</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="ZoomPopupTitle" xml:space="preserve">
+    <value>Did you know?</value>
+    <comment>EditPage</comment>
+  </data>
 </root>
