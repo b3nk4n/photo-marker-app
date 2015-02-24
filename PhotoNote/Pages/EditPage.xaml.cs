@@ -967,7 +967,7 @@ namespace PhotoNote.Pages
                 var endVec = new Vector2((float)end.X, (float)end.Y);
 
                 var arrowDirection = endVec - startVec;
-                float shoulderLength = GetShoulderLength(arrowDirection.Length(), (float)LinerToQuadraticConverter.Convert(this.ThicknessSlider.Value, null, null, null));
+                float shoulderLength = GetShoulderLength(arrowDirection.Length(), (float)((double)LinerToQuadraticConverter.Convert(this.ThicknessSlider.Value, null, null, null)));
                 arrowDirection.Normalize();
 
                 var leftShoulder = RotateVector(arrowDirection, 3 * MathHelper.PiOver4);
