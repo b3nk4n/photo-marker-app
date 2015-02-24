@@ -266,7 +266,7 @@
     <comment>EditPage</comment>
   </data>
   <data name="MessageBoxExitWithoutSave" xml:space="preserve">
-    <value>خروج بدون ذخیره؟</value>
+    <value>آیا میخواهید خارج شوید بون ذخیره کردن تصویر ویرایش شده؟</value>
     <comment>EditPage</comment>
   </data>
   <data name="ZoomPopupText" xml:space="preserve">
