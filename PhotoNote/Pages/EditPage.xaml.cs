@@ -25,6 +25,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Collections.Generic;
 using PhoneKit.Framework.Core.Storage;
+using PhotoNote.Conversion;
 
 namespace PhotoNote.Pages
 {
@@ -60,6 +61,8 @@ namespace PhotoNote.Pages
         private DrawMode _currentDrawMode = DrawMode.Normal;
 
         private static StoredObject<bool> ZoomingInfoShow = new StoredObject<bool>("_zoomingInfo_", false);
+
+        private static LinearToQuadraticConverter LinerToQuadraticConverter = new LinearToQuadraticConverter();
 
         public EditPage()
         {
@@ -286,7 +289,8 @@ namespace PhotoNote.Pages
         {
             this.ColorPicker.Color = AppSettings.PenColor.Value;
             this.OpacitySlider.Value = AppSettings.PenOpacity.Value;
-            this.ThicknessSlider.Value = AppSettings.PenThickness.Value;
+            var thicknessQuadratic = AppSettings.PenThickness.Value;
+            this.ThicknessSlider.Value = (double)LinerToQuadraticConverter.ConvertBack(thicknessQuadratic, null, null, null);
             _currentDrawMode = AppSettings.DrawMode.Value;
         }
 
@@ -294,7 +298,7 @@ namespace PhotoNote.Pages
         {
             AppSettings.PenColor.Value = this.ColorPicker.Color;
             AppSettings.PenOpacity.Value = this.OpacitySlider.Value;
-            AppSettings.PenThickness.Value = this.ThicknessSlider.Value;
+            AppSettings.PenThickness.Value = (double)LinerToQuadraticConverter.Convert(this.ThicknessSlider.Value, null, null, null);
             AppSettings.DrawMode.Value = this._currentDrawMode;
         }
 
@@ -925,7 +929,7 @@ namespace PhotoNote.Pages
             MyStylusPointCollection.Add(new StylusPoint(_centerStart.X, _centerStart.Y));
             var opacity = OpacitySlider.Value;
             var color = ColorPicker.Color;
-            var size = ThicknessSlider.Value;
+            var size = (double)LinerToQuadraticConverter.Convert(this.ThicknessSlider.Value, null, null, null);
             var stroke = new Stroke(MyStylusPointCollection);
             stroke.DrawingAttributes = new DrawingAttributes
             {
@@ -963,7 +967,7 @@ namespace PhotoNote.Pages
                 var endVec = new Vector2((float)end.X, (float)end.Y);
 
                 var arrowDirection = endVec - startVec;
-                float shoulderLength = GetShoulderLength(arrowDirection.Length(), (float)ThicknessSlider.Value);
+                float shoulderLength = GetShoulderLength(arrowDirection.Length(), (float)LinerToQuadraticConverter.Convert(this.ThicknessSlider.Value, null, null, null));
                 arrowDirection.Normalize();
 
                 var leftShoulder = RotateVector(arrowDirection, 3 * MathHelper.PiOver4);

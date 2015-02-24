@@ -8,6 +8,7 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:coding="clr-namespace:Coding4Fun.Toolkit.Controls;assembly=Coding4Fun.Toolkit.Controls"
     xmlns:Converters="clr-namespace:Coding4Fun.Toolkit.Controls.Converters;assembly=Coding4Fun.Toolkit.Controls"
+    xmlns:conv="clr-namespace:PhotoNote.Conversion"
     xmlns:vm="clr-namespace:PhotoNote.ViewModel"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:eim="clr-namespace:Microsoft.Expression.Interactivity.Media;assembly=Microsoft.Expression.Interactions"
     x:Class="PhotoNote.Pages.EditPage"
@@ -38,6 +39,7 @@
 
     <phone:PhoneApplicationPage.Resources>
 		<Converters:SolidColorBrushToColorConverter x:Key="BrushToBrush"/>
+        <conv:LinearToQuadraticConverter x:Key="LinToQuadConv" />
 		<SolidColorBrush x:Key="DefaultDisabledBrush" Color="{Binding Converter={StaticResource BrushToBrush}, Source={StaticResource PhoneDisabledBrush}}"/>
 		<Style x:Key="CustomColorPickerStyle" TargetType="coding:ColorPicker">
 			<Setter Property="Template">
@@ -485,7 +487,7 @@
 					<Ellipse Width="53" Height="53" Fill="White"/>
 					<Ellipse Height="1" Width="1" Fill="{Binding SolidColorBrush, ElementName=ColorPicker}" Opacity="{Binding Value, ElementName=OpacitySlider}" RenderTransformOrigin="0.5,0.5">
 						<Ellipse.RenderTransform>
-							<ScaleTransform ScaleX="{Binding Value, ElementName=ThicknessSlider}" ScaleY="{Binding Value, ElementName=ThicknessSlider}" />
+                            <ScaleTransform ScaleX="{Binding Value, ElementName=ThicknessSlider, Converter={StaticResource LinToQuadConv}}" ScaleY="{Binding Value, ElementName=ThicknessSlider, Converter={StaticResource LinToQuadConv}}" />
 						</Ellipse.RenderTransform>
 					</Ellipse>
 				</Grid>
@@ -558,7 +560,7 @@
 					<Ellipse Width="53" Height="53" Fill="White"/>
 					<Ellipse Height="1" Width="1" Fill="{Binding SolidColorBrush, ElementName=ColorPickerLandscape}" Opacity="{Binding Value, ElementName=OpacitySliderLandscape}" RenderTransformOrigin="0.5,0.5">
 						<Ellipse.RenderTransform>
-							<ScaleTransform ScaleX="{Binding Value, ElementName=ThicknessSliderLandscape}" ScaleY="{Binding Value, ElementName=ThicknessSliderLandscape}" />
+                            <ScaleTransform ScaleX="{Binding Value, ElementName=ThicknessSliderLandscape, Converter={StaticResource LinToQuadConv}}" ScaleY="{Binding Value, ElementName=ThicknessSliderLandscape, Converter={StaticResource LinToQuadConv}}" />
 						</Ellipse.RenderTransform>
 					</Ellipse>
 				</Grid>

@@ -103,6 +103,7 @@
     </Compile>
     <Compile Include="Controls\LocalizedAboutControl.cs" />
     <Compile Include="Controls\LocalizedInAppStoreControl.cs" />
+    <Compile Include="Conversion\LinearToQuadraticConverter.cs" />
     <Compile Include="CustomUriMapper.cs" />
     <Compile Include="DrawMode.cs" />
     <Compile Include="Helpers\LauncherHelper.cs" />
