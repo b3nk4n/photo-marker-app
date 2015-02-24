@@ -262,15 +262,15 @@
     <comment>EditPage</comment>
   </data>
   <data name="MessageBoxAttention" xml:space="preserve">
-    <value>Atención</value>
+    <value>Aviso</value>
     <comment>EditPage</comment>
   </data>
   <data name="MessageBoxExitWithoutSave" xml:space="preserve">
-    <value>Salir sin guardar?</value>
+    <value>¿De verdad quieres salir sin guardar la foto?</value>
     <comment>EditPage</comment>
   </data>
   <data name="ZoomPopupText" xml:space="preserve">
-    <value>El uso de dos dedos puede mover o ampliar la imagen con facilidad. Esto permite más rápido e incluso marcas más precisas.</value>
+    <value>Usando dos dedos puedes mover o acercar la imagen fácilmente. Esto te permite hacer anotaciones rápidas y más precisas.</value>
     <comment>EditPage</comment>
   </data>
   <data name="ZoomPopupTitle" xml:space="preserve">

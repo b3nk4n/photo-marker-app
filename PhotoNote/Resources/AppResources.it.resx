@@ -266,7 +266,7 @@
     <comment>EditPage</comment>
   </data>
   <data name="MessageBoxExitWithoutSave" xml:space="preserve">
-    <value>Uscire senza salvare?</value>
+    <value>Sei sicuro di voler uscire senza aver salvato l'immagine?</value>
     <comment>EditPage</comment>
   </data>
   <data name="ZoomPopupText" xml:space="preserve">

@@ -262,11 +262,11 @@
     <comment>EditPage</comment>
   </data>
   <data name="MessageBoxAttention" xml:space="preserve">
-    <value>اهتمام</value>
+    <value>تحذير</value>
     <comment>EditPage</comment>
   </data>
   <data name="MessageBoxExitWithoutSave" xml:space="preserve">
-    <value>خروج دون حفظ؟</value>
+    <value>هل تريد حقا الخروج بدون حفظ الصورة؟</value>
     <comment>EditPage</comment>
   </data>
   <data name="ZoomPopupText" xml:space="preserve">
