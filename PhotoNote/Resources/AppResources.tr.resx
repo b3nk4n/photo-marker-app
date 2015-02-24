@@ -261,4 +261,20 @@
     <value>zoom</value>
     <comment>EditPage</comment>
   </data>
+  <data name="MessageBoxAttention" xml:space="preserve">
+    <value>Dikkat</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="MessageBoxExitWithoutSave" xml:space="preserve">
+    <value>Kaydetmeden çık?</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="ZoomPopupText" xml:space="preserve">
+    <value>İki parmağınızı kullanarak fotoğrafı kolayca taşıyabilir veya yaklaştırabilirsiniz. Bu daha hızlı ve olay bir şekilde işaretleme yapmanızı sağlar.</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="ZoomPopupTitle" xml:space="preserve">
+    <value>Biliyor muydunuz?</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

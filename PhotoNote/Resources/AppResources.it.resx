@@ -261,4 +261,20 @@
     <value>zoom</value>
     <comment>EditPage</comment>
   </data>
+  <data name="MessageBoxAttention" xml:space="preserve">
+    <value>Attenzione</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="MessageBoxExitWithoutSave" xml:space="preserve">
+    <value>Uscire senza salvare?</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="ZoomPopupText" xml:space="preserve">
+    <value>Usando due dita puoi facilmente muovere l'immagine o farne lo zoom. Potrai così effettuare selezioni in modo ancora più preciso e rapido.</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="ZoomPopupTitle" xml:space="preserve">
+    <value>Lo sapevi?</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

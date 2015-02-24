@@ -209,6 +209,14 @@
     <value>wählen Sie ein Bild aus, welches Sie bearbeiten wollen...</value>
     <comment>MainPage</comment>
   </data>
+  <data name="MessageBoxAttention" xml:space="preserve">
+    <value>Achtung</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="MessageBoxExitWithoutSave" xml:space="preserve">
+    <value>Möchten Sie die Änderungen wirklich ohne Speichern verwerfen?</value>
+    <comment>EditPage</comment>
+  </data>
   <data name="MessageBoxNoInfo" xml:space="preserve">
     <value>Leider konnte ich die App zum Anzeigen der Bildinformationen nicht starten. Tut mir wirklich sehr seid!</value>
     <comment>MessageBox</comment>
@@ -262,7 +270,7 @@
     <comment>About Page</comment>
   </data>
   <data name="ZoomPopupText" xml:space="preserve">
-    <value>Mit zwei Fingern kannst du schnell und einfach das Bild vergrößern oder den Ausschnitt bewegen. Damit lassen sich noch präzisere Markierugen setzen.</value>
+    <value>Mit zwei Fingern kannst du schnell und einfach das Bild vergrößern oder den Ausschnitt bewegen. Damit lassen sich noch präzisere Markierungen setzen.</value>
     <comment>EditPage</comment>
   </data>
   <data name="ZoomPopupTitle" xml:space="preserve">

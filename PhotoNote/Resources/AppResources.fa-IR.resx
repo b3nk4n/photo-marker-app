@@ -261,4 +261,20 @@
     <value>بزرگنمایی</value>
     <comment>EditPage</comment>
   </data>
+  <data name="MessageBoxAttention" xml:space="preserve">
+    <value>توجه</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="MessageBoxExitWithoutSave" xml:space="preserve">
+    <value>خروج بدون ذخیره؟</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="ZoomPopupText" xml:space="preserve">
+    <value>با استفاده از دو انگشت شما به راحتی می تواند حرکت کند و یا زوم تصویر. این اجازه می دهد سریع تر و حتی نشانه گذاری دقیق تر.</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="ZoomPopupTitle" xml:space="preserve">
+    <value>می دانستی؟</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

@@ -261,4 +261,20 @@
     <value>zoom</value>
     <comment>EditPage</comment>
   </data>
+  <data name="MessageBoxAttention" xml:space="preserve">
+    <value>Atención</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="MessageBoxExitWithoutSave" xml:space="preserve">
+    <value>Salir sin guardar?</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="ZoomPopupText" xml:space="preserve">
+    <value>El uso de dos dedos puede mover o ampliar la imagen con facilidad. Esto permite más rápido e incluso marcas más precisas.</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="ZoomPopupTitle" xml:space="preserve">
+    <value>¿Sabía usted?</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

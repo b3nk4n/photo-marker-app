@@ -571,7 +571,7 @@ namespace PhotoNote.Pages
             else if (InkControl.Strokes.Count > 0)
             {
                 // ask before closing when there is at least one stroke on the image
-                if (MessageBox.Show("Achtung","Wirklich ohne Speichern schließen?",MessageBoxButton.OKCancel) == MessageBoxResult.Cancel) // TODO: translation of message box
+                if (MessageBox.Show(AppResources.MessageBoxExitWithoutSave, AppResources.MessageBoxAttention, MessageBoxButton.OKCancel) == MessageBoxResult.Cancel) // TODO: translation of message box
                 {
                     e.Cancel = true;
                 }

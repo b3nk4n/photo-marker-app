@@ -269,4 +269,12 @@
     <value>Did you know?</value>
     <comment>EditPage</comment>
   </data>
+  <data name="MessageBoxAttention" xml:space="preserve">
+    <value>Attention</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="MessageBoxExitWithoutSave" xml:space="preserve">
+    <value>Do you really want to quit without saving the picture?</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

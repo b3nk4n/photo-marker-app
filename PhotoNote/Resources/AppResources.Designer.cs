@@ -268,6 +268,24 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Attention ähnelt.
+        /// </summary>
+        public static string MessageBoxAttention {
+            get {
+                return ResourceManager.GetString("MessageBoxAttention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Do you really want to quit without saving the picture? ähnelt.
+        /// </summary>
+        public static string MessageBoxExitWithoutSave {
+            get {
+                return ResourceManager.GetString("MessageBoxExitWithoutSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Launching the photo information app could not be started. I&apos;m very sorry! ähnelt.
         /// </summary>
         public static string MessageBoxNoInfo {

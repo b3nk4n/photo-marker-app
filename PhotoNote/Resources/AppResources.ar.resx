@@ -261,4 +261,20 @@
     <value>زوم</value>
     <comment>EditPage</comment>
   </data>
+  <data name="MessageBoxAttention" xml:space="preserve">
+    <value>اهتمام</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="MessageBoxExitWithoutSave" xml:space="preserve">
+    <value>خروج دون حفظ؟</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="ZoomPopupText" xml:space="preserve">
+    <value>يمكنك و باستخدام اصبعين من تحريك و تكبير الصورة بسهوله. هذا يسمح لك بتأشير الصور بشكل ادق و اسرع</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="ZoomPopupTitle" xml:space="preserve">
+    <value>هل تعلم؟</value>
+    <comment>EditPage</comment>
+  </data>
 </root>
