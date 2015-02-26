@@ -262,19 +262,19 @@
     <comment>EditPage</comment>
   </data>
   <data name="MessageBoxAttention" xml:space="preserve">
-    <value>Chú ý</value>
+    <value>Lưu ý</value>
     <comment>EditPage</comment>
   </data>
   <data name="MessageBoxExitWithoutSave" xml:space="preserve">
-    <value>Thoát mà không lưu?</value>
+    <value>Bạn thực sự muốn thoát mà không lưu hình ảnh?</value>
     <comment>EditPage</comment>
   </data>
   <data name="ZoomPopupText" xml:space="preserve">
-    <value>Sử dụng hai ngón tay bạn một cách dễ dàng có thể di chuyển hoặc phóng to hình ảnh. Điều này cho phép nhanh hơn và thậm chí cả những mảng chính xác hơn.</value>
+    <value>Bằng cách sử dụng hai ngón tay, bạn có thể dễ dàng di chuyển hoặc phóng to hình ảnh . Điều này sẽ làm cho các thao tác được nhanh gọn và thậm chí là chính xác hơn.</value>
     <comment>EditPage</comment>
   </data>
   <data name="ZoomPopupTitle" xml:space="preserve">
-    <value>Bạn có biết?</value>
+    <value>Bạn có biết cách làm không?</value>
     <comment>EditPage</comment>
   </data>
 </root>
