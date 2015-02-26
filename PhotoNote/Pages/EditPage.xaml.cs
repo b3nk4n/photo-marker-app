@@ -565,7 +565,7 @@ namespace PhotoNote.Pages
             HidePenToolbar();
         }
 
-        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        protected async override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
             if (_isPenToolbarVisible)
             {
@@ -574,10 +574,12 @@ namespace PhotoNote.Pages
             }
             else if (InkControl.Strokes.Count > 0)
             {
-                // ask before closing when there is at least one stroke on the image
-                if (MessageBox.Show(AppResources.MessageBoxExitWithoutSave, AppResources.MessageBoxAttention, MessageBoxButton.OKCancel) == MessageBoxResult.Cancel) // TODO: translation of message box
+                e.Cancel = true;
+                await Task.Delay(100); // fixes the "kill app by OS" issue
+                if (MessageBox.Show(AppResources.MessageBoxExitWithoutSave, AppResources.MessageBoxAttention, MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                 {
-                    e.Cancel = true;
+                    if (NavigationService.CanGoBack)
+                        NavigationService.GoBack();
                 }
             }
 
