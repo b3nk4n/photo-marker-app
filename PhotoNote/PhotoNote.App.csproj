@@ -187,6 +187,8 @@
     <Content Include="Assets\AppBar\appbar.magnify.add.png" />
     <Content Include="Assets\AppBar\appbar.magnify2.png" />
     <Content Include="Assets\AppBar\appbar.magnify3.png" />
+    <Content Include="Assets\AppBar\appbar.magnify4.png" />
+    <Content Include="Assets\AppBar\appbar.magnify5.png" />
     <Content Include="Assets\AppBar\appbar.save.png" />
     <Content Include="Assets\AppBar\appbar.undo.curve.png" />
     <Content Include="Assets\AppBar\appbar.share.png" />

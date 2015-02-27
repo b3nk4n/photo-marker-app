@@ -56,7 +56,7 @@ namespace PhotoNote.Pages
         private double _translateY;
 
         private const double ZOOM_MIN = 1.0;
-        private const double ZOOM_MAX = 3.0;
+        private const double ZOOM_MAX = 5.0;
 
         private DrawMode _currentDrawMode = DrawMode.Normal;
 
@@ -1028,7 +1028,7 @@ namespace PhotoNote.Pages
 
         private void ToggleZoom()
         {
-            if (_zoom == 1 || _zoom == 2)
+            if (_zoom == 1 || _zoom == 2 || _zoom == 3 || _zoom == 4)
                 _zoom++;
             else
             {
@@ -1045,7 +1045,15 @@ namespace PhotoNote.Pages
 
         private void UpdateZoomAppBarIcon()
         {
-            if (_zoom == 3.0)
+            if (_zoom == 5.0)
+            {
+                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify5.png", UriKind.Relative);
+            }
+            else if (_zoom == 4.0)
+            {
+                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify4.png", UriKind.Relative);
+            }
+            else if (_zoom == 3.0)
             {
                 _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify3.png", UriKind.Relative);
             }
