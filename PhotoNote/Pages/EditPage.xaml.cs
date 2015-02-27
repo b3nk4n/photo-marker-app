@@ -580,6 +580,8 @@ namespace PhotoNote.Pages
                 {
                     if (NavigationService.CanGoBack)
                         NavigationService.GoBack();
+                    else
+                        Application.Current.Terminate();
                 }
             }
 
