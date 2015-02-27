@@ -112,7 +112,7 @@ namespace PhotoNote.Pages
             ApplicationBar.Buttons.Add(_appBarPenButton);
 
             // zoom
-            _appBarZoomButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.magnify.add.png", UriKind.Relative));
+            _appBarZoomButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.magnify1.png", UriKind.Relative));
             _appBarZoomButton.Text = AppResources.AppBarZoom;
             _appBarZoomButton.Click += (s, e) =>
             {
@@ -221,6 +221,10 @@ namespace PhotoNote.Pages
                 returnedFromTombstone) // to ensure this is only called after tombstone
                 RestoreState();
 
+            // load settings
+            LoadSettings();
+            LoadColorHistory();
+
             // query string lookup
             bool success = false;
             if (NavigationContext.QueryString != null)
@@ -263,9 +267,6 @@ namespace PhotoNote.Pages
                     NavigationHelper.BackToMainPageWithHistoryClear(NavigationService);
                     return;
                 }
-
-                LoadSettings();
-                LoadColorHistory();
             }
 
             returnedFromTombstone = false;
@@ -1028,9 +1029,9 @@ namespace PhotoNote.Pages
 
         private void ToggleZoom()
         {
-            if (_zoom == 1 || _zoom == 2 || _zoom == 3 || _zoom == 4)
-                _zoom++;
-            else
+            _zoom = Math.Round(_zoom + 1);
+
+            if (_zoom > ZOOM_MAX)
             {
                 _zoom = ZOOM_MIN;
 
@@ -1043,28 +1044,27 @@ namespace PhotoNote.Pages
             UpdateImageOrientationAndScale();
         }
 
+        /// <summary>
+        /// Remember the current zoom icon value to update the icon only when there is a change.
+        /// </summary>
+        private int currentZoomIcon = 1;
+
         private void UpdateZoomAppBarIcon()
         {
-            if (_zoom == 5.0)
-            {
-                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify5.png", UriKind.Relative);
-            }
-            else if (_zoom == 4.0)
-            {
-                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify4.png", UriKind.Relative);
-            }
-            else if (_zoom == 3.0)
-            {
-                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify3.png", UriKind.Relative);
-            }
-            else if (_zoom == 2.0)
-            {
-                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify2.png", UriKind.Relative);
-            }
-            else
-            {
-                _appBarZoomButton.IconUri = new Uri("/Assets/AppBar/appbar.magnify.add.png", UriKind.Relative);
-            }
+            if (_appBarZoomButton == null)
+                return;
+
+            int zoomValue = (int)Math.Round(_zoom);
+
+            zoomValue = (int)CheckZoomInBounds(zoomValue);
+
+            if (currentZoomIcon == zoomValue)
+                return;
+
+            currentZoomIcon = zoomValue;
+
+            var uriString = string.Format("/Assets/AppBar/appbar.magnify{0}.png", zoomValue);
+            _appBarZoomButton.IconUri = new Uri(uriString, UriKind.Relative);
         }
 
         #endregion
@@ -1118,13 +1118,26 @@ namespace PhotoNote.Pages
 
                 _zoom = ExponentialFilter(_zoom, zoomBaseline + zoomDeltaFactor, 0.33);
 
-                if (_zoom < ZOOM_MIN)
-                    _zoom = ZOOM_MIN;
-                else if (_zoom > ZOOM_MAX)
-                    _zoom = ZOOM_MAX;
+                _zoom = CheckZoomInBounds(_zoom);
 
                 UpdateImageOrientationAndScale();
+                UpdateZoomAppBarIcon();
             }
+        }
+
+        /// <summary>
+        /// Checks whether the zoom is in bounds.
+        /// </summary>
+        /// <param name="zoom">The zoom value</param>
+        /// <returns>The adjusted value.</returns>
+        private double CheckZoomInBounds(double zoom)
+        {
+            if (zoom < ZOOM_MIN)
+                zoom = ZOOM_MIN;
+            else if (zoom > ZOOM_MAX)
+                zoom = ZOOM_MAX;
+
+            return zoom;
         }
 
         private double ExponentialFilter(double lastValue, double newValue, double alpha)

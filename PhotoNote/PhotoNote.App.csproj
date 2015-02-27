@@ -184,7 +184,7 @@
     <Content Include="Assets\AppBar\appbar.draw.marker.Rectangle.png" />
     <Content Include="Assets\AppBar\appbar.edit.png" />
     <Content Include="Assets\AppBar\appbar.image.select.png" />
-    <Content Include="Assets\AppBar\appbar.magnify.add.png" />
+    <Content Include="Assets\AppBar\appbar.magnify1.png" />
     <Content Include="Assets\AppBar\appbar.magnify2.png" />
     <Content Include="Assets\AppBar\appbar.magnify3.png" />
     <Content Include="Assets\AppBar\appbar.magnify4.png" />
