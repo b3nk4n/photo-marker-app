@@ -806,6 +806,10 @@ namespace PhotoNote.Pages
         private Vector2 _centerStart;
         private int _moveCounter;
 
+        /// <summary>
+        /// Used to make sure no stroke is added multiple times. Not really necessary anymore, but makes sure
+        /// the performance will not be bad in the move-event.
+        /// </summary>
         private bool strokeAdded;
 
         //A new stroke object named MyStroke is created. MyStroke is added to the StrokeCollection of the InkPresenter named MyIP
@@ -815,7 +819,6 @@ namespace PhotoNote.Pages
             StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
             var touchPoint = e.StylusDevice.GetStylusPoints(InkControl).First();
             _centerStart = new Vector2((float)touchPoint.X, (float)touchPoint.Y);
-            strokeAdded = false;
         }
 
         //StylusPoint objects are collected from the MouseEventArgs and added to MyStroke. 
@@ -831,10 +834,9 @@ namespace PhotoNote.Pages
             if (_activeStroke == null)
             {
                 _activeStroke = StartStroke();
-                //InkControl.Strokes.Add(_activeStroke);
             } else if (!strokeAdded)
             {
-                InkControl.Strokes.Add(_activeStroke);
+                CheckedAddStroke(_activeStroke);
                 strokeAdded = true;
             }
 
@@ -889,6 +891,7 @@ namespace PhotoNote.Pages
                         InkControl.Strokes.Remove(_activeStroke);
                     HidePenToolbar();
                     _activeStroke = null;
+                    strokeAdded = false;
                     return;
                 }
             }
@@ -901,14 +904,18 @@ namespace PhotoNote.Pages
 
                 if (!_twoFingersActive)
                 {
-                    InkControl.Strokes.Add(_activeStroke);
-                    strokeAdded = true;
+                    if (!strokeAdded)
+                    {
+                        CheckedAddStroke(_activeStroke);
+                        strokeAdded = true;
+                    }
                 }
                     
             }
             else if (!strokeAdded)
             {
-                InkControl.Strokes.Add(_activeStroke);
+                CheckedAddStroke(_activeStroke);
+                strokeAdded = true;
             }
 
             if (_currentDrawMode == DrawMode.Arrow)
@@ -923,9 +930,20 @@ namespace PhotoNote.Pages
             }
 
             _activeStroke = null;
+            strokeAdded = false;
 
             _twoFingersActive = false;
             _moveCounter = 0;
+        }
+
+        /// <summary>
+        /// To make sure no to get an "Element is already the child of another element." error.
+        /// </summary>
+        /// <param name="stroke">The stroke to add only once.</param>
+        private void CheckedAddStroke(Stroke stroke)
+        {
+            if (!InkControl.Strokes.Contains(stroke))
+                InkControl.Strokes.Add(stroke);
         }
 
         private Stroke StartStroke()
