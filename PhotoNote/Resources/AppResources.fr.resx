@@ -266,15 +266,15 @@
     <comment>EditPage</comment>
   </data>
   <data name="MessageBoxExitWithoutSave" xml:space="preserve">
-    <value>Quitter sans enregistrer?</value>
+    <value>Voulez-vous quitter sans sauvegarder l'image ?</value>
     <comment>EditPage</comment>
   </data>
   <data name="ZoomPopupText" xml:space="preserve">
-    <value>Avec deux doigts, vous pouvez facilement déplacer ou agrandir l'image. Cela permet plus rapide et même des marques plus précises.</value>
+    <value>Avec deux doigts vous pouvez facilement déplacer ou agrandir l'image. Cela permet les notes plus rapides et précises.</value>
     <comment>EditPage</comment>
   </data>
   <data name="ZoomPopupTitle" xml:space="preserve">
-    <value>Le savez vous?</value>
+    <value>Le saviez-vous ?</value>
     <comment>EditPage</comment>
   </data>
 </root>
