@@ -405,24 +405,31 @@
 			<Grid x:Name="EditImageContainer" Width="480" Height="728">
 				<Grid x:Name="RenderContainer">
 
-					<Image x:Name="EditImageControl"  VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+					<Image x:Name="EditImageControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
 						<Image.RenderTransform>
 							<CompositeTransform/>
 						</Image.RenderTransform>
 					</Image>
 
-					<InkPresenter x:Name="InkControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5"
+                    <Canvas x:Name="EditTextControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                        <Canvas.RenderTransform>
+                            <CompositeTransform/>
+                        </Canvas.RenderTransform>
+                    </Canvas>
+
+                    <InkPresenter x:Name="InkControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5"
 						MouseLeftButtonDown="MyIP_MouseLeftButtonDown" 
 						LostMouseCapture="MyIP_LostMouseCapture"
 						MouseMove="MyIP_MouseMove" 
 						Background="Transparent"
 						ManipulationStarted="MyIP_ManipulationStarted"
-						ManipulationDelta="MyIP_ManipulationDelta">
-						<InkPresenter.RenderTransform>
-							<CompositeTransform x:Name="PanTransform"/>
-						</InkPresenter.RenderTransform>
-					</InkPresenter>
-				</Grid>
+						ManipulationDelta="MyIP_ManipulationDelta"
+                        ManipulationCompleted="MyIP_ManipulationCompleted">
+                        <InkPresenter.RenderTransform>
+                            <CompositeTransform x:Name="PanTransform"/>
+                        </InkPresenter.RenderTransform>
+                    </InkPresenter>
+                </Grid>
 			</Grid>
 
 			<Grid x:Name="PenToolbar" Height="360" VerticalAlignment="Bottom" Background="{StaticResource PhoneChromeBrush}" RenderTransformOrigin="0.5,0.5"  Visibility="Collapsed">

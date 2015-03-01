@@ -111,6 +111,15 @@ namespace PhotoNote.Pages
             };
             ApplicationBar.Buttons.Add(_appBarPenButton);
 
+            // text
+            ApplicationBarIconButton appBarTextButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.interface.textbox.png", UriKind.Relative));
+            appBarTextButton.Text = "text"; // TODO: translate
+            appBarTextButton.Click += (s, e) =>
+            {
+                _currentDrawMode = DrawMode.Text;
+            };
+            ApplicationBar.Buttons.Add(appBarTextButton);
+
             // zoom
             _appBarZoomButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.magnify1.png", UriKind.Relative));
             _appBarZoomButton.Text = AppResources.AppBarZoom;
@@ -127,9 +136,8 @@ namespace PhotoNote.Pages
             ApplicationBar.Buttons.Add(_appBarZoomButton);
 
             // save
-            ApplicationBarIconButton appBarSaveButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.save.png", UriKind.Relative));
-            appBarSaveButton.Text = AppResources.AppBarSave;
-            appBarSaveButton.Click += async (s, e) =>
+            ApplicationBarMenuItem appBarSaveMenuItem = new ApplicationBarMenuItem(AppResources.AppBarSave);
+            appBarSaveMenuItem.Click += async (s, e) =>
             {
                 if (await Save())
                 {
@@ -139,10 +147,8 @@ namespace PhotoNote.Pages
                 {
                     MessageBox.Show(AppResources.MessageBoxNoSave, AppResources.MessageBoxWarning, MessageBoxButton.OK);
                 }
-                
             };
-            ApplicationBar.Buttons.Add(appBarSaveButton);
-
+            ApplicationBar.MenuItems.Add(appBarSaveMenuItem);
 
             // image info (photo info)
             ApplicationBarMenuItem appBarPhotoInfoMenuItem = new ApplicationBarMenuItem(AppResources.ShowPhotoInfo);
@@ -433,6 +439,10 @@ namespace PhotoNote.Pages
             InkControl.Width = neutralScaleFactor * _editImage.Width;
             InkControl.Height = neutralScaleFactor * _editImage.Height;
 
+            // text control
+            EditTextControl.Width = neutralScaleFactor * _editImage.Width;
+            EditTextControl.Height = neutralScaleFactor * _editImage.Height;
+
             // check and adjust translation/move
             var renderedImageWidth = scale * _editImage.Width * _zoom;
             var renderedImageHeight = scale * _editImage.Height * _zoom;
@@ -461,6 +471,12 @@ namespace PhotoNote.Pages
             inkTransform.ScaleY = scale / neutralScaleFactor * _zoom;
             inkTransform.TranslateX = _translateX;
             inkTransform.TranslateY = _translateY;
+
+            var textTransform = EditTextControl.RenderTransform as CompositeTransform;
+            textTransform.ScaleX = scale / neutralScaleFactor * _zoom;
+            textTransform.ScaleY = scale / neutralScaleFactor * _zoom;
+            textTransform.TranslateX = _translateX;
+            textTransform.TranslateY = _translateY;
 
             SetBoundary(InkControl.Width, InkControl.Height);
         }
@@ -812,6 +828,8 @@ namespace PhotoNote.Pages
         /// </summary>
         private bool strokeAdded;
 
+        
+
         //A new stroke object named MyStroke is created. MyStroke is added to the StrokeCollection of the InkPresenter named MyIP
         private void MyIP_MouseLeftButtonDown(object sender, MouseEventArgs e)
         {
@@ -824,7 +842,7 @@ namespace PhotoNote.Pages
         //StylusPoint objects are collected from the MouseEventArgs and added to MyStroke. 
         private void MyIP_MouseMove(object sender, MouseEventArgs e)
         {
-            if (_twoFingersActive)
+            if (_twoFingersActive || _currentDrawMode == DrawMode.Text)
                 return;
 
             _moveCounter++;
@@ -882,56 +900,60 @@ namespace PhotoNote.Pages
         //MyStroke is completed
         private void MyIP_LostMouseCapture(object sender, MouseEventArgs e)
         {
-            if (_isPenToolbarVisible)
+            if (_currentDrawMode != DrawMode.Text)
             {
-                // close the toolbar and do not draw anything when there was quite like a tap.
-                if (_activeStroke == null || _activeStroke.StylusPoints.Count < 2)
-                {
-                    if (_activeStroke != null)
-                        InkControl.Strokes.Remove(_activeStroke);
-                    HidePenToolbar();
-                    _activeStroke = null;
-                    strokeAdded = false;
-                    return;
-                }
-            }
 
-            // delayed display of first point, that the point is not visible
-            // when tapping on the screen to close the toolbar
-            if (_activeStroke == null)
-            {
-                _activeStroke = StartStroke();
-
-                if (!_twoFingersActive)
+                if (_isPenToolbarVisible)
                 {
-                    if (!strokeAdded)
+                    // close the toolbar and do not draw anything when there was quite like a tap.
+                    if (_activeStroke == null || _activeStroke.StylusPoints.Count < 2)
                     {
-                        CheckedAddStroke(_activeStroke);
-                        strokeAdded = true;
+                        if (_activeStroke != null)
+                            InkControl.Strokes.Remove(_activeStroke);
+                        HidePenToolbar();
+                        _activeStroke = null;
+                        strokeAdded = false;
+                        return;
                     }
                 }
-                    
-            }
-            else if (!strokeAdded)
-            {
-                CheckedAddStroke(_activeStroke);
-                strokeAdded = true;
+
+                // delayed display of first point, that the point is not visible
+                // when tapping on the screen to close the toolbar
+                if (_activeStroke == null)
+                {
+                    _activeStroke = StartStroke();
+
+                    if (!_twoFingersActive)
+                    {
+                        if (!strokeAdded)
+                        {
+                            CheckedAddStroke(_activeStroke);
+                            strokeAdded = true;
+                        }
+                    }
+
+                }
+                else if (!strokeAdded)
+                {
+                    CheckedAddStroke(_activeStroke);
+                    strokeAdded = true;
+                }
+
+                if (_currentDrawMode == DrawMode.Arrow)
+                {
+                    FinishArrow();
+                }
+
+                // remove ink segments when two fingers have been detected shortly after the drawing has begun
+                if (_twoFingersActive && _moveCounter < 3)
+                {
+                    InkControl.Strokes.Remove(_activeStroke);
+                }
             }
 
-            if (_currentDrawMode == DrawMode.Arrow)
-            {
-                FinishArrow();
-            }
-            
-            // remove ink segments when two fingers have been detected shortly after the drawing has begun
-            if (_twoFingersActive && _moveCounter < 3)
-            {
-                InkControl.Strokes.Remove(_activeStroke);
-            }
-
+            // reset current context
             _activeStroke = null;
             strokeAdded = false;
-
             _twoFingersActive = false;
             _moveCounter = 0;
         }
@@ -1095,12 +1117,33 @@ namespace PhotoNote.Pages
 
         private bool _twoFingersActive;
 
+        public const int TEXT_SELECTION_MARGIN = 5;
+
+        private TextBox _selectedTextBox = null;
+
         private void MyIP_ManipulationStarted(object sender, ManipulationStartedEventArgs e)
         {
             // init start of manipulation
             translationDeltaX = double.MinValue;
             translationDeltaY = double.MinValue;
             zoomBaseline = _zoom;
+
+            // select textbox
+            for (int i = EditTextControl.Children.Count - 1; i >= 0; --i)
+            {
+                var textbox = EditTextControl.Children[i] as TextBox;
+                if (textbox != null)
+                {
+                    var boundingBox = new Rectangle((int)Canvas.GetLeft(textbox) - TEXT_SELECTION_MARGIN, (int)Canvas.GetTop(textbox) - TEXT_SELECTION_MARGIN,
+                                                    (int)textbox.ActualWidth + 2 * TEXT_SELECTION_MARGIN, (int)textbox.ActualHeight + 2 * TEXT_SELECTION_MARGIN);
+
+                    if (boundingBox.Contains((int)e.ManipulationOrigin.X, (int)e.ManipulationOrigin.Y))
+                    {
+                        _selectedTextBox = textbox;
+                        break;
+                    }
+                }
+            }
         }
 
         private void MyIP_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
@@ -1122,8 +1165,6 @@ namespace PhotoNote.Pages
                 double dx = translationDeltaX - e.ManipulationOrigin.X;
                 double dy = translationDeltaY - e.ManipulationOrigin.Y;
 
-                //_translateX -= dx * _zoom;
-                //_translateY -= dy * _zoom;
                 _translateX = ExponentialFilter(_translateX, _translateX - dx * _zoom, 0.33);
                 _translateY = ExponentialFilter(_translateY, _translateY - dy * _zoom, 0.33);
 
@@ -1141,6 +1182,33 @@ namespace PhotoNote.Pages
                 UpdateImageOrientationAndScale();
                 UpdateZoomAppBarIcon();
             }
+            else if (_selectedTextBox != null)
+            {
+                _moveCounter++;
+                SetTextBoxPosition(EditTextControl, e.ManipulationOrigin.X, e.ManipulationOrigin.Y, _selectedTextBox);
+            }
+
+        }
+
+        private void MyIP_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            if (_currentDrawMode == DrawMode.Text && !_twoFingersActive)
+            {
+                if (_selectedTextBox != null)
+                {
+                    if (_moveCounter == 0)
+                    {
+                        _selectedTextBox.Focus();
+                        _selectedTextBox.SelectAll();
+                    }
+                }
+                else
+                {
+                    AddTextBlock(EditTextControl, "Text", e.ManipulationOrigin.X, e.ManipulationOrigin.Y);
+                } 
+            }
+
+            _selectedTextBox = null;
         }
 
         /// <summary>
@@ -1161,6 +1229,38 @@ namespace PhotoNote.Pages
         private double ExponentialFilter(double lastValue, double newValue, double alpha)
         {
             return lastValue * (1 - alpha) + newValue * alpha;
+        }
+
+        private void AddTextBlock(Canvas parent, string text, double x, double y)
+        {
+            var textbox = new TextBox();
+            textbox.Text = text;
+            textbox.AcceptsReturn = true;
+            textbox.FontSize = 32.0;
+            textbox.LostFocus += (s, e) =>
+            {
+                var thisTextBox = s as TextBox;
+                if (thisTextBox != null && string.IsNullOrWhiteSpace(thisTextBox.Text))
+                {
+                    parent.Children.Remove(thisTextBox);
+                }
+            };
+
+            // use out of screen location to get the actual width and height
+            Canvas.SetTop(textbox, -999);
+            Canvas.SetLeft(textbox, -999);
+            parent.Children.Add(textbox);
+            textbox.UpdateLayout();
+
+            SetTextBoxPosition(parent, x, y, textbox);
+        }
+
+        private static void SetTextBoxPosition(Canvas parent, double x, double y, TextBox textbox)
+        {
+            // adjust position afterwards when rendered
+            Canvas.SetTop(textbox, y - textbox.ActualHeight / 2);
+            Canvas.SetLeft(textbox, x - textbox.ActualWidth / 2);
+            parent.UpdateLayout();
         }
 
         #endregion

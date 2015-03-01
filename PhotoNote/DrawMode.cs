@@ -9,6 +9,6 @@ namespace PhotoNote
     // The draw mode.
     public enum DrawMode
     {
-        Normal, Line, Arrow, Circle, Rectangle
+        Normal, Line, Arrow, Circle, Rectangle, Text
     }
 }
