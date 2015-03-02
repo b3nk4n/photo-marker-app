@@ -601,6 +601,11 @@ namespace PhotoNote.Pages
                         Application.Current.Terminate();
                 }
             }
+            else if (_selectedTextBox != null)
+            {
+                _selectedTextBox.IsEnabled = false;
+                e.Cancel = true;
+            }
 
             base.OnBackKeyPress(e);
         }
@@ -1150,9 +1155,20 @@ namespace PhotoNote.Pages
                 }
             }
 
+            if (_previouslySelectedTextBox != null)
+            {
+                _previouslySelectedTextBox.IsEnabled = false;
+            }
+
             // reset previous selection when nothing was clicked
             if (_selectedTextBox == null)
+            {
                 _previouslySelectedTextBox = null;
+                if (_selectedTextBox != null)
+                {
+                    _selectedTextBox.IsEnabled = false;
+                }
+            }
         }
 
         private void MyIP_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
@@ -1206,11 +1222,12 @@ namespace PhotoNote.Pages
             {
                 if (_selectedTextBox != null)
                 {
-                    if (_moveCounter == 0)
-                    {
-                        _selectedTextBox.Focus();
-                        _selectedTextBox.SelectAll();
-                    }
+                    //if (_moveCounter == 0)
+                    //{
+                    //    _selectedTextBox.Focus();
+                    //    _selectedTextBox.SelectAll();
+                    //}
+                    _selectedTextBox.IsEnabled = true;
                 }
                 else if (_previouslySelectedTextBox == null && _moveCounter <= 1 && !_isKeyboardActive)
                 {
@@ -1244,23 +1261,33 @@ namespace PhotoNote.Pages
             var textbox = new TextBox();
             textbox.Text = text;
             textbox.AcceptsReturn = true;
-            textbox.FontSize = 32.0;
+            textbox.FontSize = 36.0;
             textbox.Style = (Style)Resources["DraggableTextBoxStyle"];
             textbox.LostFocus += (s, e) =>
             {
                 var thisTextBox = s as TextBox;
                 if (thisTextBox != null && string.IsNullOrWhiteSpace(thisTextBox.Text))
                 {
-                    parent.Children.Remove(thisTextBox);
+                    RemoveTextBox(parent, thisTextBox);
                 }
-                _selectedTextBox = null;
+                //_selectedTextBox = null;
                 _isKeyboardActive = false;
             };
             textbox.GotFocus += (s, e) =>
             {
                 _isKeyboardActive = true;
             };
-
+            textbox.IsEnabledChanged += (s, e) =>
+            {
+                if ((bool)e.NewValue)
+                {
+                    TextOptions.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    TextOptions.Visibility = Visibility.Collapsed;
+                }
+            };
             // use out of screen location to get the actual width and height
             Canvas.SetTop(textbox, -999);
             Canvas.SetLeft(textbox, -999);
@@ -1273,6 +1300,9 @@ namespace PhotoNote.Pages
             _selectedTextBox = textbox;
             _selectedTextBox.Focus();
             _selectedTextBox.SelectAll();
+
+            // show text options
+            TextOptions.Visibility = Visibility.Visible;
         }
 
         private static void SetTextBoxPosition(Canvas parent, double x, double y, TextBox textbox)
@@ -1284,5 +1314,49 @@ namespace PhotoNote.Pages
         }
 
         #endregion
+
+        private void IncreaseFont(object sender, RoutedEventArgs e)
+        {
+            if (_selectedTextBox != null)
+            {
+                _selectedTextBox.FontSize += 2;
+            }
+        }
+
+        private void DecreaseFont(object sender, RoutedEventArgs e)
+        {
+            if (_selectedTextBox != null)
+            {
+                _selectedTextBox.FontSize -= 2;
+            }
+        }
+
+        private void TextOptionsEditClicked(object sender, RoutedEventArgs e)
+        {
+            if (_selectedTextBox != null)
+            {
+                _selectedTextBox.Focus();
+                _selectedTextBox.SelectAll();
+            }
+        }
+
+        private void TextOptionsDeleteClicked(object sender, RoutedEventArgs e)
+        {
+            if (_selectedTextBox != null)
+            {
+                RemoveTextBox(EditTextControl, _selectedTextBox);
+            }
+        }
+
+        /// <summary>
+        /// Unsets the focus and removes the text box.
+        /// </summary>
+        /// <param name="parent">The container panel.</param>
+        /// <param name="textBox">The text box to remove.</param>
+        private static void RemoveTextBox(Panel parent, TextBox textBox)
+        {
+            textBox.IsEnabled = false;
+            parent.Children.Remove(textBox);
+        }
     }
 }
