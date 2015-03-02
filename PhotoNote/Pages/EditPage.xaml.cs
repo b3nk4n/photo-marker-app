@@ -1245,6 +1245,7 @@ namespace PhotoNote.Pages
             textbox.Text = text;
             textbox.AcceptsReturn = true;
             textbox.FontSize = 32.0;
+            textbox.Style = (Style)Resources["DraggableTextBoxStyle"];
             textbox.LostFocus += (s, e) =>
             {
                 var thisTextBox = s as TextBox;
@@ -1267,6 +1268,11 @@ namespace PhotoNote.Pages
             textbox.UpdateLayout();
 
             SetTextBoxPosition(parent, x, y, textbox);
+
+            // select
+            _selectedTextBox = textbox;
+            _selectedTextBox.Focus();
+            _selectedTextBox.SelectAll();
         }
 
         private static void SetTextBoxPosition(Canvas parent, double x, double y, TextBox textbox)

@@ -304,6 +304,55 @@
                 </DiscreteObjectKeyFrame>
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
+        <Style x:Key="DraggableTextBoxStyle" TargetType="TextBox">
+        	<Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyNormal}"/>
+        	<Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
+        	<Setter Property="Background" Value="{StaticResource PhoneTextBoxBrush}"/>
+        	<Setter Property="Foreground" Value="{StaticResource PhoneTextBoxForegroundBrush}"/>
+        	<Setter Property="BorderBrush" Value="{StaticResource PhoneTextBoxBrush}"/>
+        	<Setter Property="SelectionBackground" Value="{StaticResource PhoneAccentBrush}"/>
+        	<Setter Property="SelectionForeground" Value="{StaticResource PhoneTextBoxSelectionForegroundBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="2"/>
+        	<Setter Property="Template">
+        		<Setter.Value>
+        			<ControlTemplate TargetType="TextBox">
+        				<Grid Background="Transparent">
+        					<VisualStateManager.VisualStateGroups>
+        						<VisualStateGroup x:Name="CommonStates">
+        							<VisualState x:Name="Normal"/>
+        							<VisualState x:Name="MouseOver"/>
+        							<VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                        </Storyboard>
+        							</VisualState>
+                                    <VisualState x:Name="ReadOnly">
+                                    </VisualState>
+        						</VisualStateGroup>
+        						<VisualStateGroup x:Name="FocusStates">
+        							<VisualState x:Name="Focused">
+        								<Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Rectangle.Fill)" Storyboard.TargetName="MainRect">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneTextBoxEditBackgroundBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Rectangle.StrokeThickness)" Storyboard.TargetName="MainRect">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+        							</VisualState>
+                                    <VisualState x:Name="Unfocused">
+                                    </VisualState>
+        						</VisualStateGroup>
+        					</VisualStateManager.VisualStateGroups>
+                            <Rectangle x:Name="MainRect" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding BorderThickness}" StrokeDashArray="2 4" Margin="{StaticResource PhoneTouchTargetOverhang}"/>
+                            <Border BorderBrush="Transparent" BorderThickness="{TemplateBinding BorderThickness}" Background="Transparent" Margin="{StaticResource PhoneTouchTargetOverhang}">
+        						<ContentControl x:Name="ContentElement" BorderThickness="0" HorizontalContentAlignment="Stretch" Margin="{StaticResource PhoneTextBoxInnerMargin}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="Stretch"/>
+        					</Border>
+        				</Grid>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
+        </Style>
 	</phone:PhoneApplicationPage.Resources>
 	<phone:PhoneApplicationPage.FontFamily>
 		<StaticResource ResourceKey="PhoneFontFamilyNormal"/>
@@ -609,14 +658,14 @@
                 </StackPanel>
             </Grid>
 		</Grid>
-        
-		<Grid x:Name="SavingPopup" Visibility="Collapsed">
-			<Rectangle Fill="{StaticResource PhoneBackgroundBrush}" Opacity="0.5" />
-			<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-				<ProgressBar IsIndeterminate="True" Width="200" Margin="6"/>
-				<TextBlock Text="{Binding LocalizedResources.SavingPicuture, Source={StaticResource LocalizedStrings}}" TextAlignment="Center" />
-			</StackPanel>
-		</Grid>
-	</Grid>
+
+        <Grid x:Name="SavingPopup" Visibility="Collapsed">
+            <Rectangle Fill="{StaticResource PhoneBackgroundBrush}" Opacity="0.5" />
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <ProgressBar IsIndeterminate="True" Width="200" Margin="6"/>
+                <TextBlock Text="{Binding LocalizedResources.SavingPicuture, Source={StaticResource LocalizedStrings}}" TextAlignment="Center" />
+            </StackPanel>
+        </Grid>
+    </Grid>
 
 </phone:PhoneApplicationPage>
