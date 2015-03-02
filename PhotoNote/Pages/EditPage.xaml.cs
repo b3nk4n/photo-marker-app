@@ -1120,6 +1120,9 @@ namespace PhotoNote.Pages
         public const int TEXT_SELECTION_MARGIN = 5;
 
         private TextBox _selectedTextBox = null;
+        private TextBox _previouslySelectedTextBox = null;
+        private bool _isKeyboardActive = false;
+
 
         private void MyIP_ManipulationStarted(object sender, ManipulationStartedEventArgs e)
         {
@@ -1128,7 +1131,9 @@ namespace PhotoNote.Pages
             translationDeltaY = double.MinValue;
             zoomBaseline = _zoom;
 
-            // select textbox
+            _previouslySelectedTextBox = _selectedTextBox;
+            _selectedTextBox = null;
+
             for (int i = EditTextControl.Children.Count - 1; i >= 0; --i)
             {
                 var textbox = EditTextControl.Children[i] as TextBox;
@@ -1144,6 +1149,10 @@ namespace PhotoNote.Pages
                     }
                 }
             }
+
+            // reset previous selection when nothing was clicked
+            if (_selectedTextBox == null)
+                _previouslySelectedTextBox = null;
         }
 
         private void MyIP_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
@@ -1185,6 +1194,7 @@ namespace PhotoNote.Pages
             else if (_selectedTextBox != null)
             {
                 _moveCounter++;
+
                 SetTextBoxPosition(EditTextControl, e.ManipulationOrigin.X, e.ManipulationOrigin.Y, _selectedTextBox);
             }
 
@@ -1202,13 +1212,11 @@ namespace PhotoNote.Pages
                         _selectedTextBox.SelectAll();
                     }
                 }
-                else
+                else if (_previouslySelectedTextBox == null && _moveCounter <= 1 && !_isKeyboardActive)
                 {
-                    AddTextBlock(EditTextControl, "Text", e.ManipulationOrigin.X, e.ManipulationOrigin.Y);
+                    AddTextBlock(EditTextControl, "Text", e.ManipulationOrigin.X, e.ManipulationOrigin.Y); // TODO: translate
                 } 
             }
-
-            _selectedTextBox = null;
         }
 
         /// <summary>
@@ -1244,6 +1252,12 @@ namespace PhotoNote.Pages
                 {
                     parent.Children.Remove(thisTextBox);
                 }
+                _selectedTextBox = null;
+                _isKeyboardActive = false;
+            };
+            textbox.GotFocus += (s, e) =>
+            {
+                _isKeyboardActive = true;
             };
 
             // use out of screen location to get the actual width and height
