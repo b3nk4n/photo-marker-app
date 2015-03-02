@@ -37,6 +37,8 @@ namespace PhotoNote.Pages
 
         ApplicationBarIconButton _appBarPenButton;
 
+        ApplicationBarIconButton _appBarTextButton;
+
         private Random rand = new Random();
 
         private static readonly ScaleTransform NEUTRAL_SCALE = new ScaleTransform();
@@ -60,6 +62,8 @@ namespace PhotoNote.Pages
 
         private DrawMode _currentDrawMode = DrawMode.Normal;
 
+        private EditMode _currentEditMode = EditMode.Marker;
+
         private static StoredObject<bool> ZoomingInfoShow = new StoredObject<bool>("_zoomingInfo_", false);
 
         private static LinearToQuadraticConverter LinerToQuadraticConverter = new LinearToQuadraticConverter();
@@ -70,10 +74,8 @@ namespace PhotoNote.Pages
             BuildLocalizedApplicationBar();
 
             Loaded += (s, e) => {
-                // FIXME: there might be the case that there can be crashed when accessing UI-Controls in OnNavigatedTo()
-                //        these should be accessed in Loaded() event instad. See BugSense errors (e.g. in UpdateMoveButtonVisibility()).
-
                 SetTogglesToMode(_currentDrawMode);
+                UpdateTextAppBar();
             };
         }
 
@@ -100,25 +102,36 @@ namespace PhotoNote.Pages
             _appBarPenButton.Text = AppResources.AppBarPen;
             _appBarPenButton.Click += (s, e) =>
             {
-                if (_isPenToolbarVisible)
+                if (_currentEditMode == EditMode.Text)
                 {
-                    HidePenToolbar();
+                    _currentEditMode = EditMode.Marker;
+                    UpdateMarkerAppBar();
+                    UpdateTextAppBar();
                 }
                 else
                 {
-                    ShowPenToolbar();
+                    if (_isPenToolbarVisible)
+                    {
+                        HidePenToolbar();
+                    }
+                    else
+                    {
+                        ShowPenToolbar();
+                    }
                 }
             };
             ApplicationBar.Buttons.Add(_appBarPenButton);
 
             // text
-            ApplicationBarIconButton appBarTextButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.interface.textbox.png", UriKind.Relative));
-            appBarTextButton.Text = "text"; // TODO: translate
-            appBarTextButton.Click += (s, e) =>
+            _appBarTextButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.interface.textbox.png", UriKind.Relative));
+            _appBarTextButton.Text = "text"; // TODO: translate
+            _appBarTextButton.Click += (s, e) =>
             {
-                _currentDrawMode = DrawMode.Text;
+                _currentEditMode = EditMode.Text;
+                UpdateMarkerAppBar();
+                UpdateTextAppBar();
             };
-            ApplicationBar.Buttons.Add(appBarTextButton);
+            ApplicationBar.Buttons.Add(_appBarTextButton);
 
             // zoom
             _appBarZoomButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.magnify1.png", UriKind.Relative));
@@ -589,6 +602,11 @@ namespace PhotoNote.Pages
                 e.Cancel = true;
                 HidePenToolbar();
             }
+            else if (_selectedTextBox != null)
+            {
+                _selectedTextBox.IsEnabled = false;
+                e.Cancel = true;
+            }
             else if (InkControl.Strokes.Count > 0)
             {
                 e.Cancel = true;
@@ -600,11 +618,6 @@ namespace PhotoNote.Pages
                     else
                         Application.Current.Terminate();
                 }
-            }
-            else if (_selectedTextBox != null)
-            {
-                _selectedTextBox.IsEnabled = false;
-                e.Cancel = true;
             }
 
             base.OnBackKeyPress(e);
@@ -804,9 +817,7 @@ namespace PhotoNote.Pages
                     break;
             }
 
-            // update application bar icon
-            var iconUriString = string.Format("/Assets/AppBar/appbar.draw.marker.{0}.png", mode.ToString());
-            _appBarPenButton.IconUri = new Uri(iconUriString, UriKind.Relative);
+            UpdateMarkerAppBar();
 
             // reregister events
             NormalPen.Checked += PenModeToggled;
@@ -847,7 +858,7 @@ namespace PhotoNote.Pages
         //StylusPoint objects are collected from the MouseEventArgs and added to MyStroke. 
         private void MyIP_MouseMove(object sender, MouseEventArgs e)
         {
-            if (_twoFingersActive || _currentDrawMode == DrawMode.Text)
+            if (_twoFingersActive || _currentEditMode == EditMode.Text)
                 return;
 
             _moveCounter++;
@@ -905,7 +916,7 @@ namespace PhotoNote.Pages
         //MyStroke is completed
         private void MyIP_LostMouseCapture(object sender, MouseEventArgs e)
         {
-            if (_currentDrawMode != DrawMode.Text)
+            if (_currentEditMode != EditMode.Text)
             {
 
                 if (_isPenToolbarVisible)
@@ -1112,6 +1123,26 @@ namespace PhotoNote.Pages
             _appBarZoomButton.IconUri = new Uri(uriString, UriKind.Relative);
         }
 
+        /// <summary>
+        /// Update marker application bar icon.
+        /// </summary>
+        private void UpdateMarkerAppBar()
+        {
+            var active = (_currentEditMode == EditMode.Marker) ? ".active" : string.Empty;
+            var iconUriString = string.Format("/Assets/AppBar/appbar.draw.marker.{0}{1}.png", _currentDrawMode.ToString(), active);
+            _appBarPenButton.IconUri = new Uri(iconUriString, UriKind.Relative);
+        }
+
+        /// <summary>
+        /// Update text application bar icon.
+        /// </summary>
+        private void UpdateTextAppBar()
+        {
+            var active = (_currentEditMode == EditMode.Text) ? ".active" : string.Empty;
+            var iconUriString = string.Format("/Assets/AppBar/appbar.interface.textbox{0}.png", active);
+            _appBarTextButton.IconUri = new Uri(iconUriString, UriKind.Relative);
+        }
+
         #endregion
 
         #region PinchToZoom/Panning
@@ -1131,42 +1162,45 @@ namespace PhotoNote.Pages
 
         private void MyIP_ManipulationStarted(object sender, ManipulationStartedEventArgs e)
         {
-            // init start of manipulation
-            translationDeltaX = double.MinValue;
-            translationDeltaY = double.MinValue;
-            zoomBaseline = _zoom;
-
-            _previouslySelectedTextBox = _selectedTextBox;
-            _selectedTextBox = null;
-
-            for (int i = EditTextControl.Children.Count - 1; i >= 0; --i)
+            if (_currentEditMode == EditMode.Text)
             {
-                var textbox = EditTextControl.Children[i] as TextBox;
-                if (textbox != null)
-                {
-                    var boundingBox = new Rectangle((int)Canvas.GetLeft(textbox) - TEXT_SELECTION_MARGIN, (int)Canvas.GetTop(textbox) - TEXT_SELECTION_MARGIN,
-                                                    (int)textbox.ActualWidth + 2 * TEXT_SELECTION_MARGIN, (int)textbox.ActualHeight + 2 * TEXT_SELECTION_MARGIN);
+                // init start of manipulation
+                translationDeltaX = double.MinValue;
+                translationDeltaY = double.MinValue;
+                zoomBaseline = _zoom;
 
-                    if (boundingBox.Contains((int)e.ManipulationOrigin.X, (int)e.ManipulationOrigin.Y))
+                _previouslySelectedTextBox = _selectedTextBox;
+                _selectedTextBox = null;
+
+                for (int i = EditTextControl.Children.Count - 1; i >= 0; --i)
+                {
+                    var textbox = EditTextControl.Children[i] as TextBox;
+                    if (textbox != null)
                     {
-                        _selectedTextBox = textbox;
-                        break;
+                        var boundingBox = new Rectangle((int)Canvas.GetLeft(textbox) - TEXT_SELECTION_MARGIN, (int)Canvas.GetTop(textbox) - TEXT_SELECTION_MARGIN,
+                                                        (int)textbox.ActualWidth + 2 * TEXT_SELECTION_MARGIN, (int)textbox.ActualHeight + 2 * TEXT_SELECTION_MARGIN);
+
+                        if (boundingBox.Contains((int)e.ManipulationOrigin.X, (int)e.ManipulationOrigin.Y))
+                        {
+                            _selectedTextBox = textbox;
+                            break;
+                        }
                     }
                 }
-            }
 
-            if (_previouslySelectedTextBox != null)
-            {
-                _previouslySelectedTextBox.IsEnabled = false;
-            }
-
-            // reset previous selection when nothing was clicked
-            if (_selectedTextBox == null)
-            {
-                _previouslySelectedTextBox = null;
-                if (_selectedTextBox != null)
+                if (_previouslySelectedTextBox != null)
                 {
-                    _selectedTextBox.IsEnabled = false;
+                    _previouslySelectedTextBox.IsEnabled = false;
+                }
+
+                // reset previous selection when nothing was clicked
+                if (_selectedTextBox == null)
+                {
+                    _previouslySelectedTextBox = null;
+                    if (_selectedTextBox != null)
+                    {
+                        _selectedTextBox.IsEnabled = false;
+                    }
                 }
             }
         }
@@ -1209,24 +1243,21 @@ namespace PhotoNote.Pages
             }
             else if (_selectedTextBox != null)
             {
-                _moveCounter++;
-
                 SetTextBoxPosition(EditTextControl, e.ManipulationOrigin.X, e.ManipulationOrigin.Y, _selectedTextBox);
             }
 
+            if (_currentEditMode == EditMode.Text)
+            {
+                _moveCounter++;
+            }
         }
 
         private void MyIP_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
         {
-            if (_currentDrawMode == DrawMode.Text && !_twoFingersActive)
+            if (_currentEditMode == EditMode.Text && !_twoFingersActive)
             {
                 if (_selectedTextBox != null)
                 {
-                    //if (_moveCounter == 0)
-                    //{
-                    //    _selectedTextBox.Focus();
-                    //    _selectedTextBox.SelectAll();
-                    //}
                     _selectedTextBox.IsEnabled = true;
                 }
                 else if (_previouslySelectedTextBox == null && _moveCounter <= 1 && !_isKeyboardActive)

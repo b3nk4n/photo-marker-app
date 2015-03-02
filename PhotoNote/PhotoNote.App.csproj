@@ -106,6 +106,7 @@
     <Compile Include="Conversion\LinearToQuadraticConverter.cs" />
     <Compile Include="CustomUriMapper.cs" />
     <Compile Include="DrawMode.cs" />
+    <Compile Include="EditMode.cs" />
     <Compile Include="Helpers\LauncherHelper.cs" />
     <Compile Include="Helpers\NavigationHelper.cs" />
     <Compile Include="LocalizedStrings.cs" />
@@ -177,13 +178,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\AppBar\appbar.draw.marker.Arrow.active.png" />
     <Content Include="Assets\AppBar\appbar.draw.marker.Arrow.png" />
+    <Content Include="Assets\AppBar\appbar.draw.marker.Circle.active.png" />
     <Content Include="Assets\AppBar\appbar.draw.marker.Circle.png" />
+    <Content Include="Assets\AppBar\appbar.draw.marker.Line.active.png" />
     <Content Include="Assets\AppBar\appbar.draw.marker.Line.png" />
+    <Content Include="Assets\AppBar\appbar.draw.marker.Normal.active.png" />
     <Content Include="Assets\AppBar\appbar.draw.marker.Normal.png" />
+    <Content Include="Assets\AppBar\appbar.draw.marker.Rectangle.active.png" />
     <Content Include="Assets\AppBar\appbar.draw.marker.Rectangle.png" />
     <Content Include="Assets\AppBar\appbar.edit.png" />
     <Content Include="Assets\AppBar\appbar.image.select.png" />
+    <Content Include="Assets\AppBar\appbar.interface.textbox.active.png" />
     <Content Include="Assets\AppBar\appbar.interface.textbox.png" />
     <Content Include="Assets\AppBar\appbar.magnify1.png" />
     <Content Include="Assets\AppBar\appbar.magnify2.png" />
