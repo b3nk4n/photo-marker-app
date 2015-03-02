@@ -104,6 +104,7 @@ namespace PhotoNote.Pages
             {
                 if (_currentEditMode == EditMode.Text)
                 {
+                    UnselectTextBox(ref _selectedTextBox);
                     _currentEditMode = EditMode.Marker;
                     UpdateMarkerAppBar();
                     UpdateTextAppBar();
@@ -604,7 +605,7 @@ namespace PhotoNote.Pages
             }
             else if (_selectedTextBox != null)
             {
-                _selectedTextBox.IsEnabled = false;
+                UnselectTextBox(ref _selectedTextBox);
                 e.Cancel = true;
             }
             else if (InkControl.Strokes.Count > 0)
@@ -1188,19 +1189,12 @@ namespace PhotoNote.Pages
                     }
                 }
 
-                if (_previouslySelectedTextBox != null)
-                {
-                    _previouslySelectedTextBox.IsEnabled = false;
-                }
+                UnselectTextBox(ref _previouslySelectedTextBox);
 
                 // reset previous selection when nothing was clicked
                 if (_selectedTextBox == null)
                 {
                     _previouslySelectedTextBox = null;
-                    if (_selectedTextBox != null)
-                    {
-                        _selectedTextBox.IsEnabled = false;
-                    }
                 }
             }
         }
@@ -1312,11 +1306,13 @@ namespace PhotoNote.Pages
             {
                 if ((bool)e.NewValue)
                 {
-                    TextOptions.Visibility = Visibility.Visible;
+                    // show text options
+                    ShowTextOptionsAnimation.Begin();
                 }
                 else
                 {
-                    TextOptions.Visibility = Visibility.Collapsed;
+                    // hide text options
+                    HideTextOptionsAnimation.Begin();
                 }
             };
             // use out of screen location to get the actual width and height
@@ -1333,7 +1329,7 @@ namespace PhotoNote.Pages
             _selectedTextBox.SelectAll();
 
             // show text options
-            TextOptions.Visibility = Visibility.Visible;
+            ShowTextOptionsAnimation.Begin();
         }
 
         private static void SetTextBoxPosition(Canvas parent, double x, double y, TextBox textbox)
@@ -1386,8 +1382,20 @@ namespace PhotoNote.Pages
         /// <param name="textBox">The text box to remove.</param>
         private static void RemoveTextBox(Panel parent, TextBox textBox)
         {
-            textBox.IsEnabled = false;
             parent.Children.Remove(textBox);
+            UnselectTextBox(ref textBox);
+        }
+
+        /// <summary>
+        /// Unselects the active text box.
+        /// </summary>
+        private static void UnselectTextBox(ref TextBox textBox)
+        {
+            if (textBox != null)
+            {
+                textBox.IsEnabled = false;
+                textBox = null;
+            }
         }
     }
 }

@@ -356,7 +356,39 @@
         		</Setter.Value>
         	</Setter>
         </Style>
-	</phone:PhoneApplicationPage.Resources>
+        <Storyboard x:Name="ShowTextOptionsAnimation">
+        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="TextOptions">
+        		<DiscreteObjectKeyFrame KeyTime="0">
+        			<DiscreteObjectKeyFrame.Value>
+        				<Visibility>Visible</Visibility>
+        			</DiscreteObjectKeyFrame.Value>
+        		</DiscreteObjectKeyFrame>
+        	</ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="TextOptions">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1">
+        			<EasingDoubleKeyFrame.EasingFunction>
+        				<CircleEase EasingMode="EaseInOut"/>
+        			</EasingDoubleKeyFrame.EasingFunction>
+        		</EasingDoubleKeyFrame>
+        	</DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Name="HideTextOptionsAnimation">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="TextOptions">
+                <DiscreteObjectKeyFrame KeyTime="1">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="TextOptions">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </phone:PhoneApplicationPage.Resources>
 	<phone:PhoneApplicationPage.FontFamily>
 		<StaticResource ResourceKey="PhoneFontFamilyNormal"/>
 	</phone:PhoneApplicationPage.FontFamily>
@@ -643,7 +675,7 @@
             </Button>
         </StackPanel>
 
-        <Grid x:Name="TextToolbar" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Visibility="Collapsed">
+        <Grid x:Name="TextToolbar" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Visibility="Collapsed" Opacity="0">
             <Grid.RenderTransform>
                 <CompositeTransform TranslateY="0" />
             </Grid.RenderTransform>
