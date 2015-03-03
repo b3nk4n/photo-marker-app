@@ -108,6 +108,12 @@ namespace PhotoNote.Pages
                     _currentEditMode = EditMode.Marker;
                     UpdateMarkerAppBar();
                     UpdateTextAppBar();
+
+                    if (_isPenToolbarVisible)
+                    {
+                        // updates the view state
+                        ShowPenToolbar();
+                    }
                 }
                 else
                 {
@@ -128,9 +134,29 @@ namespace PhotoNote.Pages
             _appBarTextButton.Text = "text"; // TODO: translate
             _appBarTextButton.Click += (s, e) =>
             {
-                _currentEditMode = EditMode.Text;
-                UpdateMarkerAppBar();
-                UpdateTextAppBar();
+                if (_currentEditMode == EditMode.Marker)
+                {
+                    _currentEditMode = EditMode.Text;
+                    UpdateMarkerAppBar();
+                    UpdateTextAppBar();
+
+                    if (_isPenToolbarVisible)
+                    {
+                        // updates the view state
+                        ShowPenToolbar();
+                    }
+                }
+                else
+                {
+                    if (_isPenToolbarVisible)
+                    {
+                        HidePenToolbar();
+                    }
+                    else
+                    {
+                        ShowPenToolbar();
+                    }
+                }
             };
             ApplicationBar.Buttons.Add(_appBarTextButton);
 
@@ -627,9 +653,6 @@ namespace PhotoNote.Pages
 
         public void ShowPenToolbar(bool useTransition=true)
         {
-            if (_isPenToolbarVisible)
-                return;
-
             // make sure the right toobar is visible (required for the first launch
             if (Orientation == PageOrientation.Portrait ||
                 Orientation == PageOrientation.PortraitDown ||
@@ -642,9 +665,13 @@ namespace PhotoNote.Pages
                 PenToolbarLandscape.Visibility = System.Windows.Visibility.Visible;
             }
 
-            //LoadColorHistory();
+            string visualState;
+            if (_currentEditMode == EditMode.Marker)
+                visualState = "DisplayedPenMode";
+            else
+                visualState = "DisplayedTextMode";
 
-            VisualStateManager.GoToState(this, "Displayed", useTransition);
+            VisualStateManager.GoToState(this, visualState, useTransition);
             _isPenToolbarVisible = true;
         }
 
@@ -1164,6 +1191,11 @@ namespace PhotoNote.Pages
 
         private void MyIP_ManipulationStarted(object sender, ManipulationStartedEventArgs e)
         {
+            // init start of manipulation
+            translationDeltaX = double.MinValue;
+            translationDeltaY = double.MinValue;
+            zoomBaseline = _zoom;
+
             if (_currentEditMode == EditMode.Text)
             {
                 // init start of manipulation
