@@ -608,7 +608,8 @@ namespace PhotoNote.Pages
                 UnselectTextBox(ref _selectedTextBox);
                 e.Cancel = true;
             }
-            else if (InkControl.Strokes.Count > 0)
+            else if (InkControl.Strokes.Count > 0 ||
+                EditTextControl.Children.Count > 0)
             {
                 e.Cancel = true;
                 await Task.Delay(100); // fixes the "kill app by OS" issue
@@ -1189,7 +1190,8 @@ namespace PhotoNote.Pages
                     }
                 }
 
-                UnselectTextBox(ref _previouslySelectedTextBox);
+                if (_previouslySelectedTextBox != _selectedTextBox)
+                    UnselectTextBox(ref _previouslySelectedTextBox);
 
                 // reset previous selection when nothing was clicked
                 if (_selectedTextBox == null)
@@ -1253,6 +1255,11 @@ namespace PhotoNote.Pages
                 if (_selectedTextBox != null)
                 {
                     _selectedTextBox.IsEnabled = true;
+
+                    if (_previouslySelectedTextBox == _selectedTextBox && _moveCounter == 0)
+                    {
+                        EditTextBox(_selectedTextBox);
+                    }
                 }
                 else if (_previouslySelectedTextBox == null && _moveCounter <= 1 && !_isKeyboardActive)
                 {
@@ -1325,8 +1332,7 @@ namespace PhotoNote.Pages
 
             // select
             _selectedTextBox = textbox;
-            _selectedTextBox.Focus();
-            _selectedTextBox.SelectAll();
+            EditTextBox(_selectedTextBox);
 
             // show text options
             ShowTextOptionsAnimation.Begin();
@@ -1360,11 +1366,7 @@ namespace PhotoNote.Pages
 
         private void TextOptionsEditClicked(object sender, RoutedEventArgs e)
         {
-            if (_selectedTextBox != null)
-            {
-                _selectedTextBox.Focus();
-                _selectedTextBox.SelectAll();
-            }
+            EditTextBox(_selectedTextBox);
         }
 
         private void TextOptionsDeleteClicked(object sender, RoutedEventArgs e)
@@ -1395,6 +1397,19 @@ namespace PhotoNote.Pages
             {
                 textBox.IsEnabled = false;
                 textBox = null;
+            }
+        }
+
+        /// <summary>
+        /// Edits the text box.
+        /// </summary>
+        private static void EditTextBox(TextBox textBox)
+        {
+            if (textBox != null)
+            {
+                textBox.IsEnabled = true;
+                textBox.Focus();
+                textBox.SelectAll();
             }
         }
     }
