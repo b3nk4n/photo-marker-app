@@ -75,6 +75,7 @@ namespace PhotoNote.Pages
 
             Loaded += (s, e) => {
                 SetTogglesToMode(_currentDrawMode);
+                SetTogglesToTextAlignment(_currentTextAlignment);
                 UpdateTextAppBar();
             };
         }
@@ -770,6 +771,8 @@ namespace PhotoNote.Pages
             if (toggle != null)
             {
                 var toggledMode = (DrawMode)Enum.Parse(typeof(DrawMode), (string)toggle.Tag);
+                // set mode
+                _currentDrawMode = toggledMode;
                 SetTogglesToMode(toggledMode);
             }
         }
@@ -787,9 +790,6 @@ namespace PhotoNote.Pages
             LinePen.Unchecked -= PenModeToggled;
             CirclePen.Unchecked -= PenModeToggled;
             RectanglePen.Unchecked -= PenModeToggled;
-
-            // set mode
-            _currentDrawMode = mode;
 
             // update UI
             switch (mode)
@@ -1217,6 +1217,9 @@ namespace PhotoNote.Pages
                         if (boundingBox.Contains((int)e.ManipulationOrigin.X, (int)e.ManipulationOrigin.Y))
                         {
                             _selectedTextBox = textbox;
+                            
+                            // update UI in toolbar
+                            SetTogglesToTextAlignment(_currentTextAlignment);
                             break;
                         }
                     }
@@ -1320,10 +1323,18 @@ namespace PhotoNote.Pages
             return lastValue * (1 - alpha) + newValue * alpha;
         }
 
+        /// <summary>
+        /// Add a text with current text properties.
+        /// </summary>
+        /// <param name="parent">The parent canvas container.</param>
+        /// <param name="text">The default text.</param>
+        /// <param name="x">The x coord.</param>
+        /// <param name="y">THe y coord.</param>
         private void AddTextBlock(Canvas parent, string text, double x, double y)
         {
             var textbox = new TextBox();
             textbox.Text = text;
+            textbox.TextAlignment = _currentTextAlignment;
             textbox.AcceptsReturn = true;
             textbox.FontSize = 36.0;
             textbox.Style = (Style)Resources["DraggableTextBoxStyle"];
@@ -1380,22 +1391,6 @@ namespace PhotoNote.Pages
 
         #endregion
 
-        private void IncreaseFont(object sender, RoutedEventArgs e)
-        {
-            if (_selectedTextBox != null)
-            {
-                _selectedTextBox.FontSize += 2;
-            }
-        }
-
-        private void DecreaseFont(object sender, RoutedEventArgs e)
-        {
-            if (_selectedTextBox != null)
-            {
-                _selectedTextBox.FontSize -= 2;
-            }
-        }
-
         private void TextOptionsEditClicked(object sender, RoutedEventArgs e)
         {
             EditTextBox(_selectedTextBox);
@@ -1443,6 +1438,81 @@ namespace PhotoNote.Pages
                 textBox.Focus();
                 textBox.SelectAll();
             }
+        }
+
+        /// <summary>
+        /// The most recent text alignment.
+        /// </summary>
+        private TextAlignment _currentTextAlignment = TextAlignment.Left;
+
+        private void TextAlignmentToggled(object sender, RoutedEventArgs e)
+        {
+            var toggle = sender as ToggleButton;
+
+            if (toggle != null)
+            {
+                var toggledAlignment = (TextAlignment)Enum.Parse(typeof(TextAlignment), (string)toggle.Tag);
+                
+                // set mode
+                _currentTextAlignment = toggledAlignment;
+
+                // change allignment when a text is selected
+                if (_selectedTextBox != null)
+                {
+                    _selectedTextBox.TextAlignment = _currentTextAlignment;
+                }
+
+                // refresh UI
+                SetTogglesToTextAlignment(toggledAlignment);
+            }
+        }
+
+        private void SetTogglesToTextAlignment(TextAlignment alignment)
+        {
+            // unregister events
+            AlignmentLeft.Checked -= TextAlignmentToggled;
+            AlignmentCenter.Checked -= TextAlignmentToggled;
+            AlignmentRight.Checked -= TextAlignmentToggled;
+            AlignmentLeft.Unchecked -= TextAlignmentToggled;
+            AlignmentCenter.Unchecked -= TextAlignmentToggled;
+            AlignmentRight.Unchecked -= TextAlignmentToggled;
+
+            // update UI
+            switch (alignment)
+            {
+                case TextAlignment.Left:
+                    if (!AlignmentLeft.IsChecked.Value)
+                    {
+                        AlignmentLeft.IsChecked = true;
+                    }
+                    AlignmentCenter.IsChecked = false;
+                    AlignmentRight.IsChecked = false;
+                    break;
+                case TextAlignment.Center:
+                    if (!AlignmentCenter.IsChecked.Value)
+                    {
+                        AlignmentCenter.IsChecked = true;
+                    }
+                    AlignmentLeft.IsChecked = false;
+                    AlignmentRight.IsChecked = false;
+                    break;
+                case TextAlignment.Right:
+                    if (!AlignmentRight.IsChecked.Value)
+                    {
+                        AlignmentRight.IsChecked = true;
+                    }
+                    AlignmentLeft.IsChecked = false;
+                    AlignmentCenter.IsChecked = false;
+                    break;
+            }
+
+            // reregister events
+            AlignmentLeft.Checked += TextAlignmentToggled;
+            AlignmentCenter.Checked += TextAlignmentToggled;
+            AlignmentRight.Checked += TextAlignmentToggled;
+            AlignmentLeft.Unchecked += TextAlignmentToggled;
+            AlignmentCenter.Unchecked += TextAlignmentToggled;
+            AlignmentRight.Unchecked += TextAlignmentToggled;
         }
     }
 }

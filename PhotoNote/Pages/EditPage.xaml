@@ -610,6 +610,7 @@
                         </StackPanel>
                     </StackPanel>
 
+                    <!-- text mode -->
                     <StackPanel x:Name="PropertiesTextMode" Orientation="Horizontal" Visibility="Collapsed">
                         <StackPanel Margin="10,24,6,12">
                             <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 19,19L 25.3333,19L 25.3333,25.3333L 31.6667,25.3333L 31.6667,19L 38,19L 38,25.3333L 44.3333,25.3333L 44.3333,19L 50.6667,19L 50.6667,25.3333L 57,25.3333L 57,31.6667L 50.6667,31.6667L 50.6667,38L 57,38L 57,44.3333L 50.6667,44.3333L 50.6667,50.6667L 57,50.6667L 57,57L 50.6667,57L 50.6667,50.6667L 44.3333,50.6667L 44.3333,57L 38,57L 38,50.6667L 31.6667,50.6667L 31.6667,57L 25.3333,57L 25.3333,50.6667L 19,50.6667L 19,44.3333L 25.3333,44.3333L 25.3333,38L 19,38L 19,31.6667L 25.3333,31.6667L 25.3333,25.3333L 19,25.3333L 19,19 Z M 50.6667,38L 44.3333,38L 44.3333,44.3333L 50.6667,44.3333L 50.6667,38 Z M 50.6667,25.3333L 44.3333,25.3333L 44.3333,31.6667L 50.6667,31.6667L 50.6667,25.3333 Z M 44.3333,44.3333L 38,44.3333L 38,50.6667L 44.3333,50.6667L 44.3333,44.3333 Z M 38,44.3333L 38,38L 31.6667,38L 31.6667,44.3333L 38,44.3333 Z M 31.6667,44.3333L 25.3333,44.3333L 25.3333,50.6667L 31.6667,50.6667L 31.6667,44.3333 Z M 44.3333,31.6667L 38,31.6667L 38,38L 44.3333,38L 44.3333,31.6667 Z M 38,31.6667L 38,25.3333L 31.6667,25.3333L 31.6666,31.6667L 38,31.6667 Z M 31.6666,31.6667L 25.3333,31.6667L 25.3333,38L 31.6667,38L 31.6666,31.6667 Z ">
@@ -624,9 +625,20 @@
 							Value="0.5" Minimum="0.1" Maximum="1" SmallChange="0.2" LargeChange="0.1" Orientation="Vertical" Height="184" Width="64" VerticalAlignment="Top" Style="{StaticResource CustomSliderStyle}" />
                         </StackPanel>
                         <StackPanel Margin="0,24,6,12">
-                            <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 20.5833,55.4167L 49.0833,55.4167L 45.9167,52.25L 25.3333,52.25L 31.6667,49.0833L 25.3333,42.75L 22.1667,49.875C 22.1667,49.875 15.8333,55.4167 20.5833,55.4167 Z M 36.4166,47.5L 26.9166,38L 26.9166,41.1667L 33.25,47.5L 36.4166,47.5 Z M 28.8958,37.6042L 36.8125,45.5209C 38.3958,47.1042 42.75,42.75 42.75,42.75L 31.6666,31.6667C 26.9166,36.4167 28.8958,37.6042 28.8958,37.6042 Z M 44.3333,41.1667L 65.6868,16.8593C 63.2289,13.6452 60.224,10.8717 56.8112,8.67772L 33.25,30.0834L 44.3333,41.1667 Z "/>
+                            <Path Width="30" Height="22" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 33.6585,44.381L 24.397,44.381L 22.0936,52.9919L 14.5596,52.9919L 24.397,21L 33.9944,21L 42.31,47.4041L 47.7438,29.9832L 54.7237,29.9832L 62.0513,53L 56.2942,53L 54.4794,46.7375L 47.7438,46.7375L 46.0686,53L 36.1538,52.9919L 33.6585,44.381 Z M 25.4527,39.1786L 32.6028,39.1786L 30.5873,32.3811L 29.7355,29.2915L 28.9557,26.2024L 28.8598,26.2024L 28.134,29.3193L 27.3722,32.4615L 25.4527,39.1786 Z M 48.5116,42.954L 53.7116,42.954L 52.2458,38.0104L 51.6264,35.7634L 51.0592,33.5168L 50.9894,33.5168L 50.4616,35.7836L 49.9075,38.0688L 48.5116,42.954 Z "/>
                             <Slider x:Name="TextThicknessSlider" Foreground="{Binding SolidColorBrush, ElementName=ColorPicker}"
 							Minimum="12" Maximum="128" SmallChange="2" LargeChange="2" Orientation="Vertical" Height="184" Width="64" VerticalAlignment="Top" Style="{StaticResource CustomSliderStyle}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,24,16,24">
+                            <ToggleButton x:Name="AlignmentLeft" Style="{StaticResource CustomToggleButtonStyle}" Tag="Left" Checked="TextAlignmentToggled" Unchecked="TextAlignmentToggled">
+                                <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 53,19L 19,19L 19,25L 53,25L 53,19 Z M 49,52L 19,52L 19,58L 49,58L 49,52 Z M 38,41L 19,41L 19,47L 38,47L 38,41 Z M 44,30L 19,30L 19,36L 44,36L 44,30 Z " />
+                            </ToggleButton>
+                            <ToggleButton x:Name="AlignmentCenter" Style="{StaticResource CustomToggleButtonStyle}" Tag="Center" Checked="TextAlignmentToggled" Unchecked="TextAlignmentToggled">
+                                <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 19,19L 57,19L 57,25L 19,25L 19,19 Z M 22,52L 54,52L 54,58L 22,58L 22,52 Z M 29,41L 47,41L 47,47L 29,47L 29,41 Z M 25,30L 51,30L 51,36L 25,36L 25,30 Z " />
+                            </ToggleButton>
+                            <ToggleButton x:Name="AlignmentRight" Style="{StaticResource CustomToggleButtonStyle}" Tag="Right" Checked="TextAlignmentToggled" Unchecked="TextAlignmentToggled">
+                                <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 23,19L 57,19L 57,25L 23,25L 23,19 Z M 27,52L 57,52L 57,58L 27,58L 27,52 Z M 38,41L 57,41L 57,47L 38,47L 38,41 Z M 32,30L 57,30L 57,36L 32,36L 32,30 Z " />
+                            </ToggleButton>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
@@ -732,16 +744,6 @@
                 </Grid>
             </Button>
         </StackPanel>
-
-        <Grid x:Name="TextToolbar" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Visibility="Collapsed" Opacity="0">
-            <Grid.RenderTransform>
-                <CompositeTransform TranslateY="0" />
-            </Grid.RenderTransform>
-            <StackPanel Orientation="Horizontal">
-                <RepeatButton Content="A+" Click="IncreaseFont" />
-                <RepeatButton Content="A-" Click="DecreaseFont" />
-            </StackPanel>
-        </Grid>
 
         <Grid x:Name="ZoomingPopup" Visibility="Collapsed" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
             <Grid.Resources>
