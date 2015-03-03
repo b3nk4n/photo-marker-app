@@ -26,6 +26,7 @@ using System.Windows.Controls.Primitives;
 using System.Collections.Generic;
 using PhoneKit.Framework.Core.Storage;
 using PhotoNote.Conversion;
+using PhotoNote.ViewModel;
 
 namespace PhotoNote.Pages
 {
@@ -68,6 +69,8 @@ namespace PhotoNote.Pages
 
         private static LinearToQuadraticConverter LinerToQuadraticConverter = new LinearToQuadraticConverter();
 
+        private TextContext _textContext = new TextContext();
+
         public EditPage()
         {
             InitializeComponent();
@@ -75,7 +78,14 @@ namespace PhotoNote.Pages
 
             Loaded += (s, e) => {
                 SetTogglesToMode(_currentDrawMode);
-                SetTogglesToTextAlignment(_currentTextAlignment);
+                SetTogglesToTextAlignment(_textContext.Alignment);
+                SetTogglesToTextWeight(_textContext.Weight);
+                SetTogglesToTextStyle(_textContext.Style);
+                TextOpacitySlider.Value = _textContext.Opacity;
+                TextSizeSlider.Value = _textContext.Size;
+                SetTogglesToTextBorder(_textContext.HasBorder);
+                SetTogglesToTextBackgroundBorder(_textContext.HasBackgroundBorder);
+                SetSelectionTextFont(_textContext.Font);
                 UpdateTextAppBar();
             };
         }
@@ -760,6 +770,9 @@ namespace PhotoNote.Pages
 
                 if (solidColor != null) {
                     ColorPicker.Color = solidColor.Color;
+
+                    // manually call the changed event
+                    ColorPickerChanged(null, solidColor.Color);
                 }
             }
         }
@@ -1219,7 +1232,14 @@ namespace PhotoNote.Pages
                             _selectedTextBox = textbox;
                             
                             // update UI in toolbar
-                            SetTogglesToTextAlignment(_currentTextAlignment);
+                            SetTogglesToTextAlignment(_textContext.Alignment);
+                            SetTogglesToTextWeight(_textContext.Weight);
+                            SetTogglesToTextStyle(_textContext.Style);
+                            TextOpacitySlider.Value = _textContext.Opacity;
+                            TextSizeSlider.Value = _textContext.Size;
+                            SetTogglesToTextBorder(_textContext.HasBorder);
+                            SetTogglesToTextBackgroundBorder(_textContext.HasBackgroundBorder);
+                            SetSelectionTextFont(_textContext.Font);
                             break;
                         }
                     }
@@ -1334,7 +1354,11 @@ namespace PhotoNote.Pages
         {
             var textbox = new TextBox();
             textbox.Text = text;
-            textbox.TextAlignment = _currentTextAlignment;
+            textbox.Foreground = ColorPicker.SolidColorBrush; // TODO: define a common context?
+            textbox.TextAlignment = _textContext.Alignment;
+            textbox.FontFamily = _textContext.Font;
+            textbox.FontWeight = _textContext.Weight;
+            textbox.FontStyle = _textContext.Style;
             textbox.AcceptsReturn = true;
             textbox.FontSize = 36.0;
             textbox.Style = (Style)Resources["DraggableTextBoxStyle"];
@@ -1440,11 +1464,6 @@ namespace PhotoNote.Pages
             }
         }
 
-        /// <summary>
-        /// The most recent text alignment.
-        /// </summary>
-        private TextAlignment _currentTextAlignment = TextAlignment.Left;
-
         private void TextAlignmentToggled(object sender, RoutedEventArgs e)
         {
             var toggle = sender as ToggleButton;
@@ -1454,12 +1473,12 @@ namespace PhotoNote.Pages
                 var toggledAlignment = (TextAlignment)Enum.Parse(typeof(TextAlignment), (string)toggle.Tag);
                 
                 // set mode
-                _currentTextAlignment = toggledAlignment;
+                _textContext.Alignment = toggledAlignment;
 
                 // change allignment when a text is selected
                 if (_selectedTextBox != null)
                 {
-                    _selectedTextBox.TextAlignment = _currentTextAlignment;
+                    _selectedTextBox.TextAlignment = toggledAlignment;
                 }
 
                 // refresh UI
@@ -1513,6 +1532,236 @@ namespace PhotoNote.Pages
             AlignmentLeft.Unchecked += TextAlignmentToggled;
             AlignmentCenter.Unchecked += TextAlignmentToggled;
             AlignmentRight.Unchecked += TextAlignmentToggled;
+        }
+
+        private void TextWeightToggled(object sender, RoutedEventArgs e)
+        {
+            var toggle = sender as ToggleButton;
+
+            if (toggle != null)
+            {
+                if (toggle.IsChecked.Value)
+                    UpdateFontWeight(FontWeights.Bold);
+                else
+                    UpdateFontWeight(FontWeights.Normal);
+            }
+        }
+
+        private void UpdateFontWeight(FontWeight weight)
+        {
+            _textContext.Weight = weight;
+
+            // change font weight when a text is selected
+            if (_selectedTextBox != null)
+            {
+                _selectedTextBox.FontWeight = weight;
+            }
+        }
+
+        private void SetTogglesToTextWeight(FontWeight weight)
+        {
+            // unregister events
+            TextWeight.Checked -= TextWeightToggled;
+
+            // update UI
+            if (weight == FontWeights.Bold)
+            {
+                if (!TextWeight.IsChecked.Value)
+                {
+                    TextWeight.IsChecked = true;
+                }
+            }
+            else
+            {
+                if (TextWeight.IsChecked.Value)
+                {
+                    TextWeight.IsChecked = false;
+                }
+            }
+
+            // reregister events
+            TextWeight.Checked += TextWeightToggled;
+        }
+
+        private void TextStyleToggled(object sender, RoutedEventArgs e)
+        {
+            var toggle = sender as ToggleButton;
+
+            if (toggle != null)
+            {
+                if (toggle.IsChecked.Value)
+                    UpdateFontStyle(FontStyles.Italic);
+                else 
+                    UpdateFontStyle(FontStyles.Normal);
+            }
+        }
+
+        private void UpdateFontStyle(FontStyle style)
+        {
+            _textContext.Style = style;
+
+            // change font style when a text is selected
+            if (_selectedTextBox != null)
+            {
+                _selectedTextBox.FontStyle = style;
+            }
+        }
+
+        private void SetTogglesToTextStyle(FontStyle style)
+        {
+            // unregister events
+            TextStyle.Checked -= TextStyleToggled;
+
+            // update UI
+            if (style == FontStyles.Italic)
+            {
+                if (!TextStyle.IsChecked.Value)
+                {
+                    TextStyle.IsChecked = true;
+                }
+            }
+            else
+            {
+                if (TextStyle.IsChecked.Value)
+                {
+                    TextStyle.IsChecked = false;
+                }
+            }
+
+            // reregister events
+            TextStyle.Checked += TextStyleToggled;
+        }
+
+        private void ColorPickerChanged(object sender, System.Windows.Media.Color color)
+        {
+            if (_selectedTextBox != null)
+            {
+                // Remark: color not used, because we do not want to create a new instance each change
+                _selectedTextBox.Foreground = ColorPicker.SolidColorBrush;
+            }
+        }
+
+        private void TextOpacityChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            _textContext.Opacity = e.NewValue;
+
+            if (_selectedTextBox != null)
+            {
+                _selectedTextBox.Opacity = _textContext.Opacity;
+            }
+        }
+
+        private void TextSizeChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            _textContext.Size = e.NewValue;
+
+            if (_selectedTextBox != null)
+            {
+                _selectedTextBox.FontSize = _textContext.Size;
+            }
+        }
+
+        private void TextBorderToggled(object sender, RoutedEventArgs e)
+        {
+            var toggle = sender as ToggleButton;
+
+            if (toggle != null)
+            {
+                UpdateTextBorder(toggle.IsChecked.Value);
+            }
+        }
+
+        private void UpdateTextBorder(bool hasBorder)
+        {
+            _textContext.HasBorder = hasBorder;
+
+            // change when a text is selected
+            if (_selectedTextBox != null)
+            {
+                //_selectedTextBox.HasBorder = hasBorder; // TODO: create advanced textbox class
+            }
+        }
+
+        private void SetTogglesToTextBorder(bool hasBorder)
+        {
+            // unregister events
+            TextBorder.Checked -= TextBorderToggled;
+
+            // update UI
+            TextBorder.IsChecked = hasBorder;
+
+            // reregister events
+            TextBorder.Checked += TextBorderToggled;
+        }
+
+        private void TextBackgroundBorderToggled(object sender, RoutedEventArgs e)
+        {
+            var toggle = sender as ToggleButton;
+
+            if (toggle != null)
+            {
+                UpdateTextBackgroundBorder(toggle.IsChecked.Value);
+            }
+        }
+
+        private void UpdateTextBackgroundBorder(bool hasBackgroundBorder)
+        {
+            _textContext.HasBackgroundBorder = hasBackgroundBorder;
+
+            // change when a text is selected
+            if (_selectedTextBox != null)
+            {
+                //_selectedTextBox.HasBorderBackground = hasBorderBackground; // TODO: create advanced textbox class
+            }
+        }
+
+        private void SetTogglesToTextBackgroundBorder(bool hasBackgroundBorder)
+        {
+            // unregister events
+            TextBackgroundBorder.Checked -= TextBackgroundBorderToggled;
+
+            // update UI
+            TextBackgroundBorder.IsChecked = hasBackgroundBorder;
+
+            // reregister events
+            TextBackgroundBorder.Checked += TextBackgroundBorderToggled;
+        }
+
+        private void FontPickerSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var picker = sender as ListPicker;
+            if (picker != null)
+            {
+                var selectedFontItem = picker.SelectedItem as FontItemViewModel;
+
+                if (selectedFontItem != null)
+                    UpdateTextFont(selectedFontItem.Font);
+            }
+
+            
+        }
+
+        private void UpdateTextFont(FontFamily font)
+        {
+            _textContext.Font = font;
+
+            // change when a text is selected
+            if (_selectedTextBox != null)
+            {
+                _selectedTextBox.FontFamily = _textContext.Font;
+            }
+        }
+
+        private void SetSelectionTextFont(FontFamily font)
+        {
+            // unregister events
+            FontPicker.SelectionChanged -= FontPickerSelectionChanged;
+
+            // update UI
+            FontPicker.SelectedItem = FontsViewModel.GetItemByFont(font);
+
+            // reregister events
+            FontPicker.SelectionChanged += FontPickerSelectionChanged;
         }
     }
 }

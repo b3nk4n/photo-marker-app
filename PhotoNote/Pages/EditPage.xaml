@@ -38,6 +38,7 @@
     </toolkit:TransitionService.NavigationOutTransition>-->
 
     <phone:PhoneApplicationPage.Resources>
+        <vm:FontsViewModel x:Key="FontsViewModel" />
 		<Converters:SolidColorBrushToColorConverter x:Key="BrushToBrush"/>
         <conv:LinearToQuadraticConverter x:Key="LinToQuadConv" />
 		<SolidColorBrush x:Key="DefaultDisabledBrush" Color="{Binding Converter={StaticResource BrushToBrush}, Source={StaticResource PhoneDisabledBrush}}"/>
@@ -503,8 +504,16 @@
 				</VisualState>
                 <VisualState x:Name="DisplayedTextMode">
                     <Storyboard>
-                        <DoubleAnimation Duration="0:0:1" To="100" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)" Storyboard.TargetName="PenToolbar" d:IsOptimized="True"/>
-                        <DoubleAnimation Duration="0:0:1" To="100" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)" Storyboard.TargetName="PenToolbarLandscape" d:IsOptimized="True"/>
+                        <DoubleAnimation Duration="0:0:1" To="100" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)" Storyboard.TargetName="PenToolbar" d:IsOptimized="True">
+                            <DoubleAnimation.EasingFunction>
+                                <BackEase EasingMode="EaseInOut" Amplitude="0.2"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                        <DoubleAnimation Duration="0:0:1" To="100" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)" Storyboard.TargetName="PenToolbarLandscape" d:IsOptimized="True">
+                            <DoubleAnimation.EasingFunction>
+                                <BackEase EasingMode="EaseInOut" Amplitude="0.2"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PropertiesPenMode" Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
                         </ObjectAnimationUsingKeyFrames>
@@ -549,7 +558,7 @@
                 </Grid>
 			</Grid>
 
-			<Grid x:Name="PenToolbar" Height="360" VerticalAlignment="Bottom" Background="{StaticResource PhoneChromeBrush}" RenderTransformOrigin="0.5,0.5"  Visibility="Collapsed">
+			<Grid x:Name="PenToolbar" Height="360" VerticalAlignment="Bottom" Background="{StaticResource PhoneChromeBrush}" RenderTransformOrigin="0.5,0.5"  Visibility="Visible">
 				<Grid.RenderTransform>
 					<CompositeTransform TranslateY="600"/>
 				</Grid.RenderTransform>
@@ -561,7 +570,7 @@
                 </Button>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,0">
 					<StackPanel Margin="12">
-						<coding:ColorPicker x:Name="ColorPicker" Height="198" Width="220"  Margin="10,12,0,12" Style="{StaticResource CustomColorPickerStyle}" />
+						<coding:ColorPicker x:Name="ColorPicker" Height="198" Width="220"  Margin="10,12,0,12" Style="{StaticResource CustomColorPickerStyle}" ColorChanged="ColorPickerChanged" />
 					</StackPanel>
 					<StackPanel Margin="-4,20,0,20">
 						<Rectangle x:Name="ColorHistory1" Fill="Red" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
@@ -611,7 +620,7 @@
                     </StackPanel>
 
                     <!-- text mode -->
-                    <StackPanel x:Name="PropertiesTextMode" Orientation="Horizontal" Visibility="Collapsed">
+                    <StackPanel x:Name="PropertiesTextMode" Orientation="Horizontal" Visibility="Visible">
                         <StackPanel Margin="10,24,6,12">
                             <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 19,19L 25.3333,19L 25.3333,25.3333L 31.6667,25.3333L 31.6667,19L 38,19L 38,25.3333L 44.3333,25.3333L 44.3333,19L 50.6667,19L 50.6667,25.3333L 57,25.3333L 57,31.6667L 50.6667,31.6667L 50.6667,38L 57,38L 57,44.3333L 50.6667,44.3333L 50.6667,50.6667L 57,50.6667L 57,57L 50.6667,57L 50.6667,50.6667L 44.3333,50.6667L 44.3333,57L 38,57L 38,50.6667L 31.6667,50.6667L 31.6667,57L 25.3333,57L 25.3333,50.6667L 19,50.6667L 19,44.3333L 25.3333,44.3333L 25.3333,38L 19,38L 19,31.6667L 25.3333,31.6667L 25.3333,25.3333L 19,25.3333L 19,19 Z M 50.6667,38L 44.3333,38L 44.3333,44.3333L 50.6667,44.3333L 50.6667,38 Z M 50.6667,25.3333L 44.3333,25.3333L 44.3333,31.6667L 50.6667,31.6667L 50.6667,25.3333 Z M 44.3333,44.3333L 38,44.3333L 38,50.6667L 44.3333,50.6667L 44.3333,44.3333 Z M 38,44.3333L 38,38L 31.6667,38L 31.6667,44.3333L 38,44.3333 Z M 31.6667,44.3333L 25.3333,44.3333L 25.3333,50.6667L 31.6667,50.6667L 31.6667,44.3333 Z M 44.3333,31.6667L 38,31.6667L 38,38L 44.3333,38L 44.3333,31.6667 Z M 38,31.6667L 38,25.3333L 31.6667,25.3333L 31.6666,31.6667L 38,31.6667 Z M 31.6666,31.6667L 25.3333,31.6667L 25.3333,38L 31.6667,38L 31.6666,31.6667 Z ">
                                 <Path.OpacityMask>
@@ -621,24 +630,70 @@
                                     </LinearGradientBrush>
                                 </Path.OpacityMask>
                             </Path>
-                            <Slider x:Name="TextOpacitySlider" Foreground="{Binding SolidColorBrush, ElementName=ColorPicker}"
-							Value="0.5" Minimum="0.1" Maximum="1" SmallChange="0.2" LargeChange="0.1" Orientation="Vertical" Height="184" Width="64" VerticalAlignment="Top" Style="{StaticResource CustomSliderStyle}" />
+                            <Slider x:Name="TextOpacitySlider" Foreground="{Binding SolidColorBrush, ElementName=ColorPicker}" ValueChanged="TextOpacityChanged"
+							Value="1" Minimum="0.1" Maximum="1" SmallChange="0.2" LargeChange="0.1" Orientation="Vertical" Height="184" Width="64" VerticalAlignment="Top" Style="{StaticResource CustomSliderStyle}" />
                         </StackPanel>
                         <StackPanel Margin="0,24,6,12">
                             <Path Width="30" Height="22" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 33.6585,44.381L 24.397,44.381L 22.0936,52.9919L 14.5596,52.9919L 24.397,21L 33.9944,21L 42.31,47.4041L 47.7438,29.9832L 54.7237,29.9832L 62.0513,53L 56.2942,53L 54.4794,46.7375L 47.7438,46.7375L 46.0686,53L 36.1538,52.9919L 33.6585,44.381 Z M 25.4527,39.1786L 32.6028,39.1786L 30.5873,32.3811L 29.7355,29.2915L 28.9557,26.2024L 28.8598,26.2024L 28.134,29.3193L 27.3722,32.4615L 25.4527,39.1786 Z M 48.5116,42.954L 53.7116,42.954L 52.2458,38.0104L 51.6264,35.7634L 51.0592,33.5168L 50.9894,33.5168L 50.4616,35.7836L 49.9075,38.0688L 48.5116,42.954 Z "/>
-                            <Slider x:Name="TextThicknessSlider" Foreground="{Binding SolidColorBrush, ElementName=ColorPicker}"
-							Minimum="12" Maximum="128" SmallChange="2" LargeChange="2" Orientation="Vertical" Height="184" Width="64" VerticalAlignment="Top" Style="{StaticResource CustomSliderStyle}" />
+                            <Slider x:Name="TextSizeSlider" Foreground="{Binding SolidColorBrush, ElementName=ColorPicker}" ValueChanged="TextSizeChanged"
+							Value="36" Minimum="12" Maximum="128" SmallChange="2" LargeChange="2" Orientation="Vertical" Height="184" Width="64" VerticalAlignment="Top" Style="{StaticResource CustomSliderStyle}" />
                         </StackPanel>
                         <StackPanel Margin="0,24,16,24">
-                            <ToggleButton x:Name="AlignmentLeft" Style="{StaticResource CustomToggleButtonStyle}" Tag="Left" Checked="TextAlignmentToggled" Unchecked="TextAlignmentToggled">
-                                <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 53,19L 19,19L 19,25L 53,25L 53,19 Z M 49,52L 19,52L 19,58L 49,58L 49,52 Z M 38,41L 19,41L 19,47L 38,47L 38,41 Z M 44,30L 19,30L 19,36L 44,36L 44,30 Z " />
-                            </ToggleButton>
-                            <ToggleButton x:Name="AlignmentCenter" Style="{StaticResource CustomToggleButtonStyle}" Tag="Center" Checked="TextAlignmentToggled" Unchecked="TextAlignmentToggled">
-                                <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 19,19L 57,19L 57,25L 19,25L 19,19 Z M 22,52L 54,52L 54,58L 22,58L 22,52 Z M 29,41L 47,41L 47,47L 29,47L 29,41 Z M 25,30L 51,30L 51,36L 25,36L 25,30 Z " />
-                            </ToggleButton>
-                            <ToggleButton x:Name="AlignmentRight" Style="{StaticResource CustomToggleButtonStyle}" Tag="Right" Checked="TextAlignmentToggled" Unchecked="TextAlignmentToggled">
-                                <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 23,19L 57,19L 57,25L 23,25L 23,19 Z M 27,52L 57,52L 57,58L 27,58L 27,52 Z M 38,41L 57,41L 57,47L 38,47L 38,41 Z M 32,30L 57,30L 57,36L 32,36L 32,30 Z " />
-                            </ToggleButton>
+                            <!-- alignment -->
+                            <StackPanel Orientation="Horizontal">
+                                <ToggleButton x:Name="AlignmentLeft" Style="{StaticResource CustomToggleButtonStyle}" Tag="Left" Checked="TextAlignmentToggled" Unchecked="TextAlignmentToggled">
+                                    <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 53,19L 19,19L 19,25L 53,25L 53,19 Z M 49,52L 19,52L 19,58L 49,58L 49,52 Z M 38,41L 19,41L 19,47L 38,47L 38,41 Z M 44,30L 19,30L 19,36L 44,36L 44,30 Z " />
+                                </ToggleButton>
+                                <ToggleButton x:Name="AlignmentCenter" Style="{StaticResource CustomToggleButtonStyle}" Tag="Center" Checked="TextAlignmentToggled" Unchecked="TextAlignmentToggled">
+                                    <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 19,19L 57,19L 57,25L 19,25L 19,19 Z M 22,52L 54,52L 54,58L 22,58L 22,52 Z M 29,41L 47,41L 47,47L 29,47L 29,41 Z M 25,30L 51,30L 51,36L 25,36L 25,30 Z " />
+                                </ToggleButton>
+                                <ToggleButton x:Name="AlignmentRight" Style="{StaticResource CustomToggleButtonStyle}" Tag="Right" Checked="TextAlignmentToggled" Unchecked="TextAlignmentToggled">
+                                    <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 23,19L 57,19L 57,25L 23,25L 23,19 Z M 27,52L 57,52L 57,58L 27,58L 27,52 Z M 38,41L 57,41L 57,47L 38,47L 38,41 Z M 32,30L 57,30L 57,36L 32,36L 32,30 Z " />
+                                </ToggleButton>
+                            </StackPanel>
+                            
+                            <!-- style/weight -->
+                            <StackPanel Orientation="Horizontal">
+                                <ToggleButton x:Name="TextWeight" Style="{StaticResource CustomToggleButtonStyle}" Checked="TextWeightToggled" Unchecked="TextWeightToggled">
+                                    <Path Width="18" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 27,58L 27,20L 38.9937,20C 42.6524,20 45.549,20.7945 47.6837,22.3835C 49.8184,23.9725 50.8857,26.0421 50.8857,28.5924C 50.8857,30.7243 50.2849,32.5776 49.0833,34.1524C 47.8816,35.7273 46.2205,36.8455 44.1,37.5071L 44.1,37.6174C 46.6559,37.9171 48.6973,38.8926 50.2241,40.5437C 51.7509,42.1949 52.5143,44.3409 52.5143,46.9817C 52.5143,50.2615 51.2448,52.9178 48.7058,54.9507C 46.1668,56.9835 42.9606,58 39.087,58L 27,58 Z M 33.0143,24.8857L 33.0143,35.7429L 37.5009,35.7429C 39.644,35.7429 41.3249,35.224 42.5435,34.1864C 43.7621,33.1487 44.3714,31.6799 44.3714,29.7799C 44.3714,26.5171 42.2452,24.8857 37.9929,24.8857L 33.0143,24.8857 Z M 33.0143,40.6286L 33.0143,53.1143L 38.7817,53.1143C 41.0832,53.1143 42.8616,52.5502 44.117,51.4221C 45.3723,50.294 46,48.7403 46,46.7612C 46,42.6728 43.3253,40.6286 37.9759,40.6286L 33.0143,40.6286 Z " />
+                                </ToggleButton>
+                                <ToggleButton x:Name="TextStyle" Style="{StaticResource CustomToggleButtonStyle}" Checked="TextStyleToggled" Unchecked="TextStyleToggled">
+                                    <Path Width="13" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 47.9383,20L 47.2449,24.05L 43.4449,24.05L 37.8979,53.95L 41.6979,53.95L 41.0046,58L 28.0617,58L 28.7551,53.95L 32.5551,53.95L 38.102,24.05L 34.302,24.05L 34.9954,20L 47.9383,20 Z " />
+                                </ToggleButton>
+                            </StackPanel>
+                            
+                            <!-- border -->
+                            <StackPanel Orientation="Horizontal">
+                                <ToggleButton x:Name="TextBorder" Style="{StaticResource CustomToggleButtonStyle}" Tag="Left" Checked="TextBorderToggled" Unchecked="TextBorderToggled">
+                                    <Grid>
+                                        <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 16,41L 16,19L 60,19L 60,41L 16,41 Z M 20,23L 20,39L 56,39L 56,21L 20,21 Z "/>
+                                        <Path Width="16" Height="18" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 23.75,20.5833L 52.25,20.5833L 52.25,26.9167L 41.1667,26.9167L 41.1667,58.5833L 34.8333,58.5833L 34.8333,26.9167L 23.75,26.9167L 23.75,20.5833 Z " />
+                                    </Grid>
+                                </ToggleButton>
+                                <ToggleButton x:Name="TextBackgroundBorder" Style="{StaticResource CustomToggleButtonStyle}" Tag="Center" Checked="TextBackgroundBorderToggled" Unchecked="TextBackgroundBorderToggled">
+                                    <Grid>
+                                        <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Opacity="0.33" Data="F1 M 16,41L 16,19L 60,19L 60,41L 16,41 Z"/>
+                                        <Path Width="16" Height="18" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 23.75,20.5833L 52.25,20.5833L 52.25,26.9167L 41.1667,26.9167L 41.1667,58.5833L 34.8333,58.5833L 34.8333,26.9167L 23.75,26.9167L 23.75,20.5833 Z " />
+                                    </Grid>
+                                </ToggleButton>
+                            </StackPanel>
+                            
+                            <!-- font -->
+                            <toolkit:ListPicker x:Name="FontPicker" DataContext="{StaticResource FontsViewModel}" ItemsSource="{Binding Fonts}" SelectionChanged="FontPickerSelectionChanged">
+                                <toolkit:ListPicker.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" FontFamily="{Binding Font}"/>
+                                    </DataTemplate>
+                                </toolkit:ListPicker.ItemTemplate>
+                                <toolkit:ListPicker.FullModeItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="5">
+                                            <TextBlock Text="{Binding Name}" FontFamily="{Binding Font}" VerticalAlignment="Center" Style="{StaticResource PhoneTextLargeStyle}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </toolkit:ListPicker.FullModeItemTemplate>
+                            </toolkit:ListPicker>
+                            
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
