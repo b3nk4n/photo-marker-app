@@ -1197,8 +1197,8 @@ namespace PhotoNote.Pages
 
         public const int TEXT_SELECTION_MARGIN = 5;
 
-        private TextBox _selectedTextBox = null;
-        private TextBox _previouslySelectedTextBox = null;
+        private ExtendedTextBox _selectedTextBox = null;
+        private ExtendedTextBox _previouslySelectedTextBox = null;
         private bool _isKeyboardActive = false;
 
 
@@ -1221,7 +1221,7 @@ namespace PhotoNote.Pages
 
                 for (int i = EditTextControl.Children.Count - 1; i >= 0; --i)
                 {
-                    var textbox = EditTextControl.Children[i] as TextBox;
+                    var textbox = EditTextControl.Children[i] as ExtendedTextBox;
                     if (textbox != null)
                     {
                         var boundingBox = new Rectangle((int)Canvas.GetLeft(textbox) - TEXT_SELECTION_MARGIN, (int)Canvas.GetTop(textbox) - TEXT_SELECTION_MARGIN,
@@ -1318,7 +1318,7 @@ namespace PhotoNote.Pages
                 }
                 else if (_previouslySelectedTextBox == null && _moveCounter <= 1 && !_isKeyboardActive)
                 {
-                    AddTextBlock(EditTextControl, "Text", e.ManipulationOrigin.X, e.ManipulationOrigin.Y); // TODO: translate
+                    AddTextBox(EditTextControl, "Text", e.ManipulationOrigin.X, e.ManipulationOrigin.Y); // TODO: translate
                 } 
             }
         }
@@ -1350,21 +1350,19 @@ namespace PhotoNote.Pages
         /// <param name="text">The default text.</param>
         /// <param name="x">The x coord.</param>
         /// <param name="y">THe y coord.</param>
-        private void AddTextBlock(Canvas parent, string text, double x, double y)
+        private void AddTextBox(Canvas parent, string text, double x, double y)
         {
-            var textbox = new TextBox();
+            var textbox = new ExtendedTextBox();
             textbox.Text = text;
             textbox.Foreground = ColorPicker.SolidColorBrush; // TODO: define a common context?
             textbox.TextAlignment = _textContext.Alignment;
             textbox.FontFamily = _textContext.Font;
             textbox.FontWeight = _textContext.Weight;
             textbox.FontStyle = _textContext.Style;
-            textbox.AcceptsReturn = true;
             textbox.FontSize = 36.0;
-            textbox.Style = (Style)Resources["DraggableTextBoxStyle"];
             textbox.LostFocus += (s, e) =>
             {
-                var thisTextBox = s as TextBox;
+                var thisTextBox = s as ExtendedTextBox;
                 if (thisTextBox != null && string.IsNullOrWhiteSpace(thisTextBox.Text))
                 {
                     RemoveTextBox(parent, thisTextBox);
@@ -1405,7 +1403,7 @@ namespace PhotoNote.Pages
             ShowTextOptionsAnimation.Begin();
         }
 
-        private static void SetTextBoxPosition(Canvas parent, double x, double y, TextBox textbox)
+        private static void SetTextBoxPosition(Canvas parent, double x, double y, ExtendedTextBox textbox)
         {
             // adjust position afterwards when rendered
             Canvas.SetTop(textbox, y - textbox.ActualHeight / 2);
@@ -1433,7 +1431,7 @@ namespace PhotoNote.Pages
         /// </summary>
         /// <param name="parent">The container panel.</param>
         /// <param name="textBox">The text box to remove.</param>
-        private static void RemoveTextBox(Panel parent, TextBox textBox)
+        private static void RemoveTextBox(Panel parent, ExtendedTextBox textBox)
         {
             parent.Children.Remove(textBox);
             UnselectTextBox(ref textBox);
@@ -1442,7 +1440,7 @@ namespace PhotoNote.Pages
         /// <summary>
         /// Unselects the active text box.
         /// </summary>
-        private static void UnselectTextBox(ref TextBox textBox)
+        private static void UnselectTextBox(ref ExtendedTextBox textBox)
         {
             if (textBox != null)
             {
@@ -1454,7 +1452,7 @@ namespace PhotoNote.Pages
         /// <summary>
         /// Edits the text box.
         /// </summary>
-        private static void EditTextBox(TextBox textBox)
+        private static void EditTextBox(ExtendedTextBox textBox)
         {
             if (textBox != null)
             {
@@ -1678,7 +1676,7 @@ namespace PhotoNote.Pages
             // change when a text is selected
             if (_selectedTextBox != null)
             {
-                //_selectedTextBox.HasBorder = hasBorder; // TODO: create advanced textbox class
+                _selectedTextBox.HasBorder = hasBorder;
             }
         }
 
@@ -1711,7 +1709,7 @@ namespace PhotoNote.Pages
             // change when a text is selected
             if (_selectedTextBox != null)
             {
-                //_selectedTextBox.HasBorderBackground = hasBorderBackground; // TODO: create advanced textbox class
+                _selectedTextBox.HasBackgroundBorder = hasBackgroundBorder;
             }
         }
 
@@ -1737,8 +1735,6 @@ namespace PhotoNote.Pages
                 if (selectedFontItem != null)
                     UpdateTextFont(selectedFontItem.Font);
             }
-
-            
         }
 
         private void UpdateTextFont(FontFamily font)

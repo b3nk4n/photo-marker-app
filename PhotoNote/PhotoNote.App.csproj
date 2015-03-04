@@ -98,6 +98,9 @@
     <Compile Include="Controls\EditedImageInkControl.xaml.cs">
       <DependentUpon>EditedImageInkControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ExtendedTextBox.xaml.cs">
+      <DependentUpon>ExtendedTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\InfoControl.xaml.cs">
       <DependentUpon>InfoControl.xaml</DependentUpon>
     </Compile>
@@ -145,6 +148,10 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Page Include="Controls\EditedImageInkControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ExtendedTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
