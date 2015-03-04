@@ -13,7 +13,7 @@
     xmlns:controls="clr-namespace:PhotoNote.Controls"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:eim="clr-namespace:Microsoft.Expression.Interactivity.Media;assembly=Microsoft.Expression.Interactions"
     x:Class="PhotoNote.Pages.EditPage"
-    SupportedOrientations="PortraitOrLandscape" Orientation="Landscape"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     mc:Ignorable="d">
 
     <!-- REMOVED BECAUSE IT CAUSES BAD INK PERFORMANCE!

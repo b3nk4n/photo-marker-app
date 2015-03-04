@@ -52,10 +52,10 @@ namespace PhotoNote.Controls
         /// <summary>
         /// Gets or sets the opacity.
         /// </summary>
-        public new double Opacity
+        public double TextOpacity
         {
-            get { return TextControl.Opacity; }
-            set { TextControl.Opacity = value; }
+            get { return TextControl.TextOpacity; }
+            set { TextControl.TextOpacity = value; }
         }
 
         /// <summary>
@@ -110,6 +110,25 @@ namespace PhotoNote.Controls
         {
             get { return TextControl.Foreground; }
             set { TextControl.Foreground = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the read only property.
+        /// </summary>
+        public bool IsActive
+        {
+            get 
+            {
+                return TextControl.IsReadOnly;
+            }
+            set 
+            { 
+                TextControl.IsReadOnly = value;
+                if (value == true)
+                    VisualStateManager.GoToState(TextControl, "Inactive", false);
+                else
+                    VisualStateManager.GoToState(TextControl, "Active", false);
+            }
         }
     }
 }

@@ -115,8 +115,7 @@ namespace PhotoNote.Pages
             {
                 if (_currentEditMode == EditMode.Text)
                 {
-                    UnselectTextBox(ref _selectedTextBox);
-                    _currentEditMode = EditMode.Marker;
+                    ChangedEditMode(EditMode.Marker);
                     UpdateMarkerAppBar();
                     UpdateTextAppBar();
 
@@ -147,7 +146,7 @@ namespace PhotoNote.Pages
             {
                 if (_currentEditMode == EditMode.Marker)
                 {
-                    _currentEditMode = EditMode.Text;
+                    ChangedEditMode(EditMode.Text);
                     UpdateMarkerAppBar();
                     UpdateTextAppBar();
 
@@ -1229,7 +1228,7 @@ namespace PhotoNote.Pages
 
                         if (boundingBox.Contains((int)e.ManipulationOrigin.X, (int)e.ManipulationOrigin.Y))
                         {
-                            _selectedTextBox = textbox;
+                            SelectTextBox(textbox);
                             
                             // update UI in toolbar
                             SetTogglesToTextAlignment(_textContext.Alignment);
@@ -1344,6 +1343,25 @@ namespace PhotoNote.Pages
         }
 
         /// <summary>
+        /// Changes the edit mode
+        /// </summary>
+        /// <param name="newEditMode"></param>
+        private void ChangedEditMode(EditMode newEditMode)
+        {
+            _currentEditMode = newEditMode;
+
+            if (newEditMode == EditMode.Text)
+            {
+                AllTextBoxesToActiveState(false);
+            }
+            else
+            {
+                AllTextBoxesToActiveState(true);
+                UnselectTextBox(ref _selectedTextBox);
+            }
+        }
+
+        /// <summary>
         /// Add a text with current text properties.
         /// </summary>
         /// <param name="parent">The parent canvas container.</param>
@@ -1359,7 +1377,9 @@ namespace PhotoNote.Pages
             textbox.FontFamily = _textContext.Font;
             textbox.FontWeight = _textContext.Weight;
             textbox.FontStyle = _textContext.Style;
+            textbox.TextOpacity = _textContext.Opacity;
             textbox.FontSize = 36.0;
+            textbox.IsActive = true;
             textbox.LostFocus += (s, e) =>
             {
                 var thisTextBox = s as ExtendedTextBox;
@@ -1396,7 +1416,7 @@ namespace PhotoNote.Pages
             SetTextBoxPosition(parent, x, y, textbox);
 
             // select
-            _selectedTextBox = textbox;
+            SelectTextBox(textbox);
             EditTextBox(_selectedTextBox);
 
             // show text options
@@ -1435,6 +1455,32 @@ namespace PhotoNote.Pages
         {
             parent.Children.Remove(textBox);
             UnselectTextBox(ref textBox);
+        }
+
+        private void SelectTextBox(ExtendedTextBox textBox)
+        {
+            if (textBox != null)
+            {
+                _selectedTextBox = textBox;
+                _selectedTextBox.IsActive = false;
+            }
+        }
+
+        /// <summary>
+        /// Sets the read only state of all text boxes, where readOnly means
+        /// if a text box is highlighted or not.
+        /// </summary>
+        /// <param name="readOnly"></param>
+        private void AllTextBoxesToActiveState(bool readOnly)
+        {
+            foreach (var tb in EditTextControl.Children)
+            {
+                var textbox = tb as ExtendedTextBox;
+                if (textbox != null)
+                {
+                    textbox.IsActive = readOnly;
+                }
+            }
         }
 
         /// <summary>
@@ -1645,7 +1691,7 @@ namespace PhotoNote.Pages
 
             if (_selectedTextBox != null)
             {
-                _selectedTextBox.Opacity = _textContext.Opacity;
+                _selectedTextBox.TextOpacity = _textContext.Opacity;
             }
         }
 
