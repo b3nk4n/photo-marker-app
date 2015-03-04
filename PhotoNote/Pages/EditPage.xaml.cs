@@ -1317,7 +1317,7 @@ namespace PhotoNote.Pages
                 }
                 else if (_previouslySelectedTextBox == null && _moveCounter <= 1 && !_isKeyboardActive)
                 {
-                    AddTextBox(EditTextControl, "Text", e.ManipulationOrigin.X, e.ManipulationOrigin.Y); // TODO: translate
+                    AddTextBox(EditTextControl, string.Empty, e.ManipulationOrigin.X, e.ManipulationOrigin.Y); // TODO: translate?
                 } 
             }
         }

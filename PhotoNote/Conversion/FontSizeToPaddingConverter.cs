@@ -21,7 +21,7 @@ namespace PhotoNote.Conversion
                 double doubleValue = (double)value;
                 double h = 12 + doubleValue / 6;
                 double v = 10 + doubleValue / 10;
-                return new Thickness(h, v, h, v);
+                return new Thickness(h, v, h - 2, v);
             }
 
             return new Thickness();
