@@ -159,13 +159,21 @@ namespace PhotoNote.Pages
                 }
                 else
                 {
-                    if (_isPenToolbarVisible)
+                    var keyboardClosed = false;
+                    if (_selectedTextBox != null)
                     {
-                        HidePenToolbar();
+                        // close the keyboard
+                        this.Focus();
+                        keyboardClosed = true;
+                    }
+                    
+                    if (!_isPenToolbarVisible || keyboardClosed)
+                    {
+                        ShowPenToolbar();
                     }
                     else
                     {
-                        ShowPenToolbar();
+                        HidePenToolbar();
                     }
                 }
             };
@@ -1296,7 +1304,11 @@ namespace PhotoNote.Pages
             }
             else if (_selectedTextBox != null)
             {
-                SetTextBoxPosition(EditTextControl, e.ManipulationOrigin.X, e.ManipulationOrigin.Y, _selectedTextBox);
+                // remove textbox when moved out of image
+                if (!SetTextBoxPosition(EditTextControl, e.ManipulationOrigin.X, e.ManipulationOrigin.Y, _selectedTextBox))
+                {
+                    RemoveTextBox(EditTextControl, ref _selectedTextBox);
+                }
             }
 
             if (_currentEditMode == EditMode.Text)
@@ -1405,7 +1417,7 @@ namespace PhotoNote.Pages
                 var thisTextBox = s as ExtendedTextBox;
                 if (thisTextBox != null && string.IsNullOrWhiteSpace(thisTextBox.Text))
                 {
-                    RemoveTextBox(parent, thisTextBox);
+                    RemoveTextBox(parent, ref thisTextBox);
                 }
                 //_selectedTextBox = null;
                 _isKeyboardActive = false;
@@ -1443,15 +1455,30 @@ namespace PhotoNote.Pages
             ShowTextOptionsAnimation.Begin();
         }
 
-        private void SetTextBoxPosition(Canvas parent, double x, double y, ExtendedTextBox textbox)
+        /// <summary>
+        /// Sets the text box position
+        /// </summary>
+        /// <param name="parent">The parent container</param>
+        /// <param name="x">The center x coord.</param>
+        /// <param name="y">The center y coord.</param>
+        /// <param name="textbox">The textbox to move.</param>
+        /// <returns>True, wenn new position is still in parent bounds.</returns>
+        private bool SetTextBoxPosition(Canvas parent, double x, double y, ExtendedTextBox textbox)
         {
+            const int OUTER_DELTA = 12;
             // verify the text box stays in image bounds
-
+            var top = y - textbox.ActualHeight / 2;
+            var left = x - textbox.ActualWidth / 2;
+            var tbBounds = new Rectangle((int)left, (int)top, (int)textbox.ActualWidth, (int)textbox.ActualHeight);
+            var parentBounds = new Rectangle(OUTER_DELTA, OUTER_DELTA, (int)parent.ActualWidth - 2 * OUTER_DELTA, (int)parent.ActualHeight - 2 * OUTER_DELTA);
+            var inBounds = tbBounds.Intersects(parentBounds);
 
             // set position
-            Canvas.SetTop(textbox, y - textbox.ActualHeight / 2);
-            Canvas.SetLeft(textbox, x - textbox.ActualWidth / 2);
+            Canvas.SetTop(textbox, top);
+            Canvas.SetLeft(textbox, left);
             parent.UpdateLayout();
+
+            return inBounds;
         }
 
         #endregion
@@ -1465,7 +1492,7 @@ namespace PhotoNote.Pages
         {
             if (_selectedTextBox != null)
             {
-                RemoveTextBox(EditTextControl, _selectedTextBox);
+                RemoveTextBox(EditTextControl, ref _selectedTextBox);
             }
         }
 
@@ -1474,10 +1501,11 @@ namespace PhotoNote.Pages
         /// </summary>
         /// <param name="parent">The container panel.</param>
         /// <param name="textBox">The text box to remove.</param>
-        private static void RemoveTextBox(Panel parent, ExtendedTextBox textBox)
+        private static void RemoveTextBox(Panel parent, ref ExtendedTextBox textBox)
         {
             parent.Children.Remove(textBox);
             UnselectTextBox(ref textBox);
+            
         }
 
         private void SelectTextBox(ExtendedTextBox textBox)
@@ -1527,7 +1555,7 @@ namespace PhotoNote.Pages
             {
                 textBox.IsEnabled = true;
                 textBox.Focus();
-                textBox.SelectAll();
+                textBox.SelectLast();
             }
         }
 

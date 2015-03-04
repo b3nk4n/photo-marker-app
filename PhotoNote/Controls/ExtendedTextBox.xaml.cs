@@ -21,9 +21,9 @@ namespace PhotoNote.Controls
             InitializeComponent();
         }
 
-        public void SelectAll()
+        public void SelectLast()
         {
-            TextControl.SelectAll();
+            TextControl.Select(Text.Length, 0);
         }
 
         public new void Focus()
