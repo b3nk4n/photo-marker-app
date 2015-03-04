@@ -221,7 +221,7 @@
     <comment>EditPage</comment>
   </data>
   <data name="MessageBoxMultipleTextUpgrade" xml:space="preserve">
-    <value>Das Einfügen mehrerer Textelemente erfodert die Photo Marker PRO. Wollen sie jetzt upgraden?</value>
+    <value>Das Einfügen mehrerer Textelemente erfordert Photo Marker PRO. Wollen sie jetzt upgraden?</value>
     <comment>EditPage</comment>
   </data>
   <data name="MessageBoxNoInfo" xml:space="preserve">

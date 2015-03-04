@@ -529,7 +529,9 @@ namespace PhotoNote.Pages
             textTransform.TranslateX = _translateX;
             textTransform.TranslateY = _translateY;
 
-            SetBoundary(InkControl.Width, InkControl.Height);
+            // set clipping region
+            SetBoundary(InkControl, InkControl.Width, InkControl.Height);
+            SetBoundary(EditTextControl, EditTextControl.Width, EditTextControl.Height);
         }
 
         private bool HasNoImage()
@@ -1105,11 +1107,11 @@ namespace PhotoNote.Pages
 
         //Set the Clip property of the inkpresenter so that the strokes
         //are contained within the boundary of the inkpresenter
-        private void SetBoundary(double width, double height)
+        private void SetBoundary(FrameworkElement control, double width, double height)
         {
             RectangleGeometry MyRectangleGeometry = new RectangleGeometry();
             MyRectangleGeometry.Rect = new Rect(0, 0, width, height);
-            InkControl.Clip = MyRectangleGeometry;
+            control.Clip = MyRectangleGeometry;
         }
 
         private bool CanUndo()
@@ -1303,6 +1305,8 @@ namespace PhotoNote.Pages
             }
         }
 
+        private bool _upgradePopupShown;
+
         private void MyIP_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
         {
             if (_currentEditMode == EditMode.Text && !_twoFingersActive)
@@ -1318,12 +1322,14 @@ namespace PhotoNote.Pages
                 }
                 else if (_previouslySelectedTextBox == null && _moveCounter <= 1 && !_isKeyboardActive)
                 {
-                    if (EditTextControl.Children.Count > 1 && InAppPurchaseHelper.IsProductActive(AppConstants.IAP_PREMIUM_VERSION))
+                    if (EditTextControl.Children.Count == 0 || InAppPurchaseHelper.IsProductActive(AppConstants.IAP_PREMIUM_VERSION))
                     {
                         AddTextBox(EditTextControl, string.Empty, e.ManipulationOrigin.X, e.ManipulationOrigin.Y);
                     }
-                    else
+                    else if (!_upgradePopupShown) // show upgrade message only once (not req. to make it persistent)
                     {
+                        _upgradePopupShown = true;
+
                         // ask to buy the premium version to add multiple text elements
                         if (MessageBox.Show(AppResources.MessageBoxMultipleTextUpgrade, AppResources.MessageBoxAttention, MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                         {
@@ -1437,9 +1443,12 @@ namespace PhotoNote.Pages
             ShowTextOptionsAnimation.Begin();
         }
 
-        private static void SetTextBoxPosition(Canvas parent, double x, double y, ExtendedTextBox textbox)
+        private void SetTextBoxPosition(Canvas parent, double x, double y, ExtendedTextBox textbox)
         {
-            // adjust position afterwards when rendered
+            // verify the text box stays in image bounds
+
+
+            // set position
             Canvas.SetTop(textbox, y - textbox.ActualHeight / 2);
             Canvas.SetLeft(textbox, x - textbox.ActualWidth / 2);
             parent.UpdateLayout();
