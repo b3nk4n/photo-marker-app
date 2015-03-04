@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using PhoneKit.Framework.Core.Storage;
 using PhotoNote.Conversion;
 using PhotoNote.ViewModel;
+using PhoneKit.Framework.InAppPurchase;
 
 namespace PhotoNote.Pages
 {
@@ -1317,7 +1318,20 @@ namespace PhotoNote.Pages
                 }
                 else if (_previouslySelectedTextBox == null && _moveCounter <= 1 && !_isKeyboardActive)
                 {
-                    AddTextBox(EditTextControl, string.Empty, e.ManipulationOrigin.X, e.ManipulationOrigin.Y); // TODO: translate?
+                    if (EditTextControl.Children.Count > 1 && InAppPurchaseHelper.IsProductActive(AppConstants.IAP_PREMIUM_VERSION))
+                    {
+                        AddTextBox(EditTextControl, string.Empty, e.ManipulationOrigin.X, e.ManipulationOrigin.Y);
+                    }
+                    else
+                    {
+                        // ask to buy the premium version to add multiple text elements
+                        if (MessageBox.Show(AppResources.MessageBoxMultipleTextUpgrade, AppResources.MessageBoxAttention, MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                        {
+                            NavigationService.Navigate(new Uri("/Pages/InAppStorePage.xaml", UriKind.Relative));
+                        }
+                    }
+
+                    
                 } 
             }
         }

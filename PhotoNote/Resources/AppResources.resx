@@ -277,4 +277,11 @@
     <value>Do you really want to quit without saving the picture?</value>
     <comment>EditPage</comment>
   </data>
+  <data name="FontsHeader" xml:space="preserve">
+    <value>FONTS</value>
+  </data>
+  <data name="MessageBoxMultipleTextUpgrade" xml:space="preserve">
+    <value>Using multiple text elements requires Photo Marker PRO version. Do you want to upgrade now?</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

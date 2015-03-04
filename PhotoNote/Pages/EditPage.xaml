@@ -628,7 +628,7 @@
                             </StackPanel>
                             
                             <!-- font -->
-                            <toolkit:ListPicker x:Name="FontPicker" DataContext="{StaticResource FontsViewModel}" ItemsSource="{Binding Fonts}" SelectionChanged="FontPickerSelectionChanged">
+                            <toolkit:ListPicker x:Name="FontPicker" Header="{Binding LocalizedResources.FontsHeader, Source={StaticResource LocalizedStrings}}" DataContext="{StaticResource FontsViewModel}" ItemsSource="{Binding Fonts}" SelectionChanged="FontPickerSelectionChanged">
                                 <toolkit:ListPicker.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Name}" FontFamily="{Binding Font}"/>

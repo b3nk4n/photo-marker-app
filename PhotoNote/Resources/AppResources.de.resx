@@ -169,6 +169,9 @@
     <value>apps@bsautermeister.de</value>
     <comment>FeedbackDialogControl</comment>
   </data>
+  <data name="FontsHeader" xml:space="preserve">
+    <value>SCHRIFTARTEN</value>
+  </data>
   <data name="InAppStoreLoading" xml:space="preserve">
     <value>Lade...</value>
     <comment>InAppStorePage</comment>
@@ -215,6 +218,10 @@
   </data>
   <data name="MessageBoxExitWithoutSave" xml:space="preserve">
     <value>Möchten Sie die Änderungen wirklich ohne Speichern verwerfen?</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="MessageBoxMultipleTextUpgrade" xml:space="preserve">
+    <value>Das Einfügen mehrerer Textelemente erfodert die Photo Marker PRO. Wollen sie jetzt upgraden?</value>
     <comment>EditPage</comment>
   </data>
   <data name="MessageBoxNoInfo" xml:space="preserve">

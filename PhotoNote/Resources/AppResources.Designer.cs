@@ -178,6 +178,15 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die FONTS ähnelt.
+        /// </summary>
+        public static string FontsHeader {
+            get {
+                return ResourceManager.GetString("FontsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Loading... ähnelt.
         /// </summary>
         public static string InAppStoreLoading {
@@ -282,6 +291,15 @@ namespace PhotoNote.Resources {
         public static string MessageBoxExitWithoutSave {
             get {
                 return ResourceManager.GetString("MessageBoxExitWithoutSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Using multiple text elements requires Photo Marker PRO version. Do you want to upgrade now? ähnelt.
+        /// </summary>
+        public static string MessageBoxMultipleTextUpgrade {
+            get {
+                return ResourceManager.GetString("MessageBoxMultipleTextUpgrade", resourceCulture);
             }
         }
         
