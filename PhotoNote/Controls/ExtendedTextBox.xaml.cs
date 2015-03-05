@@ -21,11 +21,27 @@ namespace PhotoNote.Controls
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Gets the text context.
+        /// </summary>
+        /// <returns>The text context.</returns>
+        public TextContext GetContext()
+        {
+            return new TextContext(TextAlignment, FontWeight, FontStyle, FontFamily,
+                FontSize, TextOpacity, HasBorder, HasBackgroundBorder);
+        }
+
+        /// <summary>
+        /// Puts the cursor to the end.
+        /// </summary>
         public void SelectLast()
         {
             TextControl.Select(Text.Length, 0);
         }
 
+        /// <summary>
+        /// Focuses the text box and displays the keyboard.
+        /// </summary>
         public new void Focus()
         {
             TextControl.Focus();

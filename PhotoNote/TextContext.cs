@@ -58,15 +58,24 @@ namespace PhotoNote
         /// Creates the default text context.
         /// </summary>
         public TextContext()
+            : this(TextAlignment.Left, FontWeights.Normal, FontStyles.Normal, FontsViewModel.DEFAULT.Font, 36.0, 1.0, false, false)
         {
-            Alignment = TextAlignment.Left;
-            Weight = FontWeights.Normal;
-            Style = FontStyles.Normal;
-            Font = FontsViewModel.Default.Font;
-            Size = 36.0;
-            Opacity = 1.0;
-            HasBorder = false;
-            HasBackgroundBorder = false;
+        }
+
+        /// <summary>
+        /// Creates a custom text context.
+        /// </summary>
+        public TextContext(TextAlignment alignment, FontWeight weight, FontStyle style, FontFamily font,
+            double size, double opacity, bool hasBorder, bool hasBackBorder)
+        {
+            Alignment = alignment;
+            Weight = weight;
+            Style = style;
+            Font = font;
+            Size = size;
+            Opacity = opacity;
+            HasBorder = hasBorder;
+            HasBackgroundBorder = hasBackBorder;
         }
     }
 }

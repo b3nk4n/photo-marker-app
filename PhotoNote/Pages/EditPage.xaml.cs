@@ -79,14 +79,7 @@ namespace PhotoNote.Pages
 
             Loaded += (s, e) => {
                 SetTogglesToMode(_currentDrawMode);
-                SetTogglesToTextAlignment(_textContext.Alignment);
-                SetTogglesToTextWeight(_textContext.Weight);
-                SetTogglesToTextStyle(_textContext.Style);
-                TextOpacitySlider.Value = _textContext.Opacity;
-                TextSizeSlider.Value = _textContext.Size;
-                SetTogglesToTextBorder(_textContext.HasBorder);
-                SetTogglesToTextBackgroundBorder(_textContext.HasBackgroundBorder);
-                SetSelectionTextFont(_textContext.Font);
+                UpdateTextToolbarWithContext(_textContext);
                 UpdateTextAppBar();
             };
         }
@@ -1242,14 +1235,7 @@ namespace PhotoNote.Pages
                             SelectTextBox(textbox);
                             
                             // update UI in toolbar
-                            SetTogglesToTextAlignment(_textContext.Alignment);
-                            SetTogglesToTextWeight(_textContext.Weight);
-                            SetTogglesToTextStyle(_textContext.Style);
-                            TextOpacitySlider.Value = _textContext.Opacity;
-                            TextSizeSlider.Value = _textContext.Size;
-                            SetTogglesToTextBorder(_textContext.HasBorder);
-                            SetTogglesToTextBackgroundBorder(_textContext.HasBackgroundBorder);
-                            SetSelectionTextFont(_textContext.Font);
+                            UpdateTextToolbarWithContext(textbox.GetContext());
                             break;
                         }
                     }
@@ -1557,6 +1543,22 @@ namespace PhotoNote.Pages
                 textBox.Focus();
                 textBox.SelectLast();
             }
+        }
+
+        /// <summary>
+        /// Updates the toolbar to the given context.
+        /// </summary>
+        /// <param name="context">The context to set.</param>
+        private void UpdateTextToolbarWithContext(TextContext context)
+        {
+            SetTogglesToTextAlignment(context.Alignment);
+            SetTogglesToTextWeight(context.Weight);
+            SetTogglesToTextStyle(context.Style);
+            TextOpacitySlider.Value = context.Opacity;
+            TextSizeSlider.Value = context.Size;
+            SetTogglesToTextBorder(context.HasBorder);
+            SetTogglesToTextBackgroundBorder(context.HasBackgroundBorder);
+            SetSelectionTextFont(context.Font);
         }
 
         private void TextAlignmentToggled(object sender, RoutedEventArgs e)
