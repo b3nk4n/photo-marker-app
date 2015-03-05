@@ -53,14 +53,13 @@
                                 </VisualStateGroup>
                                 <VisualStateGroup x:Name="ActiveStates">
                                     <VisualState x:Name="Active">
-                                    </VisualState>
-                                    <VisualState x:Name="Inactive">
-                                        <!-- not in text mode -->
                                         <Storyboard>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Rectangle.Visibility)" Storyboard.TargetName="MainRect">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
                                             </ObjectAnimationUsingKeyFrames>
                                         </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Inactive">
                                     </VisualState>
                                 </VisualStateGroup>
                                 <VisualStateGroup x:Name="FocusStates">
@@ -70,7 +69,7 @@
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                            <Rectangle x:Name="MainRect" Stroke="{StaticResource PhoneTextBoxEditBackgroundBrush}" StrokeThickness="1" StrokeDashArray="2 4" Margin="6"/>
+                            <Rectangle x:Name="MainRect" Stroke="{StaticResource PhoneTextBoxEditBackgroundBrush}" StrokeThickness="1" StrokeDashArray="2 4" Margin="6" Visibility="Collapsed"/>
                             <Border BorderBrush="Transparent" Opacity="{TemplateBinding TextOpacity}" BorderThickness="{TemplateBinding BorderThickness}" Background="Transparent" Padding="{Binding FontSize, ElementName=ContentElement, Converter={StaticResource SizeToPadding}}">
                                 <ContentControl x:Name="ContentElement" BorderThickness="0" HorizontalContentAlignment="Stretch" Margin="{StaticResource PhoneTextBoxInnerMargin}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="Stretch"/>
                             </Border>
@@ -88,7 +87,7 @@
 
     <Grid x:Name="LayoutRoot">
         <Rectangle x:Name="BackgroundBorder" Fill="#99BBBBBB" Opacity="{Binding ElementName=TextControl, Path=TextOpacity}" Visibility="Visible" Margin="16,16"/>
-        <Rectangle x:Name="Border" Stroke="{Binding ElementName=TextControl, Path=Foreground}" Opacity="{Binding ElementName=TextControl, Path=TextOpacity}" StrokeThickness="{Binding FontSize, ElementName=TextControl, Converter={StaticResource SizeToDouble}}" Visibility="Visible" Margin="16,16" />
-        <controls:OpacityTextBox x:Name="TextControl" FontSize="16" CaretBrush="{Binding Foreground, Source=Self}" Text="Hallo" AcceptsReturn="True" Style="{StaticResource DraggableTextBoxStyle}" />
+        <Rectangle x:Name="Border" Stroke="{Binding ElementName=TextControl, Path=Foreground}" Opacity="{Binding ElementName=TextControl, Path=TextOpacity}" StrokeThickness="{Binding FontSize, ElementName=TextControl, Converter={StaticResource SizeToDouble}}" Visibility="Visible" Margin="16,16" DataContext="object" />
+        <controls:OpacityTextBox x:Name="TextControl" FontSize="16" Text="Hallo" AcceptsReturn="True" Style="{StaticResource DraggableTextBoxStyle}" />
     </Grid>
 </UserControl>

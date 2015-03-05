@@ -11,6 +11,9 @@ namespace PhotoNote.Conversion
 {
     /// <summary>
     /// Converter for font size to padding
+    /// <remarks>
+    /// DEPRECATED: not called while rendering!
+    /// </remarks>
     /// </summary>
     public class FontSizeToPaddingConverter : IValueConverter
     {

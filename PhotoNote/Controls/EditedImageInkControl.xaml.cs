@@ -77,22 +77,31 @@ namespace PhotoNote.Controls
         {
             EditTextControl.Width = width;
             EditTextControl.Height = height;
-            EditTextControl.RenderTransform = new ScaleTransform
+            EditTextControl.RenderTransform = new CompositeTransform
             {
                 ScaleX = scale,
-                ScaleY = scale
+                ScaleY = scale,
+                //TranslateX = 32 * scale,
+                //TranslateY = 24 * scale
             };
 
             // add data
+            this.UpdateLayout();
             foreach (var textBoxContext in textCollection)
             {
                 var textbox = new ExtendedTextBox(textBoxContext);
+                textbox.DataContext = new object();
                 textbox.IsEnabled = false;
                 textbox.IsActive = false;
                 EditTextControl.Children.Add(textbox);
                 textbox.UpdateLayout();
+                
+                //textbox.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                //textbox.Arrange(new Rect(0, 0, textbox.DesiredSize.Width, textbox.DesiredSize.Height));
+                //var temp = textbox.ActualHeight;
+                //textbox.UpdateLayout();
 
-                textbox.SetTextBoxPosition(EditTextControl, textbox.X, textbox.Y);
+                //textbox.SetTextBoxPosition(EditTextControl, textbox.X, textbox.Y);
             }
             this.UpdateLayout();
         }

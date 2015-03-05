@@ -240,9 +240,16 @@ namespace PhotoNote.Pages
                 {
                     var neutralScaleFactor = GetBiggestScaleFactorOfSmallerOrientation();
                     var textContextList = GetTextBoxContextList();
+
                     var editedImageInkControl = new EditedImageInkControl(_editImage.FullImage as BitmapSource, InkControl.Strokes, textContextList, 1.0 / neutralScaleFactor);
+                    RenderingTrash.Children.Add(editedImageInkControl); // add to visual tree to enforce Bindings are invoked
+                    
+                    await Task.Delay(500);
                     var gfx = GraphicsHelper.Create(editedImageInkControl);
                     gfx.SaveJpeg(memStream, gfx.PixelWidth, gfx.PixelHeight, 0, 100);
+
+                    RenderingTrash.Children.Remove(editedImageInkControl); // and remove it again from visual tree
+                    
                     memStream.Seek(0, SeekOrigin.Begin);
 
                     using (var media = StaticMediaLibrary.Instance)
@@ -552,8 +559,12 @@ namespace PhotoNote.Pages
             if (EditTextControl.Children.Count > 0)
             {
                 var contextList = GetTextBoxContextList();
-                var jsonArrayTextContexts = JsonConvert.SerializeObject(contextList);
-                PhoneStateHelper.SaveValue(TEXT_ELEMENTS_KEY, jsonArrayTextContexts);
+                if (contextList != null)
+                {
+                    var jsonArrayTextContexts = JsonConvert.SerializeObject(contextList);
+                    PhoneStateHelper.SaveValue(TEXT_ELEMENTS_KEY, jsonArrayTextContexts);
+                }
+                
             }
 
             // text selected index
@@ -1622,13 +1633,20 @@ namespace PhotoNote.Pages
         /// <summary>
         /// Edits the text box.
         /// </summary>
-        private static void EditTextBox(ExtendedTextBox textBox)
+        private void EditTextBox(ExtendedTextBox textBox)
         {
             if (textBox != null)
             {
                 textBox.IsEnabled = true;
                 textBox.Focus();
                 textBox.SelectLast();
+
+                // hide toolbar to make sure the nothing is hiding the text element
+                if (_isPenToolbarVisible)
+                {
+                    HidePenToolbar();
+                    _isPenToolbarVisible = false;
+                }
             }
         }
 

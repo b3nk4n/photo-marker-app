@@ -11,10 +11,9 @@
     
     <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneChromeBrush}">
         <Image x:Name="BackgroundImage" Stretch="Uniform"
-                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                   HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-        <Canvas x:Name="EditTextControl" HorizontalAlignment="Center" VerticalAlignment="Center">
-            
+        <Canvas x:Name="EditTextControl" HorizontalAlignment="Left" VerticalAlignment="Top">
         </Canvas>
 
         <InkPresenter x:Name="InkControl" VerticalAlignment="Top" HorizontalAlignment="Left"
