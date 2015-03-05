@@ -133,6 +133,10 @@
     <value>Bild auswählen</value>
     <comment>Edit Page</comment>
   </data>
+  <data name="AppBarText" xml:space="preserve">
+    <value>Text</value>
+    <comment>EditPage</comment>
+  </data>
   <data name="AppBarUndo" xml:space="preserve">
     <value>Rückgängig</value>
     <comment>EditPage</comment>

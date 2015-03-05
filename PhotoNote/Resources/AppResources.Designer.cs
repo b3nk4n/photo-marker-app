@@ -97,6 +97,15 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die text ähnelt.
+        /// </summary>
+        public static string AppBarText {
+            get {
+                return ResourceManager.GetString("AppBarText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die undo ähnelt.
         /// </summary>
         public static string AppBarUndo {

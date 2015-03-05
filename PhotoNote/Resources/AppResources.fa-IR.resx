@@ -284,4 +284,8 @@
     <value>Using multiple text elements requires Photo Marker PRO version. Do you want to upgrade now?</value>
     <comment>EditPage</comment>
   </data>
+  <data name="AppBarText" xml:space="preserve">
+    <value>متن</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

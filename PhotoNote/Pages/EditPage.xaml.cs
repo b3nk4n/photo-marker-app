@@ -143,7 +143,7 @@ namespace PhotoNote.Pages
 
             // text
             _appBarTextButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.interface.textbox.png", UriKind.Relative));
-            _appBarTextButton.Text = "text"; // TODO: translate
+            _appBarTextButton.Text = AppResources.AppBarText;
             _appBarTextButton.Click += (s, e) =>
             {
                 if (_currentEditMode == EditMode.Marker)
