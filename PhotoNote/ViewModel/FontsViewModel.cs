@@ -13,7 +13,7 @@ namespace PhotoNote.ViewModel
     /// </summary>
     public class FontsViewModel : ViewModelBase
     {
-        public static readonly FontItemViewModel DEFAULT = new FontItemViewModel("Default", string.Empty);
+        public static readonly FontItemViewModel DEFAULT = new FontItemViewModel("Default", "Portable User Interface");
 
         public static readonly FontItemViewModel ARIAL = new FontItemViewModel("Arial", "Arial");
 

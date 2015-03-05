@@ -13,6 +13,10 @@
         <Image x:Name="BackgroundImage" Stretch="Uniform"
                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
+        <Canvas x:Name="EditTextControl" HorizontalAlignment="Center" VerticalAlignment="Center">
+            
+        </Canvas>
+
         <InkPresenter x:Name="InkControl" VerticalAlignment="Top" HorizontalAlignment="Left"
                       Background="Transparent">
             <InkPresenter.RenderTransform>

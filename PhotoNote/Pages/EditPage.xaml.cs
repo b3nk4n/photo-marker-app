@@ -231,7 +231,8 @@ namespace PhotoNote.Pages
                 using (var memStream = new MemoryStream())
                 {
                     var neutralScaleFactor = GetBiggestScaleFactorOfSmallerOrientation();
-                    var editedImageInkControl = new EditedImageInkControl(_editImage.FullImage as BitmapSource, InkControl.Strokes, 1.0 / neutralScaleFactor);
+                    var textContextList = GetTextContextList();
+                    var editedImageInkControl = new EditedImageInkControl(_editImage.FullImage as BitmapSource, InkControl.Strokes, textContextList, 1.0 / neutralScaleFactor);
                     var gfx = GraphicsHelper.Create(editedImageInkControl);
                     gfx.SaveJpeg(memStream, gfx.PixelWidth, gfx.PixelHeight, 0, 100);
                     memStream.Seek(0, SeekOrigin.Begin);
@@ -266,6 +267,24 @@ namespace PhotoNote.Pages
             }
 
             return success;
+        }
+
+        /// <summary>
+        /// Gets the context list of the text elements on screen.
+        /// </summary>
+        /// <returns>The list of text contexts.</returns>
+        private IList<TextContext> GetTextContextList()
+        {
+            IList<TextContext> list = new List<TextContext>();
+            foreach (var tb in EditTextControl.Children)
+            {
+                var textbox = tb as ExtendedTextBox;
+                if (textbox != null)
+                {
+                    list.Add(textbox.GetContext());
+                }
+            }
+            return list;
         }
 
         private bool returnedFromTombstone = true; // flag to determine a tombstone
@@ -1291,7 +1310,7 @@ namespace PhotoNote.Pages
             else if (_selectedTextBox != null)
             {
                 // remove textbox when moved out of image
-                if (!SetTextBoxPosition(EditTextControl, e.ManipulationOrigin.X, e.ManipulationOrigin.Y, _selectedTextBox))
+                if (!_selectedTextBox.SetTextBoxPosition(EditTextControl, e.ManipulationOrigin.X, e.ManipulationOrigin.Y))
                 {
                     RemoveTextBox(EditTextControl, ref _selectedTextBox);
                 }
@@ -1391,12 +1410,7 @@ namespace PhotoNote.Pages
             var textbox = new ExtendedTextBox();
             textbox.Text = text;
             textbox.Foreground = ColorPicker.SolidColorBrush; // TODO: define a common context?
-            textbox.TextAlignment = _textContext.Alignment;
-            textbox.FontFamily = _textContext.Font;
-            textbox.FontWeight = _textContext.Weight;
-            textbox.FontStyle = _textContext.Style;
-            textbox.TextOpacity = _textContext.Opacity;
-            textbox.FontSize = 36.0;
+            textbox.SetContext(_textContext);
             textbox.IsActive = true;
             textbox.LostFocus += (s, e) =>
             {
@@ -1426,12 +1440,12 @@ namespace PhotoNote.Pages
                 }
             };
             // use out of screen location to get the actual width and height
-            Canvas.SetTop(textbox, -999);
-            Canvas.SetLeft(textbox, -999);
+            //Canvas.SetTop(textbox, -999);
+            //Canvas.SetLeft(textbox, -999); // TODO: 999 necessary?
             parent.Children.Add(textbox);
             textbox.UpdateLayout();
 
-            SetTextBoxPosition(parent, x, y, textbox);
+            textbox.SetTextBoxPosition(parent, x, y);
 
             // select
             SelectTextBox(textbox);
@@ -1439,32 +1453,6 @@ namespace PhotoNote.Pages
 
             // show text options
             ShowTextOptionsAnimation.Begin();
-        }
-
-        /// <summary>
-        /// Sets the text box position
-        /// </summary>
-        /// <param name="parent">The parent container</param>
-        /// <param name="x">The center x coord.</param>
-        /// <param name="y">The center y coord.</param>
-        /// <param name="textbox">The textbox to move.</param>
-        /// <returns>True, wenn new position is still in parent bounds.</returns>
-        private bool SetTextBoxPosition(Canvas parent, double x, double y, ExtendedTextBox textbox)
-        {
-            const int OUTER_DELTA = 12;
-            // verify the text box stays in image bounds
-            var top = y - textbox.ActualHeight / 2;
-            var left = x - textbox.ActualWidth / 2;
-            var tbBounds = new Rectangle((int)left, (int)top, (int)textbox.ActualWidth, (int)textbox.ActualHeight);
-            var parentBounds = new Rectangle(OUTER_DELTA, OUTER_DELTA, (int)parent.ActualWidth - 2 * OUTER_DELTA, (int)parent.ActualHeight - 2 * OUTER_DELTA);
-            var inBounds = tbBounds.Intersects(parentBounds);
-
-            // set position
-            Canvas.SetTop(textbox, top);
-            Canvas.SetLeft(textbox, left);
-            parent.UpdateLayout();
-
-            return inBounds;
         }
 
         #endregion

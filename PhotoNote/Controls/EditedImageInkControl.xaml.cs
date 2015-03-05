@@ -15,22 +15,23 @@ namespace PhotoNote.Controls
 {
     public partial class EditedImageInkControl : UserControl
     {
-        public EditedImageInkControl(BitmapSource bitmapSource, StrokeCollection strokeCollection, double scale)
+        public EditedImageInkControl(BitmapSource bitmapSource, StrokeCollection strokeCollection, IList<TextContext> textCollection, double scale)
         {
             InitializeComponent();
-            SetBackgroundImage(bitmapSource, strokeCollection, scale);
+
+            if (bitmapSource == null)
+                return;
+
+            SetBackgroundImage(bitmapSource);
+            SetText(textCollection, bitmapSource.PixelWidth, bitmapSource.PixelHeight, scale);
+            SetInk(strokeCollection, bitmapSource.PixelWidth, bitmapSource.PixelHeight, scale);
         }
 
-
         /// <summary>
-        /// Updates the attached image from the models image path.
+        /// Sets the background image.
         /// </summary>
-        /// <remarks>
-        /// Binding the image URI or path didn't work when the image is located in isolated storage,
-        /// so we do it now this way manuelly.
-        /// </remarks>
-        /// <param name="note">The current note view model.</param>
-        private void SetBackgroundImage(BitmapSource bitmapSource, StrokeCollection strokeCollection, double scale)
+        /// <param name="bitmapSource">The image source.</param>
+        private void SetBackgroundImage(BitmapSource bitmapSource)
         {
             // check if the default image should be used.
             if (bitmapSource == null)
@@ -41,16 +42,57 @@ namespace PhotoNote.Controls
             BackgroundImage.Width = bitmapSource.PixelWidth;
             BackgroundImage.Height = bitmapSource.PixelHeight;
             BackgroundImage.Source = bitmapSource;
+        }
 
+        /// <summary>
+        /// Sets the ink.
+        /// </summary>
+        /// <param name="strokeCollection">The stroke data.</param>
+        /// <param name="width">The area width.</param>
+        /// <param name="height">The area height.</param>
+        /// <param name="scale">The scale factor.</param>
+        private void SetInk(StrokeCollection strokeCollection, double width, double height, double scale)
+        {
             // strokes
-            InkControl.Width = bitmapSource.PixelWidth;
-            InkControl.Height = bitmapSource.PixelHeight;
+            InkControl.Width = width;
+            InkControl.Height = height;
             InkControl.RenderTransform = new ScaleTransform
             {
                 ScaleX = scale,
                 ScaleY = scale
             };
+
+            // add data
             InkControl.Strokes = strokeCollection;
+        }
+
+        /// <summary>
+        /// Sets the texts.
+        /// </summary>
+        /// <param name="textCollection">The text context collection</param>
+        /// <param name="width">The area width.</param>
+        /// <param name="height">The area height.</param>
+        /// <param name="scale">The scale factor.</param>
+        private void SetText(IList<TextContext> textCollection, double width, double height, double scale)
+        {
+            EditTextControl.Width = width;
+            EditTextControl.Height = height;
+            EditTextControl.RenderTransform = new ScaleTransform
+            {
+                ScaleX = scale,
+                ScaleY = scale
+            };
+
+            // add data
+            foreach (var textContext in textCollection)
+            {
+                var textbox = new ExtendedTextBox(textContext);
+                textbox.IsActive = false;
+                EditTextControl.Children.Add(textbox);
+                textbox.UpdateLayout();
+
+                textbox.SetTextBoxPosition(EditTextControl, 10, 10); // TODO: real position missing in context. Define a context container with add properties?
+            }
         }
     }
 }
