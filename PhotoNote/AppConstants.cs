@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Media;
 
 namespace PhotoNote
 {
@@ -36,5 +39,23 @@ namespace PhotoNote
         /// The size of the color history.
         /// </summary>
         public const int COLOR_HISTORY_SIZE = 6;
+
+        // PEN DEFAULTS
+        public static readonly Color DEFAULT_PEN_COLOR = Colors.Red;
+        public const double DEFAULT_PEN_OPACITY = 0.35;
+        public const double DEFAULT_PEN_THICKNESS = 14.0;
+        public static readonly List<Color> DEFAULT_HISTORY_COLORS = new List<Color> { Colors.Red, Colors.Green, Colors.Blue, Colors.Yellow, Colors.Black, Colors.White };
+        public const DrawMode DEFAULT_DRAW_MODE = PhotoNote.DrawMode.Normal;
+
+        // TEXT DEFAULTS
+        public const TextAlignment DEFAULT_TEXT_ALIGNMENT = TextAlignment.Left;
+        public static readonly FontWeight DEFAULT_TEXT_WEIGHT = FontWeights.Normal;
+        public static readonly FontStyle DEFAULT_TEXT_STYLE = FontStyles.Normal;
+        public static readonly FontFamily DEFAULT_TEXT_FONT = new FontFamily("Portable User Interface");
+        public const double DEFAULT_TEXT_SIZE = 42.0;
+        public const double DEFAULT_TEXT_OPACITY = 1.0;
+        public static readonly Color DEFAULT_TEXT_COLOR = Colors.Red;
+        public const bool DEFAULT_TEXT_BORDER = false;
+        public const bool DEFAULT_TEXT_BACKGROUND_BORDER = false;
     }
 }

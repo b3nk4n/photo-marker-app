@@ -63,7 +63,9 @@ namespace PhotoNote
         /// Creates the default text context.
         /// </summary>
         public TextContext()
-            : this(TextAlignment.Left, FontWeights.Normal, FontStyles.Normal, FontsViewModel.DEFAULT.Font, 36.0, 1.0, Colors.Black, false, false)
+            : this(AppConstants.DEFAULT_TEXT_ALIGNMENT, AppConstants.DEFAULT_TEXT_WEIGHT, AppConstants.DEFAULT_TEXT_STYLE,
+                   AppConstants.DEFAULT_TEXT_FONT, AppConstants.DEFAULT_TEXT_SIZE, AppConstants.DEFAULT_TEXT_OPACITY,
+                   AppConstants.DEFAULT_TEXT_COLOR, AppConstants.DEFAULT_TEXT_BORDER, AppConstants.DEFAULT_TEXT_BACKGROUND_BORDER)
         {
         }
 

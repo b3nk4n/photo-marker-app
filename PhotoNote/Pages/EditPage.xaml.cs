@@ -28,6 +28,7 @@ using PhoneKit.Framework.Core.Storage;
 using PhotoNote.Conversion;
 using PhotoNote.ViewModel;
 using PhoneKit.Framework.InAppPurchase;
+using Newtonsoft.Json;
 
 namespace PhotoNote.Pages
 {
@@ -55,14 +56,17 @@ namespace PhotoNote.Pages
         private const string TRANSLATION_X_KEY = "_trans_x_";
         private const string TRANSLATION_Y_KEY = "_trans_y_";
 
+        private const string TEXT_ELEMENTS_KEY = "_text_elements_";
+        private const string TEXT_SELECTED_INDEX = "_text_selected_";
+
+        private const string EDIT_MODE_KEY = "_edit_mode_";
+
         private double _zoom = 1.0;
         private double _translateX;
         private double _translateY;
 
         private const double ZOOM_MIN = 1.0;
         private const double ZOOM_MAX = 5.0;
-
-        private DrawMode _currentDrawMode = DrawMode.Normal;
 
         private EditMode _currentEditMode = EditMode.Marker;
 
@@ -72,14 +76,18 @@ namespace PhotoNote.Pages
 
         private TextContext _textContext = new TextContext();
 
+        private MarkerContext _markerContext = new MarkerContext();
+
+
         public EditPage()
         {
             InitializeComponent();
             BuildLocalizedApplicationBar();
 
             Loaded += (s, e) => {
-                SetTogglesToMode(_currentDrawMode);
+                UpdatePenToolbarWithContext(_markerContext);
                 UpdateTextToolbarWithContext(_textContext);
+                AllTextBoxesToActiveState(_currentEditMode == EditMode.Text);
                 UpdateTextAppBar();
             };
         }
@@ -153,7 +161,7 @@ namespace PhotoNote.Pages
                 else
                 {
                     var keyboardClosed = false;
-                    if (_selectedTextBox != null)
+                    if (_selectedTextBox != null && _selectedTextBox.HasFocus)
                     {
                         // close the keyboard
                         this.Focus();
@@ -365,23 +373,51 @@ namespace PhotoNote.Pages
 
         private void LoadSettings()
         {
-            this.ColorPicker.Color = AppSettings.PenColor.Value;
-            this.OpacitySlider.Value = AppSettings.PenOpacity.Value;
-            var thicknessQuadratic = AppSettings.PenThickness.Value;
-            this.ThicknessSlider.Value = (double)LinerToQuadraticConverter.ConvertBack(thicknessQuadratic, null, null, null);
-            _currentDrawMode = AppSettings.DrawMode.Value;
+            // marker
+            _markerContext.Color = AppSettings.PenColor.Value;
+            _markerContext.Opacity = AppSettings.PenOpacity.Value;
+            _markerContext.Size = AppSettings.PenThickness.Value;
+            _markerContext.Mode = AppSettings.DrawMode.Value;
+
+            // text
+            _textContext.Color = AppSettings.TextColor.Value;
+            _textContext.Alignment = AppSettings.TextAlignment.Value;
+            _textContext.Font = AppSettings.TextFont.Value;
+            _textContext.HasBorder = AppSettings.TextBorder.Value;
+            _textContext.HasBackgroundBorder = AppSettings.TextBackgroundBorder.Value;
+            _textContext.Opacity = AppSettings.TextOpacity.Value;
+            _textContext.Size = AppSettings.TextSize.Value;
+            _textContext.Style = AppSettings.TextStyle.Value;
+            _textContext.Weight = AppSettings.TextWeight.Value;
         }
 
         private void SaveSettings()
         {
-            AppSettings.PenColor.Value = this.ColorPicker.Color;
-            AppSettings.PenOpacity.Value = this.OpacitySlider.Value;
-            AppSettings.PenThickness.Value = (double)LinerToQuadraticConverter.Convert(this.ThicknessSlider.Value, null, null, null);
-            AppSettings.DrawMode.Value = this._currentDrawMode;
+            // marker
+            AppSettings.PenColor.Value = _markerContext.Color;
+            AppSettings.PenOpacity.Value = _markerContext.Opacity;
+            AppSettings.PenThickness.Value = (double)LinerToQuadraticConverter.Convert(_markerContext.Size, null, null, null);
+            AppSettings.DrawMode.Value = _markerContext.Mode;
+
+            // text
+            AppSettings.TextColor.Value = _textContext.Color;
+            AppSettings.TextAlignment.Value = _textContext.Alignment;
+            AppSettings.TextFont.Value = _textContext.Font;
+            AppSettings.TextBorder.Value = _textContext.HasBorder;
+            AppSettings.TextBackgroundBorder.Value = _textContext.HasBackgroundBorder;
+            AppSettings.TextOpacity.Value = _textContext.Opacity;
+            AppSettings.TextSize.Value = _textContext.Size;
+            AppSettings.TextStyle.Value = _textContext.Style;
+            AppSettings.TextWeight.Value = _textContext.Weight;
         }
 
         private void RestoreState()
         {
+            // edit mode
+            var editMode = PhoneStateHelper.LoadValue<EditMode>(EDIT_MODE_KEY, EditMode.Marker);
+            PhoneStateHelper.DeleteValue(EDIT_MODE_KEY);
+            ChangedEditMode(editMode);
+
             // popup state
             var showPenToolbar = PhoneStateHelper.LoadValue<bool>(PEN_POPUP_VISIBLE_KEY, false);
             PhoneStateHelper.DeleteValue(PEN_POPUP_VISIBLE_KEY);
@@ -440,6 +476,30 @@ namespace PhotoNote.Pages
             var centerStart = PhoneStateHelper.LoadValue<Vector2>(CENTER_START_KEY, new Vector2());
             PhoneStateHelper.DeleteValue(CENTER_START_KEY);
             _centerStart = centerStart;
+
+            // text elements
+            if (EditTextControl.Children.Count == 0)
+            {
+                var jsonArrayTextContexts = PhoneStateHelper.LoadValue<string>(TEXT_ELEMENTS_KEY, null);
+                PhoneStateHelper.DeleteValue(TEXT_ELEMENTS_KEY);
+                var tbContextList = JsonConvert.DeserializeObject<IList<TextBoxContext>>(jsonArrayTextContexts);
+                
+                foreach (var context in tbContextList)
+	            {
+                    var textbox = AddTextBox(EditTextControl, context);
+                    textbox.IsActive = false;
+                    textbox.IsEnabled = false;
+	            }
+            }
+
+            // text selected index
+            var textSelectedIndex = PhoneStateHelper.LoadValue<int>(TEXT_SELECTED_INDEX, -1);
+            PhoneStateHelper.DeleteValue(TEXT_SELECTED_INDEX);
+            if (textSelectedIndex != -1 && textSelectedIndex < EditTextControl.Children.Count)
+            {
+                var textbox = EditTextControl.Children[textSelectedIndex] as ExtendedTextBox;
+                SelectTextBox(textbox);
+            }
         }
 
         private static System.Windows.Media.Color HexToColor(string hexString)
@@ -456,6 +516,9 @@ namespace PhotoNote.Pages
 
         private void SaveState()
         {
+            // edit mode
+            PhoneStateHelper.SaveValue(EDIT_MODE_KEY, _currentEditMode);
+
             // popup state
             PhoneStateHelper.SaveValue(PEN_POPUP_VISIBLE_KEY, _isPenToolbarVisible);
 
@@ -484,6 +547,32 @@ namespace PhotoNote.Pages
 
             // center start (cirlce)
             PhoneStateHelper.SaveValue(CENTER_START_KEY, _centerStart);
+
+            // text elements
+            if (EditTextControl.Children.Count > 0)
+            {
+                var contextList = GetTextBoxContextList();
+                var jsonArrayTextContexts = JsonConvert.SerializeObject(contextList);
+                PhoneStateHelper.SaveValue(TEXT_ELEMENTS_KEY, jsonArrayTextContexts);
+            }
+
+            // text selected index
+            if (_selectedTextBox != null)
+            {
+                var index = -1;
+
+                for (int i = 0; i < EditTextControl.Children.Count; ++i)
+                {
+                    var textbox = EditTextControl.Children[i] as ExtendedTextBox;
+                    if (textbox != null && _selectedTextBox == textbox)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+                PhoneStateHelper.SaveValue(TEXT_SELECTED_INDEX, index);
+            }
+            
         }
 
         private bool UpdatePicture(EditPicture pic)
@@ -807,7 +896,7 @@ namespace PhotoNote.Pages
             {
                 var toggledMode = (DrawMode)Enum.Parse(typeof(DrawMode), (string)toggle.Tag);
                 // set mode
-                _currentDrawMode = toggledMode;
+                _markerContext.Mode = toggledMode;
                 SetTogglesToMode(toggledMode);
             }
         }
@@ -940,7 +1029,7 @@ namespace PhotoNote.Pages
 
             var stylusPoint = e.StylusDevice.GetStylusPoints(InkControl).First();
 
-            switch (_currentDrawMode)
+            switch (_markerContext.Mode)
             {
                 case DrawMode.Normal:
                     _activeStroke.StylusPoints.Add(stylusPoint);
@@ -1019,7 +1108,7 @@ namespace PhotoNote.Pages
                     strokeAdded = true;
                 }
 
-                if (_currentDrawMode == DrawMode.Arrow)
+                if (_markerContext.Mode == DrawMode.Arrow)
                 {
                     FinishArrow();
                 }
@@ -1052,9 +1141,9 @@ namespace PhotoNote.Pages
         {
             StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
             MyStylusPointCollection.Add(new StylusPoint(_centerStart.X, _centerStart.Y));
-            var opacity = OpacitySlider.Value;
-            var color = ColorPicker.Color;
-            var size = (double)LinerToQuadraticConverter.Convert(this.ThicknessSlider.Value, null, null, null);
+            var opacity = _markerContext.Opacity;
+            var color = _markerContext.Color;
+            var size = (double)LinerToQuadraticConverter.Convert(_markerContext.Size, null, null, null);
             var stroke = new Stroke(MyStylusPointCollection);
             stroke.DrawingAttributes = new DrawingAttributes
             {
@@ -1092,7 +1181,7 @@ namespace PhotoNote.Pages
                 var endVec = new Vector2((float)end.X, (float)end.Y);
 
                 var arrowDirection = endVec - startVec;
-                float shoulderLength = GetShoulderLength(arrowDirection.Length(), (float)((double)LinerToQuadraticConverter.Convert(this.ThicknessSlider.Value, null, null, null)));
+                float shoulderLength = GetShoulderLength(arrowDirection.Length(), (float)((double)LinerToQuadraticConverter.Convert(_markerContext.Size, null, null, null)));
                 arrowDirection.Normalize();
 
                 var leftShoulder = RotateVector(arrowDirection, 3 * MathHelper.PiOver4);
@@ -1193,7 +1282,7 @@ namespace PhotoNote.Pages
         private void UpdateMarkerAppBar()
         {
             var active = (_currentEditMode == EditMode.Marker) ? ".active" : string.Empty;
-            var iconUriString = string.Format("/Assets/AppBar/appbar.draw.marker.{0}{1}.png", _currentDrawMode.ToString(), active);
+            var iconUriString = string.Format("/Assets/AppBar/appbar.draw.marker.{0}{1}.png", _markerContext.Mode.ToString(), active);
             _appBarPenButton.IconUri = new Uri(iconUriString, UriKind.Relative);
         }
 
@@ -1241,6 +1330,7 @@ namespace PhotoNote.Pages
                 _previouslySelectedTextBox = _selectedTextBox;
                 _selectedTextBox = null;
 
+                ExtendedTextBox textBoxToSelect = null;
                 for (int i = EditTextControl.Children.Count - 1; i >= 0; --i)
                 {
                     var textbox = EditTextControl.Children[i] as ExtendedTextBox;
@@ -1251,17 +1341,25 @@ namespace PhotoNote.Pages
 
                         if (boundingBox.Contains((int)e.ManipulationOrigin.X, (int)e.ManipulationOrigin.Y))
                         {
-                            SelectTextBox(textbox);
+                            // just remember selection to select the new one after
+                            // the old one is unselected
+                            textBoxToSelect = textbox;
                             
-                            // update UI in toolbar
-                            UpdateTextToolbarWithContext(textbox.GetContext());
                             break;
                         }
                     }
                 }
 
-                if (_previouslySelectedTextBox != _selectedTextBox)
+                if (_previouslySelectedTextBox != textBoxToSelect)
                     UnselectTextBox(ref _previouslySelectedTextBox);
+
+                if (textBoxToSelect != null)
+                {
+                    SelectTextBox(textBoxToSelect);
+
+                    // update UI in toolbar
+                    UpdateTextToolbarWithContext(textBoxToSelect.GetContext());
+                }
 
                 // reset previous selection when nothing was clicked
                 if (_selectedTextBox == null)
@@ -1341,7 +1439,15 @@ namespace PhotoNote.Pages
                 {
                     if (EditTextControl.Children.Count == 0 || InAppPurchaseHelper.IsProductActive(AppConstants.IAP_PREMIUM_VERSION))
                     {
-                        AddTextBox(EditTextControl, string.Empty, e.ManipulationOrigin.X, e.ManipulationOrigin.Y);
+                        var context = new TextBoxContext(string.Empty, e.ManipulationOrigin.X, e.ManipulationOrigin.Y, _textContext);
+                        var textbox = AddTextBox(EditTextControl, context);
+
+                        // select
+                        SelectTextBox(textbox);
+                        EditTextBox(_selectedTextBox);
+
+                        // show text options
+                        ShowTextOptionsAnimation.Begin();
                     }
                     else if (!_upgradePopupShown) // show upgrade message only once (not req. to make it persistent)
                     {
@@ -1389,12 +1495,14 @@ namespace PhotoNote.Pages
 
             if (newEditMode == EditMode.Text)
             {
-                AllTextBoxesToActiveState(false);
+                AllTextBoxesToActiveState(true);
+                UpdateTextToolbarWithContext(_textContext);
             }
             else
             {
-                AllTextBoxesToActiveState(true);
+                AllTextBoxesToActiveState(false);
                 UnselectTextBox(ref _selectedTextBox);
+                UpdatePenToolbarWithContext(_markerContext);
             }
         }
 
@@ -1405,13 +1513,11 @@ namespace PhotoNote.Pages
         /// <param name="text">The default text.</param>
         /// <param name="x">The x coord.</param>
         /// <param name="y">THe y coord.</param>
-        private void AddTextBox(Canvas parent, string text, double x, double y)
+        private ExtendedTextBox AddTextBox(Canvas parent, TextBoxContext context)
         {
             var textbox = new ExtendedTextBox();
-            textbox.Text = text;
-            textbox.Foreground = ColorPicker.SolidColorBrush; // TODO: define a common context?
-            textbox.SetContext(_textContext);
-            textbox.IsActive = true;
+            textbox.Text = context.Text;
+            textbox.SetContext(context.Context);
             textbox.LostFocus += (s, e) =>
             {
                 var thisTextBox = s as ExtendedTextBox;
@@ -1440,19 +1546,11 @@ namespace PhotoNote.Pages
                 }
             };
             // use out of screen location to get the actual width and height
-            //Canvas.SetTop(textbox, -999);
-            //Canvas.SetLeft(textbox, -999); // TODO: 999 necessary?
             parent.Children.Add(textbox);
             textbox.UpdateLayout();
 
-            textbox.SetTextBoxPosition(parent, x, y);
-
-            // select
-            SelectTextBox(textbox);
-            EditTextBox(_selectedTextBox);
-
-            // show text options
-            ShowTextOptionsAnimation.Begin();
+            textbox.SetTextBoxPosition(parent, context.X, context.Y);
+            return textbox;
         }
 
         #endregion
@@ -1487,7 +1585,8 @@ namespace PhotoNote.Pages
             if (textBox != null)
             {
                 _selectedTextBox = textBox;
-                _selectedTextBox.IsActive = false;
+                _selectedTextBox.IsActive = true;
+                _selectedTextBox.IsEnabled = true;
             }
         }
 
@@ -1495,15 +1594,15 @@ namespace PhotoNote.Pages
         /// Sets the read only state of all text boxes, where readOnly means
         /// if a text box is highlighted or not.
         /// </summary>
-        /// <param name="readOnly"></param>
-        private void AllTextBoxesToActiveState(bool readOnly)
+        /// <param name="readOnly">The read only value.</param>
+        private void AllTextBoxesToActiveState(bool active)
         {
             foreach (var tb in EditTextControl.Children)
             {
                 var textbox = tb as ExtendedTextBox;
                 if (textbox != null)
                 {
-                    textbox.IsActive = readOnly;
+                    textbox.IsActive = active;
                 }
             }
         }
@@ -1537,6 +1636,18 @@ namespace PhotoNote.Pages
         /// Updates the toolbar to the given context.
         /// </summary>
         /// <param name="context">The context to set.</param>
+        private void UpdatePenToolbarWithContext(MarkerContext context)
+        {
+            OpacitySlider.Value = context.Opacity;
+            ThicknessSlider.Value = (double)LinerToQuadraticConverter.ConvertBack(context.Size, null, null, null);
+            ColorPicker.Color = context.Color;
+            SetTogglesToMode(context.Mode);
+        }
+
+        /// <summary>
+        /// Updates the toolbar to the given context.
+        /// </summary>
+        /// <param name="context">The context to set.</param>
         private void UpdateTextToolbarWithContext(TextContext context)
         {
             SetTogglesToTextAlignment(context.Alignment);
@@ -1547,6 +1658,7 @@ namespace PhotoNote.Pages
             SetTogglesToTextBorder(context.HasBorder);
             SetTogglesToTextBackgroundBorder(context.HasBackgroundBorder);
             SetSelectionTextFont(context.Font);
+            ColorPicker.Color = context.Color;
         }
 
         private void TextAlignmentToggled(object sender, RoutedEventArgs e)
@@ -1719,10 +1831,19 @@ namespace PhotoNote.Pages
 
         private void ColorPickerChanged(object sender, System.Windows.Media.Color color)
         {
-            if (_selectedTextBox != null)
+            if (_currentEditMode == EditMode.Marker)
             {
-                // Remark: color not used, because we do not want to create a new instance each change
-                _selectedTextBox.Foreground = ColorPicker.SolidColorBrush;
+                _markerContext.Color = color;
+            }
+            else // EditMode.Text
+            {
+                _textContext.Color = color;
+
+                if (_selectedTextBox != null)
+                {
+                    // Remark: color not used, because we do not want to create a new instance each change
+                    _selectedTextBox.Foreground = ColorPicker.SolidColorBrush;
+                }
             }
         }
 
@@ -1845,6 +1966,16 @@ namespace PhotoNote.Pages
 
             // reregister events
             FontPicker.SelectionChanged += FontPickerSelectionChanged;
+        }
+
+        private void MarkerThicknessChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            _markerContext.Size = e.NewValue;
+        }
+
+        private void MarkerOpacityChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            _markerContext.Opacity = e.NewValue;
         }
     }
 }

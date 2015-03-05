@@ -20,8 +20,6 @@
             <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="BorderBrush" Value="{StaticResource PhoneTextBoxBrush}"/>
-            <!--<Setter Property="SelectionBackground" Value="{StaticResource PhoneAccentBrush}"/>
-            <Setter Property="SelectionForeground" Value="{StaticResource PhoneTextBoxSelectionForegroundBrush}"/>-->
             <Setter Property="SelectionBackground" Value="White"/>
             <Setter Property="SelectionForeground" Value="Black"/>
             <Setter Property="Padding" Value="2"/>
@@ -91,6 +89,6 @@
     <Grid x:Name="LayoutRoot">
         <Rectangle x:Name="BackgroundBorder" Fill="#99BBBBBB" Opacity="{Binding ElementName=TextControl, Path=TextOpacity}" Visibility="Visible" Margin="16,16"/>
         <Rectangle x:Name="Border" Stroke="{Binding ElementName=TextControl, Path=Foreground}" Opacity="{Binding ElementName=TextControl, Path=TextOpacity}" StrokeThickness="{Binding FontSize, ElementName=TextControl, Converter={StaticResource SizeToDouble}}" Visibility="Visible" Margin="16,16" />
-        <controls:OpacityTextBox x:Name="TextControl" FontSize="16" Text="Hallo" AcceptsReturn="True" Style="{StaticResource DraggableTextBoxStyle}" />
+        <controls:OpacityTextBox x:Name="TextControl" FontSize="16" CaretBrush="{Binding Foreground, Source=Self}" Text="Hallo" AcceptsReturn="True" Style="{StaticResource DraggableTextBoxStyle}" />
     </Grid>
 </UserControl>

@@ -9,6 +9,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows.Media;
 using Microsoft.Xna.Framework;
+using System.Windows.Input;
 
 namespace PhotoNote.Controls
 {
@@ -17,6 +18,11 @@ namespace PhotoNote.Controls
     /// </summary>
     public partial class ExtendedTextBox : UserControl
     {
+        /// <summary>
+        /// The is active value, which is visuallized by the dotted outline.
+        /// </summary>
+        private bool _isActive;
+
         /// <summary>
         /// Creates a default instance.
         /// </summary>
@@ -61,6 +67,7 @@ namespace PhotoNote.Controls
             TextOpacity = context.Opacity;
             HasBorder = context.HasBorder;
             HasBackgroundBorder = context.HasBackgroundBorder;
+            Foreground = new SolidColorBrush(context.Color);
         }
 
         /// <summary>
@@ -236,15 +243,15 @@ namespace PhotoNote.Controls
         {
             get 
             {
-                return TextControl.IsReadOnly;
+                return _isActive;
             }
             set 
-            { 
-                TextControl.IsReadOnly = value;
-                if (value == true)
-                    VisualStateManager.GoToState(TextControl, "Inactive", false);
-                else
+            {
+                _isActive = value;
+                if (_isActive)
                     VisualStateManager.GoToState(TextControl, "Active", false);
+                else
+                    VisualStateManager.GoToState(TextControl, "Inactive", false);
             }
         }
 
@@ -275,6 +282,17 @@ namespace PhotoNote.Controls
             set
             {
                 Canvas.SetTop(this, value);
+            }
+        }
+
+        /// <summary>
+        /// Indicates whether the internal text control has the focus.
+        /// </summary>
+        public bool HasFocus
+        {
+            get
+            {
+                return FocusManager.GetFocusedElement() == TextControl;
             }
         }
     }

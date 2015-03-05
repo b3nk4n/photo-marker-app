@@ -116,6 +116,7 @@
     <Compile Include="Helpers\LauncherHelper.cs" />
     <Compile Include="Helpers\NavigationHelper.cs" />
     <Compile Include="LocalizedStrings.cs" />
+    <Compile Include="MarkerContext.cs" />
     <Compile Include="Model\EditPicture.cs" />
     <Compile Include="Model\StaticMediaLibrary.cs" />
     <Compile Include="Pages\AboutPage.xaml.cs">

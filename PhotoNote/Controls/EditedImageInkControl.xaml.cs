@@ -87,6 +87,7 @@ namespace PhotoNote.Controls
             foreach (var textBoxContext in textCollection)
             {
                 var textbox = new ExtendedTextBox(textBoxContext);
+                textbox.IsEnabled = false;
                 textbox.IsActive = false;
                 EditTextControl.Children.Add(textbox);
                 textbox.UpdateLayout();
