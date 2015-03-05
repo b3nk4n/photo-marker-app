@@ -37,6 +37,17 @@ namespace PhotoNote.Controls
         }
 
         /// <summary>
+        /// Ceates an instance by the given text box context.
+        /// </summary>
+        /// <param name="context">The text box context</param>
+        public ExtendedTextBox(TextBoxContext context)
+            : this()
+        {
+            InitializeComponent();
+            SetTextBoxContext(context);
+        }
+
+        /// <summary>
         /// Sets the context of the text box.
         /// </summary>
         /// <param name="context">The text context.</param>
@@ -53,13 +64,34 @@ namespace PhotoNote.Controls
         }
 
         /// <summary>
+        /// Sets the full context of the text box.
+        /// </summary>
+        /// <param name="context">The text context.</param>
+        public void SetTextBoxContext(TextBoxContext context)
+        {
+            Text = context.Text;
+            X = context.X;
+            Y = context.Y;
+            SetContext(context.Context);
+        }
+
+        /// <summary>
         /// Gets the text context.
         /// </summary>
         /// <returns>The text context.</returns>
         public TextContext GetContext()
         {
             return new TextContext(TextAlignment, FontWeight, FontStyle, FontFamily,
-                FontSize, TextOpacity, HasBorder, HasBackgroundBorder);
+                FontSize, TextOpacity, ForegroundColor, HasBorder, HasBackgroundBorder);
+        }
+
+        /// <summary>
+        /// Gets the text box context.
+        /// </summary>
+        /// <returns>The text box context.</returns>
+        public TextBoxContext GetTextBoxContext()
+        {
+            return new TextBoxContext(Text, X, Y, GetContext());
         }
 
         /// <summary>
@@ -97,8 +129,8 @@ namespace PhotoNote.Controls
             var inBounds = tbBounds.Intersects(parentBounds);
 
             // set position
-            Canvas.SetTop(this, top);
-            Canvas.SetLeft(this, left);
+            X = left;
+            Y = top;
             parent.UpdateLayout();
 
             return inBounds;
@@ -185,6 +217,18 @@ namespace PhotoNote.Controls
             set { TextControl.Foreground = value; }
         }
 
+        private System.Windows.Media.Color ForegroundColor
+        {
+            get
+            {
+                var solidColor = TextControl.Foreground as SolidColorBrush;
+                if (solidColor != null)
+                    return solidColor.Color;
+                else
+                    return new System.Windows.Media.Color();
+            }
+        }
+
         /// <summary>
         /// Gets or sets the read only property.
         /// </summary>
@@ -201,6 +245,36 @@ namespace PhotoNote.Controls
                     VisualStateManager.GoToState(TextControl, "Inactive", false);
                 else
                     VisualStateManager.GoToState(TextControl, "Active", false);
+            }
+        }
+
+        /// <summary>
+        /// Gets the x coordinate (LEFT).
+        /// </summary>
+        public double X
+        {
+            get
+            {
+                return Canvas.GetLeft(this);
+            }
+            set
+            {
+                Canvas.SetLeft(this, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the Y coordinate (TOP).
+        /// </summary>
+        public double Y
+        {
+            get
+            {
+                return Canvas.GetTop(this);
+            }
+            set
+            {
+                Canvas.SetTop(this, value);
             }
         }
     }

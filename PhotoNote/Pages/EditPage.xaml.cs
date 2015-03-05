@@ -231,7 +231,7 @@ namespace PhotoNote.Pages
                 using (var memStream = new MemoryStream())
                 {
                     var neutralScaleFactor = GetBiggestScaleFactorOfSmallerOrientation();
-                    var textContextList = GetTextContextList();
+                    var textContextList = GetTextBoxContextList();
                     var editedImageInkControl = new EditedImageInkControl(_editImage.FullImage as BitmapSource, InkControl.Strokes, textContextList, 1.0 / neutralScaleFactor);
                     var gfx = GraphicsHelper.Create(editedImageInkControl);
                     gfx.SaveJpeg(memStream, gfx.PixelWidth, gfx.PixelHeight, 0, 100);
@@ -273,15 +273,15 @@ namespace PhotoNote.Pages
         /// Gets the context list of the text elements on screen.
         /// </summary>
         /// <returns>The list of text contexts.</returns>
-        private IList<TextContext> GetTextContextList()
+        private IList<TextBoxContext> GetTextBoxContextList()
         {
-            IList<TextContext> list = new List<TextContext>();
+            IList<TextBoxContext> list = new List<TextBoxContext>();
             foreach (var tb in EditTextControl.Children)
             {
                 var textbox = tb as ExtendedTextBox;
                 if (textbox != null)
                 {
-                    list.Add(textbox.GetContext());
+                    list.Add(textbox.GetTextBoxContext());
                 }
             }
             return list;

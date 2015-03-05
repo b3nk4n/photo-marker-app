@@ -55,10 +55,15 @@ namespace PhotoNote
         public bool HasBackgroundBorder { get; set; }
 
         /// <summary>
+        /// Gets or sets the color.
+        /// </summary>
+        public Color Color { get; set; }
+
+        /// <summary>
         /// Creates the default text context.
         /// </summary>
         public TextContext()
-            : this(TextAlignment.Left, FontWeights.Normal, FontStyles.Normal, FontsViewModel.DEFAULT.Font, 36.0, 1.0, false, false)
+            : this(TextAlignment.Left, FontWeights.Normal, FontStyles.Normal, FontsViewModel.DEFAULT.Font, 36.0, 1.0, Colors.Black, false, false)
         {
         }
 
@@ -66,7 +71,7 @@ namespace PhotoNote
         /// Creates a custom text context.
         /// </summary>
         public TextContext(TextAlignment alignment, FontWeight weight, FontStyle style, FontFamily font,
-            double size, double opacity, bool hasBorder, bool hasBackBorder)
+            double size, double opacity, Color color, bool hasBorder, bool hasBackBorder)
         {
             Alignment = alignment;
             Weight = weight;
@@ -74,6 +79,7 @@ namespace PhotoNote
             Font = font;
             Size = size;
             Opacity = opacity;
+            Color = color;
             HasBorder = hasBorder;
             HasBackgroundBorder = hasBackBorder;
         }

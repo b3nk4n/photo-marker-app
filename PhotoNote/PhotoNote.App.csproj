@@ -139,6 +139,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="TextBoxContext.cs" />
     <Compile Include="TextContext.cs" />
     <Compile Include="ViewModel\FontItemViewModel.cs" />
     <Compile Include="ViewModel\FontsViewModel.cs" />

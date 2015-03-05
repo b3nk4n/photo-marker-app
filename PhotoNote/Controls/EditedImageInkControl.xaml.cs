@@ -15,7 +15,7 @@ namespace PhotoNote.Controls
 {
     public partial class EditedImageInkControl : UserControl
     {
-        public EditedImageInkControl(BitmapSource bitmapSource, StrokeCollection strokeCollection, IList<TextContext> textCollection, double scale)
+        public EditedImageInkControl(BitmapSource bitmapSource, StrokeCollection strokeCollection, IList<TextBoxContext> textCollection, double scale)
         {
             InitializeComponent();
 
@@ -73,7 +73,7 @@ namespace PhotoNote.Controls
         /// <param name="width">The area width.</param>
         /// <param name="height">The area height.</param>
         /// <param name="scale">The scale factor.</param>
-        private void SetText(IList<TextContext> textCollection, double width, double height, double scale)
+        private void SetText(IList<TextBoxContext> textCollection, double width, double height, double scale)
         {
             EditTextControl.Width = width;
             EditTextControl.Height = height;
@@ -84,15 +84,16 @@ namespace PhotoNote.Controls
             };
 
             // add data
-            foreach (var textContext in textCollection)
+            foreach (var textBoxContext in textCollection)
             {
-                var textbox = new ExtendedTextBox(textContext);
+                var textbox = new ExtendedTextBox(textBoxContext);
                 textbox.IsActive = false;
                 EditTextControl.Children.Add(textbox);
                 textbox.UpdateLayout();
 
-                textbox.SetTextBoxPosition(EditTextControl, 10, 10); // TODO: real position missing in context. Define a context container with add properties?
+                textbox.SetTextBoxPosition(EditTextControl, textbox.X, textbox.Y);
             }
+            this.UpdateLayout();
         }
     }
 }
