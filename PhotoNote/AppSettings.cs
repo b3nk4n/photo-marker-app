@@ -62,17 +62,17 @@ namespace PhotoNote
         /// <summary>
         /// The text weight.
         /// </summary>
-        public static StoredObject<FontWeight> TextWeight = new StoredObject<FontWeight>("_text_weight_", AppConstants.DEFAULT_TEXT_WEIGHT);
+        public static StoredObject<string> TextWeight = new StoredObject<string>("_text_weight_", AppConstants.DEFAULT_TEXT_WEIGHT_STRING);
 
         /// <summary>
         /// The text style.
         /// </summary>
-        public static StoredObject<FontStyle> TextStyle = new StoredObject<FontStyle>("_text_style_", AppConstants.DEFAULT_TEXT_STYLE);
+        public static StoredObject<string> TextStyle = new StoredObject<string>("_text_style_", AppConstants.DEFAULT_TEXT_STYLE_STRING);
 
         /// <summary>
         /// The text style.
         /// </summary>
-        public static StoredObject<FontFamily> TextFont = new StoredObject<FontFamily>("_text_font_", AppConstants.DEFAULT_TEXT_FONT);
+        public static StoredObject<string> TextFont = new StoredObject<string>("_text_font_", AppConstants.DEFAULT_TEXT_FONT_STRING);
 
         /// <summary>
         /// The text border.

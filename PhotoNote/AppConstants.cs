@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PhotoNote.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
@@ -50,8 +51,11 @@ namespace PhotoNote
         // TEXT DEFAULTS
         public const TextAlignment DEFAULT_TEXT_ALIGNMENT = TextAlignment.Left;
         public static readonly FontWeight DEFAULT_TEXT_WEIGHT = FontWeights.Normal;
+        public static readonly string DEFAULT_TEXT_WEIGHT_STRING = FontHelper.FONT_NORMAL;
         public static readonly FontStyle DEFAULT_TEXT_STYLE = FontStyles.Normal;
-        public static readonly FontFamily DEFAULT_TEXT_FONT = new FontFamily("Portable User Interface");
+        public static readonly string DEFAULT_TEXT_STYLE_STRING = FontHelper.FONT_NORMAL;
+        public static readonly FontFamily DEFAULT_TEXT_FONT = new FontFamily(DEFAULT_TEXT_FONT_STRING);
+        public static readonly string DEFAULT_TEXT_FONT_STRING = "Portable User Interface";
         public const double DEFAULT_TEXT_SIZE = 48.0;
         public const double DEFAULT_TEXT_OPACITY = 1.0;
         public static readonly Color DEFAULT_TEXT_COLOR = Colors.Red;

@@ -113,6 +113,7 @@
     <Compile Include="CustomUriMapper.cs" />
     <Compile Include="DrawMode.cs" />
     <Compile Include="EditMode.cs" />
+    <Compile Include="Helpers\FontHelper.cs" />
     <Compile Include="Helpers\LauncherHelper.cs" />
     <Compile Include="Helpers\NavigationHelper.cs" />
     <Compile Include="LocalizedStrings.cs" />

@@ -743,7 +743,7 @@
                     <!-- buttons -->
                     <StackPanel Grid.Column="1" HorizontalAlignment="Center">
                         <!-- font -->
-                        <toolkit:ListPicker Width="126" Height="52" x:Name="FontPicker" ExpansionMode="FullScreenOnly" Header="{Binding LocalizedResources.FontsHeader, Source={StaticResource LocalizedStrings}}" DataContext="{StaticResource FontsViewModel}" ItemsSource="{Binding Fonts}" SelectionChanged="FontPickerSelectionChanged"
+                        <toolkit:ListPicker Width="126" Height="52" x:Name="FontPicker" ExpansionMode="FullScreenOnly" Header="{Binding LocalizedResources.FontsHeader, Source={StaticResource LocalizedStrings}}" DataContext="{StaticResource FontsViewModel}" ItemsSource="{Binding Fonts}"
                                                 Style="{StaticResource CustomListPickerStyle}" HorizontalAlignment="Center">
                             <toolkit:ListPicker.ItemTemplate>
                                 <DataTemplate>
@@ -931,7 +931,7 @@
                     <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="-4,0,0,0">
                         <StackPanel VerticalAlignment="Center">
                             <!-- font -->
-                            <toolkit:ListPicker Width="122" Height="52" x:Name="FontPickerLandscape" ExpansionMode="FullScreenOnly" Header="{Binding LocalizedResources.FontsHeader, Source={StaticResource LocalizedStrings}}" DataContext="{StaticResource FontsViewModel}" ItemsSource="{Binding Fonts}" SelectionChanged="FontPickerSelectionChanged"
+                            <toolkit:ListPicker Width="122" Height="52" x:Name="FontPickerLandscape" ExpansionMode="FullScreenOnly" Header="{Binding LocalizedResources.FontsHeader, Source={StaticResource LocalizedStrings}}" DataContext="{StaticResource FontsViewModel}" ItemsSource="{Binding Fonts}"
                                                     Style="{StaticResource CustomListPickerStyle}" HorizontalAlignment="Center">
                                 <toolkit:ListPicker.ItemTemplate>
                                     <DataTemplate>
@@ -1004,7 +1004,7 @@
             </Grid>
 
             <!-- text options -->
-            <StackPanel x:Name="TextOptions" VerticalAlignment="Top" HorizontalAlignment="Left" Orientation="Horizontal" Visibility="Collapsed" >
+            <StackPanel x:Name="TextOptions" VerticalAlignment="Top" HorizontalAlignment="Center" Orientation="Horizontal" Visibility="Collapsed" >
                 <Button Template="{StaticResource EmptyButtonControlTemplate}"
                     Click="TextOptionsEditClicked">
                     <Grid>

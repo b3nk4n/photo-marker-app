@@ -47,7 +47,7 @@ namespace PhotoNote.ViewModel
         public static FontItemViewModel GetItemByFont(FontFamily font)
         {
             // default fallback
-            if (font == null)
+            if (font == null || string.IsNullOrEmpty(font.Source))
                 return DEFAULT;
 
             foreach (var f in FontCollection)

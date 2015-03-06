@@ -84,12 +84,31 @@ namespace PhotoNote.Pages
             InitializeComponent();
             BuildLocalizedApplicationBar();
 
+            // add these slightly delayed, to get no selected events while creating the UI.
+            FontPicker.SelectionChanged += FontPickerSelectionChanged;
+            FontPickerLandscape.SelectionChanged += FontPickerSelectionChanged;
+
             Loaded += (s, e) => {
-                UpdatePenToolbarWithContext(_markerContext);
-                UpdateTextToolbarWithContext(_textContext);
-                AllTextBoxesToActiveState(_currentEditMode == EditMode.Text);
+                //UpdatePenToolbarWithContext(_markerContext);
+
+                //if (_selectedTextBox != null)
+                //    UpdateTextToolbarWithContext(_selectedTextBox.GetContext());
+                //else
+                //    UpdateTextToolbarWithContext(_textContext);
+
+                //AllTextBoxesToActiveState(_currentEditMode == EditMode.Text);
                 UpdateTextAppBar();
+                UpdateMarkerAppBar();
             };
+
+            UpdatePenToolbarWithContext(_markerContext);
+
+            if (_selectedTextBox != null)
+                UpdateTextToolbarWithContext(_selectedTextBox.GetContext());
+            else
+                UpdateTextToolbarWithContext(_textContext);
+
+            AllTextBoxesToActiveState(_currentEditMode == EditMode.Text);
         }
 
         /// <summary>
@@ -389,13 +408,23 @@ namespace PhotoNote.Pages
             // text
             _textContext.Color = AppSettings.TextColor.Value;
             _textContext.Alignment = AppSettings.TextAlignment.Value;
-            _textContext.Font = AppSettings.TextFont.Value;
             _textContext.HasBorder = AppSettings.TextBorder.Value;
             _textContext.HasBackgroundBorder = AppSettings.TextBackgroundBorder.Value;
             _textContext.Opacity = AppSettings.TextOpacity.Value;
             _textContext.Size = AppSettings.TextSize.Value;
-            _textContext.Style = AppSettings.TextStyle.Value;
-            _textContext.Weight = AppSettings.TextWeight.Value;
+            _textContext.Style = FontHelper.GetStyle(AppSettings.TextStyle.Value);
+            _textContext.Weight = FontHelper.GetWeight(AppSettings.TextWeight.Value);
+
+            if (_fontFamilyFromChangedEvent != null)
+            {
+                // do not override the selected value from changed event.
+                _textContext.Font = _fontFamilyFromChangedEvent;
+                _fontFamilyFromChangedEvent = null;
+            }
+            else
+            {
+                _textContext.Font = FontHelper.GetFont(AppSettings.TextFont.Value);
+            }
         }
 
         private void SaveSettings()
@@ -409,13 +438,13 @@ namespace PhotoNote.Pages
             // text
             AppSettings.TextColor.Value = _textContext.Color;
             AppSettings.TextAlignment.Value = _textContext.Alignment;
-            AppSettings.TextFont.Value = _textContext.Font;
+            AppSettings.TextFont.Value = FontHelper.GetString(_textContext.Font);
             AppSettings.TextBorder.Value = _textContext.HasBorder;
             AppSettings.TextBackgroundBorder.Value = _textContext.HasBackgroundBorder;
             AppSettings.TextOpacity.Value = _textContext.Opacity;
             AppSettings.TextSize.Value = _textContext.Size;
-            AppSettings.TextStyle.Value = _textContext.Style;
-            AppSettings.TextWeight.Value = _textContext.Weight;
+            AppSettings.TextStyle.Value = FontHelper.GetString(_textContext.Style);
+            AppSettings.TextWeight.Value = FontHelper.GetString(_textContext.Weight);
         }
 
         private void RestoreState()
@@ -509,7 +538,9 @@ namespace PhotoNote.Pages
             {
                 var textbox = EditTextControl.Children[textSelectedIndex] as ExtendedTextBox;
                 SelectTextBox(textbox);
+                SetSelectionTextFont(textbox.FontFamily);
             }
+            // FIXME: selecting the item causes that the seleted items font is reverted to DEFAULT or that of the context.
         }
 
         private static System.Windows.Media.Color HexToColor(string hexString)
@@ -1592,7 +1623,7 @@ namespace PhotoNote.Pages
         /// </summary>
         /// <param name="parent">The container panel.</param>
         /// <param name="textBox">The text box to remove.</param>
-        private static void RemoveTextBox(Panel parent, ref ExtendedTextBox textBox)
+        private void RemoveTextBox(Panel parent, ref ExtendedTextBox textBox)
         {
             parent.Children.Remove(textBox);
             UnselectTextBox(ref textBox);
@@ -1629,13 +1660,16 @@ namespace PhotoNote.Pages
         /// <summary>
         /// Unselects the active text box.
         /// </summary>
-        private static void UnselectTextBox(ref ExtendedTextBox textBox)
+        private void UnselectTextBox(ref ExtendedTextBox textBox)
         {
             if (textBox != null)
             {
                 textBox.IsEnabled = false;
                 textBox = null;
             }
+
+            // set text back to general text context
+            UpdateTextToolbarWithContext(_textContext);
         }
 
         /// <summary>
@@ -1963,6 +1997,8 @@ namespace PhotoNote.Pages
             TextBackgroundBorder.Checked += TextBackgroundBorderToggled;
         }
 
+        private FontFamily _fontFamilyFromChangedEvent; // because loadstate overrides the changes
+
         private void FontPickerSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var picker = sender as ListPicker;
@@ -1972,6 +2008,7 @@ namespace PhotoNote.Pages
 
                 if (selectedFontItem != null)
                 {
+                    _fontFamilyFromChangedEvent = selectedFontItem.Font;
                     UpdateTextFont(selectedFontItem.Font);
                     SetSelectionTextFont(selectedFontItem.Font);
                 }
