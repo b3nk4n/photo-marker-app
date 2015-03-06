@@ -883,7 +883,7 @@
                     </StackPanel>
                 </Grid>
 
-                <Grid x:Name="ColorPreview" Margin="12,-32,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Grid x:Name="ColorPreview" Margin="12,-32,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" IsHitTestVisible="False">
                     <Ellipse Width="67" Height="67" Fill="{StaticResource PhoneChromeBrush}"/>
                     <Ellipse Width="53" Height="53" Fill="White"/>
                     <Ellipse Height="1" Width="1" Fill="{Binding SolidColorBrush, ElementName=ColorPicker}" Opacity="{Binding Value, ElementName=OpacitySlider}" RenderTransformOrigin="0.5,0.5">
@@ -1075,7 +1075,7 @@
                     </StackPanel>
                 </Grid>
 
-                <Grid Grid.RowSpan="2" Margin="-32,0,0,12" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <Grid Grid.RowSpan="2" Margin="-32,0,0,12" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsHitTestVisible="False">
                     <Ellipse Width="67" Height="67" Fill="{StaticResource PhoneChromeBrush}"/>
                     <Ellipse Width="53" Height="53" Fill="White"/>
                     <Ellipse Height="1" Width="1" Fill="{Binding SolidColorBrush, ElementName=ColorPickerLandscape}" Opacity="{Binding Value, ElementName=OpacitySliderLandscape}" RenderTransformOrigin="0.5,0.5">
