@@ -1959,7 +1959,10 @@ namespace PhotoNote.Pages
                 var selectedFontItem = picker.SelectedItem as FontItemViewModel;
 
                 if (selectedFontItem != null)
+                {
                     UpdateTextFont(selectedFontItem.Font);
+                    SetSelectionTextFont(selectedFontItem.Font);
+                }
             }
         }
 
@@ -1976,14 +1979,20 @@ namespace PhotoNote.Pages
 
         private void SetSelectionTextFont(FontFamily font)
         {
+            if (FontPicker == null || FontPickerLandscape == null)
+                return;
+
             // unregister events
             FontPicker.SelectionChanged -= FontPickerSelectionChanged;
+            FontPickerLandscape.SelectionChanged -= FontPickerSelectionChanged;
 
             // update UI
             FontPicker.SelectedItem = FontsViewModel.GetItemByFont(font);
+            FontPickerLandscape.SelectedItem = FontsViewModel.GetItemByFont(font);
 
             // reregister events
             FontPicker.SelectionChanged += FontPickerSelectionChanged;
+            FontPickerLandscape.SelectionChanged += FontPickerSelectionChanged;
         }
 
         private void MarkerThicknessChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

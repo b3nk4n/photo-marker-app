@@ -52,7 +52,7 @@ namespace PhotoNote
         public static readonly FontWeight DEFAULT_TEXT_WEIGHT = FontWeights.Normal;
         public static readonly FontStyle DEFAULT_TEXT_STYLE = FontStyles.Normal;
         public static readonly FontFamily DEFAULT_TEXT_FONT = new FontFamily("Portable User Interface");
-        public const double DEFAULT_TEXT_SIZE = 42.0;
+        public const double DEFAULT_TEXT_SIZE = 48.0;
         public const double DEFAULT_TEXT_OPACITY = 1.0;
         public static readonly Color DEFAULT_TEXT_COLOR = Colors.Red;
         public const bool DEFAULT_TEXT_BORDER = false;
