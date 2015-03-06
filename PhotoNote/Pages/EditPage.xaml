@@ -40,9 +40,8 @@
 
     <phone:PhoneApplicationPage.Resources>
         <vm:FontsViewModel x:Key="FontsViewModel" />
-		<Converters:SolidColorBrushToColorConverter x:Key="BrushToBrush"/>
-        <conv:LinearToQuadraticConverter x:Key="LinToQuadConv" />
-		<SolidColorBrush x:Key="DefaultDisabledBrush" Color="{Binding Converter={StaticResource BrushToBrush}, Source={StaticResource PhoneDisabledBrush}}"/>
+        <Converters:SolidColorBrushToColorConverter x:Key="BrushToBrush"/>
+        <SolidColorBrush x:Key="DefaultDisabledBrush" Color="{Binding Converter={StaticResource BrushToBrush}, Source={StaticResource PhoneDisabledBrush}}"/>
 		<Style x:Key="CustomColorPickerStyle" TargetType="coding:ColorPicker">
 			<Setter Property="Template">
 				<Setter.Value>
@@ -398,13 +397,6 @@
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Name="ShowTextOptionsAnimation">
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="TextOptions">
-        		<DiscreteObjectKeyFrame KeyTime="0">
-        			<DiscreteObjectKeyFrame.Value>
-        				<Visibility>Visible</Visibility>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="TextOptions">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1">
         			<EasingDoubleKeyFrame.EasingFunction>
@@ -412,16 +404,23 @@
         			</EasingDoubleKeyFrame.EasingFunction>
         		</EasingDoubleKeyFrame>
         	</DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="TextOptionsLandscape">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Name="HideTextOptionsAnimation">
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="TextOptions">
-                <DiscreteObjectKeyFrame KeyTime="1">
-                    <DiscreteObjectKeyFrame.Value>
-                        <Visibility>Collapsed</Visibility>
-                    </DiscreteObjectKeyFrame.Value>
-                </DiscreteObjectKeyFrame>
-            </ObjectAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="TextOptions">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="TextOptionsLandscape">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <CircleEase EasingMode="EaseInOut"/>
@@ -454,7 +453,35 @@
 						<ObjectAnimationUsingKeyFrames Storyboard.TargetName="PenToolbarLandscape" Storyboard.TargetProperty="Visibility">
 							<DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
 						</ObjectAnimationUsingKeyFrames>
-					</Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="TextOptions">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="TextOptionsLandscape">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)" Storyboard.TargetName="TextOptions">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    True
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)" Storyboard.TargetName="TextOptionsLandscape">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    False
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
 				</VisualState>
 				<VisualState x:Name="LandscapeLeft">
 					<Storyboard>
@@ -475,6 +502,34 @@
 						</ObjectAnimationUsingKeyFrames>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ZoomingPopup" Storyboard.TargetProperty="Margin">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="0,0,72,0"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="TextOptions">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="TextOptionsLandscape">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)" Storyboard.TargetName="TextOptions">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    false
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)" Storyboard.TargetName="TextOptionsLandscape">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    true
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
                         </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
 				</VisualState>
@@ -497,6 +552,34 @@
 						</ObjectAnimationUsingKeyFrames>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ZoomingPopup" Storyboard.TargetProperty="Margin">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="72,0,0,0"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="TextOptions">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="TextOptionsLandscape">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)" Storyboard.TargetName="TextOptions">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    false
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)" Storyboard.TargetName="TextOptionsLandscape">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    true
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
                         </ObjectAnimationUsingKeyFrames>
 					</Storyboard>
 				</VisualState>
@@ -675,13 +758,13 @@
                                     </LinearGradientBrush>
                                 </Path.OpacityMask>
                             </Path>
-                            <Slider x:Name="OpacitySlider" Foreground="{Binding SolidColorBrush, ElementName=ColorPicker}" ValueChanged="MarkerOpacityChanged"
-							Value="0.5" Minimum="0.1" Maximum="1" SmallChange="0.2" LargeChange="0.1" Orientation="Vertical" Height="184" Width="62" Margin="-3,0,-3,0" VerticalAlignment="Top" Style="{StaticResource CustomSliderStyle}" />
+                            <Slider x:Name="OpacitySlider" Foreground="{Binding SolidColorBrush, ElementName=ColorPicker}"
+							    Minimum="0.1" Maximum="1" SmallChange="0.2" LargeChange="0.1" Orientation="Vertical" Height="184" Width="62" Margin="-3,0,-3,0" VerticalAlignment="Top" Style="{StaticResource CustomSliderStyle}" />
                         </StackPanel>
                         <StackPanel>
                             <Path Width="28" Height="28" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 20.5833,55.4167L 49.0833,55.4167L 45.9167,52.25L 25.3333,52.25L 31.6667,49.0833L 25.3333,42.75L 22.1667,49.875C 22.1667,49.875 15.8333,55.4167 20.5833,55.4167 Z M 36.4166,47.5L 26.9166,38L 26.9166,41.1667L 33.25,47.5L 36.4166,47.5 Z M 28.8958,37.6042L 36.8125,45.5209C 38.3958,47.1042 42.75,42.75 42.75,42.75L 31.6666,31.6667C 26.9166,36.4167 28.8958,37.6042 28.8958,37.6042 Z M 44.3333,41.1667L 65.6868,16.8593C 63.2289,13.6452 60.224,10.8717 56.8112,8.67772L 33.25,30.0834L 44.3333,41.1667 Z "/>
-                            <Slider x:Name="ThicknessSlider" Foreground="{Binding SolidColorBrush, ElementName=ColorPicker}" ValueChanged="MarkerThicknessChanged"
-							Minimum="3" Maximum="45" SmallChange="1" LargeChange="1" Orientation="Vertical" Height="184" Margin="-3,0,-3,0" Width="62" VerticalAlignment="Top" Style="{StaticResource CustomSliderStyle}" />
+                            <Slider x:Name="ThicknessSlider" Foreground="{Binding SolidColorBrush, ElementName=ColorPicker}"
+							Minimum="3" Maximum="42" SmallChange="1" LargeChange="1" Orientation="Vertical" Height="184" Margin="-3,0,-3,0" Width="62" VerticalAlignment="Top" Style="{StaticResource CustomSliderStyle}" />
                         </StackPanel>
                     </StackPanel>
 
@@ -805,7 +888,7 @@
                     <Ellipse Width="53" Height="53" Fill="White"/>
                     <Ellipse Height="1" Width="1" Fill="{Binding SolidColorBrush, ElementName=ColorPicker}" Opacity="{Binding Value, ElementName=OpacitySlider}" RenderTransformOrigin="0.5,0.5">
                         <Ellipse.RenderTransform>
-                            <ScaleTransform ScaleX="{Binding Value, ElementName=ThicknessSlider, Converter={StaticResource LinToQuadConv}}" ScaleY="{Binding Value, ElementName=ThicknessSlider, Converter={StaticResource LinToQuadConv}}" />
+                            <ScaleTransform ScaleX="{Binding Value, ElementName=ThicknessSlider}" ScaleY="{Binding Value, ElementName=ThicknessSlider}" />
                         </Ellipse.RenderTransform>
                     </Ellipse>
                 </Grid>
@@ -997,14 +1080,30 @@
                     <Ellipse Width="53" Height="53" Fill="White"/>
                     <Ellipse Height="1" Width="1" Fill="{Binding SolidColorBrush, ElementName=ColorPickerLandscape}" Opacity="{Binding Value, ElementName=OpacitySliderLandscape}" RenderTransformOrigin="0.5,0.5">
                         <Ellipse.RenderTransform>
-                            <ScaleTransform ScaleX="{Binding Value, ElementName=ThicknessSliderLandscape, Converter={StaticResource LinToQuadConv}}" ScaleY="{Binding Value, ElementName=ThicknessSliderLandscape, Converter={StaticResource LinToQuadConv}}" />
+                            <ScaleTransform ScaleX="{Binding Value, ElementName=ThicknessSliderLandscape}" ScaleY="{Binding Value, ElementName=ThicknessSliderLandscape}" />
                         </Ellipse.RenderTransform>
                     </Ellipse>
                 </Grid>
             </Grid>
 
             <!-- text options -->
-            <StackPanel x:Name="TextOptions" VerticalAlignment="Top" HorizontalAlignment="Center" Orientation="Horizontal" Visibility="Collapsed" >
+            <StackPanel x:Name="TextOptions" VerticalAlignment="Top" HorizontalAlignment="Center" Orientation="Horizontal" Visibility="Collapsed" Opacity="0" >
+                <Button Template="{StaticResource EmptyButtonControlTemplate}"
+                    Click="TextOptionsEditClicked">
+                    <Grid>
+                        <Ellipse Width="62" Height="62" Fill="{StaticResource PhoneChromeBrush}"/>
+                        <Path Width="28" Height="28" Margin="2" Stretch="Fill" Opacity="0.5" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 53.2929,21.2929L 54.7071,22.7071C 56.4645,24.4645 56.4645,27.3137 54.7071,29.0711L 52.2323,31.5459L 44.4541,23.7677L 46.9289,21.2929C 48.6863,19.5355 51.5355,19.5355 53.2929,21.2929 Z M 31.7262,52.052L 23.948,44.2738L 43.0399,25.182L 50.818,32.9601L 31.7262,52.052 Z M 23.2409,47.1023L 28.8977,52.7591L 21.0463,54.9537L 23.2409,47.1023 Z "/>
+                    </Grid>
+                </Button>
+                <Button Template="{StaticResource EmptyButtonControlTemplate}"
+                    Click="TextOptionsDeleteClicked">
+                    <Grid>
+                        <Ellipse Width="62" Height="62" Fill="{StaticResource PhoneChromeBrush}"/>
+                        <Path Width="22" Height="28" Margin="2" Stretch="Fill" Opacity="0.5" Fill="{StaticResource PhoneForegroundBrush}" Data="F1 M 25.3333,23.75L 50.6667,23.75C 51.5411,23.75 51.8541,27.3125 51.8541,27.3125L 24.1458,27.3125C 24.1458,27.3125 24.4589,23.75 25.3333,23.75 Z M 35.625,19.7917L 40.375,19.7917C 40.8122,19.7917 41.9583,20.9378 41.9583,21.375C 41.9583,21.8122 40.8122,22.9584 40.375,22.9584L 35.625,22.9584C 35.1878,22.9584 34.0416,21.8122 34.0416,21.375C 34.0416,20.9378 35.1878,19.7917 35.625,19.7917 Z M 27.7083,28.5L 48.2916,28.5C 49.1661,28.5 49.875,29.2089 49.875,30.0834L 48.2916,53.8334C 48.2916,54.7078 47.5828,55.4167 46.7083,55.4167L 29.2917,55.4167C 28.4172,55.4167 27.7083,54.7078 27.7083,53.8334L 26.125,30.0834C 26.125,29.2089 26.8339,28.5 27.7083,28.5 Z M 30.0833,31.6667L 30.4792,52.25L 33.25,52.25L 32.8542,31.6667L 30.0833,31.6667 Z M 36.4167,31.6667L 36.4167,52.25L 39.5833,52.25L 39.5833,31.6667L 36.4167,31.6667 Z M 43.1458,31.6667L 42.75,52.25L 45.5208,52.25L 45.9167,31.6667L 43.1458,31.6667 Z "/>
+                    </Grid>
+                </Button>
+            </StackPanel>
+            <StackPanel x:Name="TextOptionsLandscape" VerticalAlignment="Center" HorizontalAlignment="Left" Visibility="Collapsed" Opacity="0" >
                 <Button Template="{StaticResource EmptyButtonControlTemplate}"
                     Click="TextOptionsEditClicked">
                     <Grid>

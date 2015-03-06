@@ -41,6 +41,11 @@ namespace PhotoNote
         /// </summary>
         public const int COLOR_HISTORY_SIZE = 6;
 
+        /// <summary>
+        /// The maximum marker size.
+        /// </summary>
+        public const double MAX_MARKER_SIZE = 42;
+
         // PEN DEFAULTS
         public static readonly Color DEFAULT_PEN_COLOR = Colors.Red;
         public const double DEFAULT_PEN_OPACITY = 0.35;

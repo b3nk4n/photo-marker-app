@@ -109,7 +109,6 @@
     <Compile Include="Controls\OpacityTextBox.cs" />
     <Compile Include="Conversion\FontSizeToPaddingConverter.cs" />
     <Compile Include="Conversion\FontSizeToThicknessConverter.cs" />
-    <Compile Include="Conversion\LinearToQuadraticConverter.cs" />
     <Compile Include="CustomUriMapper.cs" />
     <Compile Include="DrawMode.cs" />
     <Compile Include="EditMode.cs" />

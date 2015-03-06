@@ -72,8 +72,6 @@ namespace PhotoNote.Pages
 
         private static StoredObject<bool> ZoomingInfoShow = new StoredObject<bool>("_zoomingInfo_", false);
 
-        private static LinearToQuadraticConverter LinerToQuadraticConverter = new LinearToQuadraticConverter();
-
         private TextContext _textContext = new TextContext();
 
         private MarkerContext _markerContext = new MarkerContext();
@@ -87,28 +85,24 @@ namespace PhotoNote.Pages
             // add these slightly delayed, to get no selected events while creating the UI.
             FontPicker.SelectionChanged += FontPickerSelectionChanged;
             FontPickerLandscape.SelectionChanged += FontPickerSelectionChanged;
+            ThicknessSlider.ValueChanged += MarkerThicknessChanged;
+            OpacitySlider.ValueChanged += MarkerOpacityChanged;
 
             Loaded += (s, e) => {
-                //UpdatePenToolbarWithContext(_markerContext);
+                UpdateOrientation(this.Orientation);
 
-                //if (_selectedTextBox != null)
-                //    UpdateTextToolbarWithContext(_selectedTextBox.GetContext());
-                //else
-                //    UpdateTextToolbarWithContext(_textContext);
-
-                //AllTextBoxesToActiveState(_currentEditMode == EditMode.Text);
                 UpdateTextAppBar();
                 UpdateMarkerAppBar();
+
+                UpdatePenToolbarWithContext(_markerContext);
+
+                if (_selectedTextBox != null)
+                    UpdateTextToolbarWithContext(_selectedTextBox.GetContext());
+                else
+                    UpdateTextToolbarWithContext(_textContext);
+
+                AllTextBoxesToActiveState(_currentEditMode == EditMode.Text);
             };
-
-            UpdatePenToolbarWithContext(_markerContext);
-
-            if (_selectedTextBox != null)
-                UpdateTextToolbarWithContext(_selectedTextBox.GetContext());
-            else
-                UpdateTextToolbarWithContext(_textContext);
-
-            AllTextBoxesToActiveState(_currentEditMode == EditMode.Text);
         }
 
         /// <summary>
@@ -402,7 +396,13 @@ namespace PhotoNote.Pages
             // marker
             _markerContext.Color = AppSettings.PenColor.Value;
             _markerContext.Opacity = AppSettings.PenOpacity.Value;
-            _markerContext.Size = AppSettings.PenThickness.Value;
+            var markerSize = AppSettings.PenThickness.Value;
+            if (markerSize > AppConstants.MAX_MARKER_SIZE)
+            {
+                // check because marker size was minimized in version 2.0
+                markerSize = AppConstants.MAX_MARKER_SIZE;
+            }
+            _markerContext.Size = markerSize;
             _markerContext.Mode = AppSettings.DrawMode.Value;
 
             // text
@@ -432,7 +432,7 @@ namespace PhotoNote.Pages
             // marker
             AppSettings.PenColor.Value = _markerContext.Color;
             AppSettings.PenOpacity.Value = _markerContext.Opacity;
-            AppSettings.PenThickness.Value = (double)LinerToQuadraticConverter.Convert(_markerContext.Size, null, null, null);
+            AppSettings.PenThickness.Value = _markerContext.Size;
             AppSettings.DrawMode.Value = _markerContext.Mode;
 
             // text
@@ -743,21 +743,7 @@ namespace PhotoNote.Pages
         {
             base.OnOrientationChanged(e);
 
-            if (e.Orientation == PageOrientation.Portrait ||
-                e.Orientation == PageOrientation.PortraitDown ||
-                e.Orientation == PageOrientation.PortraitUp)
-            {
-                VisualStateManager.GoToState(this, "Portrait", true);
-            } 
-            else if (e.Orientation == PageOrientation.Landscape ||
-                e.Orientation == PageOrientation.LandscapeLeft)
-            {
-                VisualStateManager.GoToState(this, "LandscapeLeft", true);
-            }
-            else if (e.Orientation == PageOrientation.LandscapeRight)
-            {
-                VisualStateManager.GoToState(this, "LandscapeRight", true);
-            }
+            UpdateOrientation(e.Orientation);
 
             // reset translate when necessary
             if (!HasNoImage())
@@ -780,6 +766,28 @@ namespace PhotoNote.Pages
             }
 
             UpdateImageOrientationAndScale();
+        }
+
+        /// <summary>
+        /// Updates the orientation visual state.
+        /// </summary>
+        private void UpdateOrientation(PageOrientation orientation)
+        {
+            if (orientation == PageOrientation.Portrait ||
+                orientation == PageOrientation.PortraitDown ||
+                orientation == PageOrientation.PortraitUp)
+            {
+                VisualStateManager.GoToState(this, "Portrait", true);
+            }
+            else if (orientation == PageOrientation.Landscape ||
+                orientation == PageOrientation.LandscapeLeft)
+            {
+                VisualStateManager.GoToState(this, "LandscapeLeft", true);
+            }
+            else if (orientation == PageOrientation.LandscapeRight)
+            {
+                VisualStateManager.GoToState(this, "LandscapeRight", true);
+            }
         }
 
         #endregion
@@ -1188,7 +1196,7 @@ namespace PhotoNote.Pages
             MyStylusPointCollection.Add(new StylusPoint(_centerStart.X, _centerStart.Y));
             var opacity = _markerContext.Opacity;
             var color = _markerContext.Color;
-            var size = (double)LinerToQuadraticConverter.Convert(_markerContext.Size, null, null, null);
+            var size = _markerContext.Size;
             var stroke = new Stroke(MyStylusPointCollection);
             stroke.DrawingAttributes = new DrawingAttributes
             {
@@ -1226,7 +1234,7 @@ namespace PhotoNote.Pages
                 var endVec = new Vector2((float)end.X, (float)end.Y);
 
                 var arrowDirection = endVec - startVec;
-                float shoulderLength = GetShoulderLength(arrowDirection.Length(), (float)((double)LinerToQuadraticConverter.Convert(_markerContext.Size, null, null, null)));
+                float shoulderLength = GetShoulderLength(arrowDirection.Length(), (float)_markerContext.Size);
                 arrowDirection.Normalize();
 
                 var leftShoulder = RotateVector(arrowDirection, 3 * MathHelper.PiOver4);
