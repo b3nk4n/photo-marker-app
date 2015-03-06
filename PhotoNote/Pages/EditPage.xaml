@@ -1004,7 +1004,7 @@
             </Grid>
 
             <!-- text options -->
-            <StackPanel x:Name="TextOptions" VerticalAlignment="Top" HorizontalAlignment="Center" Orientation="Horizontal" Visibility="Collapsed" >
+            <StackPanel x:Name="TextOptions" VerticalAlignment="Top" HorizontalAlignment="Left" Orientation="Horizontal" Visibility="Collapsed" >
                 <Button Template="{StaticResource EmptyButtonControlTemplate}"
                     Click="TextOptionsEditClicked">
                     <Grid>

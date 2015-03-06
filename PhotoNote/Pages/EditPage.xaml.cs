@@ -1451,30 +1451,35 @@ namespace PhotoNote.Pages
                 }
                 else if (_previouslySelectedTextBox == null && _moveCounter <= 1 && !_isKeyboardActive)
                 {
-                    if (EditTextControl.Children.Count == 0 || InAppPurchaseHelper.IsProductActive(AppConstants.IAP_PREMIUM_VERSION))
+                    if (_isPenToolbarVisible)
                     {
-                        var context = new TextBoxContext(string.Empty, e.ManipulationOrigin.X, e.ManipulationOrigin.Y, _textContext);
-                        var textbox = AddTextBox(EditTextControl, context);
-
-                        // select
-                        SelectTextBox(textbox);
-                        EditTextBox(_selectedTextBox);
-
-                        // show text options
-                        ShowTextOptionsAnimation.Begin();
+                        HidePenToolbar();
                     }
-                    else if (!_upgradePopupShown) // show upgrade message only once (not req. to make it persistent)
+                    else
                     {
-                        _upgradePopupShown = true;
-
-                        // ask to buy the premium version to add multiple text elements
-                        if (MessageBox.Show(AppResources.MessageBoxMultipleTextUpgrade, AppResources.MessageBoxAttention, MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                        if (EditTextControl.Children.Count == 0 || InAppPurchaseHelper.IsProductActive(AppConstants.IAP_PREMIUM_VERSION))
                         {
-                            NavigationService.Navigate(new Uri("/Pages/InAppStorePage.xaml", UriKind.Relative));
+                            var context = new TextBoxContext(string.Empty, e.ManipulationOrigin.X, e.ManipulationOrigin.Y, _textContext);
+                            var textbox = AddTextBox(EditTextControl, context);
+
+                            // select
+                            SelectTextBox(textbox);
+                            EditTextBox(_selectedTextBox);
+
+                            // show text options
+                            ShowTextOptionsAnimation.Begin();
+                        }
+                        else if (!_upgradePopupShown) // show upgrade message only once (not req. to make it persistent)
+                        {
+                            _upgradePopupShown = true;
+
+                            // ask to buy the premium version to add multiple text elements
+                            if (MessageBox.Show(AppResources.MessageBoxMultipleTextUpgrade, AppResources.MessageBoxAttention, MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                            {
+                                NavigationService.Navigate(new Uri("/Pages/InAppStorePage.xaml", UriKind.Relative));
+                            }
                         }
                     }
-
-                    
                 } 
             }
         }
