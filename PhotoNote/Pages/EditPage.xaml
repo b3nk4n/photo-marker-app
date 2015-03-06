@@ -837,7 +837,7 @@
                         <Rectangle Fill="{Binding Fill, ElementName=ColorHistory6}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
                     </StackPanel>
                     <StackPanel Margin="12">
-                        <coding:ColorPicker x:Name="ColorPickerLandscape" Height="198" Width="164" Margin="28,12,0,0" HorizontalAlignment="Left"
+                        <coding:ColorPicker x:Name="ColorPickerLandscape" Color="{Binding Color, ElementName=ColorPicker, Mode=TwoWay}" Height="198" Width="164" Margin="28,12,0,0" HorizontalAlignment="Left"
                                             Style="{StaticResource CustomColorPickerStyle}" ColorChanged="ColorPickerChanged" RenderTransformOrigin="0.5,0.5">
                             <coding:ColorPicker.RenderTransform>
                                 <RotateTransform Angle="-90" />

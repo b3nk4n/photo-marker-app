@@ -488,15 +488,18 @@ namespace PhotoNote.Pages
             if (EditTextControl.Children.Count == 0)
             {
                 var jsonArrayTextContexts = PhoneStateHelper.LoadValue<string>(TEXT_ELEMENTS_KEY, null);
-                PhoneStateHelper.DeleteValue(TEXT_ELEMENTS_KEY);
-                var tbContextList = JsonConvert.DeserializeObject<IList<TextBoxContext>>(jsonArrayTextContexts);
+                if (!string.IsNullOrEmpty(jsonArrayTextContexts))
+                {
+                    PhoneStateHelper.DeleteValue(TEXT_ELEMENTS_KEY);
+                    var tbContextList = JsonConvert.DeserializeObject<IList<TextBoxContext>>(jsonArrayTextContexts);
                 
-                foreach (var context in tbContextList)
-	            {
-                    var textbox = AddTextBox(EditTextControl, context);
-                    textbox.IsActive = false;
-                    textbox.IsEnabled = false;
-	            }
+                    foreach (var context in tbContextList)
+	                {
+                        var textbox = AddTextBox(EditTextControl, context);
+                        textbox.IsActive = false;
+                        textbox.IsEnabled = false;
+	                }
+                }
             }
 
             // text selected index
@@ -1657,9 +1660,11 @@ namespace PhotoNote.Pages
         private void UpdatePenToolbarWithContext(MarkerContext context)
         {
             OpacitySlider.Value = context.Opacity;
-            ThicknessSlider.Value = (double)LinerToQuadraticConverter.ConvertBack(context.Size, null, null, null);
-            ColorPicker.Color = context.Color;
+            ThicknessSlider.Value = context.Size;
             SetTogglesToMode(context.Mode);
+
+            if (_currentEditMode == EditMode.Marker)
+                ColorPicker.Color = context.Color;
         }
 
         /// <summary>
@@ -1676,7 +1681,9 @@ namespace PhotoNote.Pages
             SetTogglesToTextBorder(context.HasBorder);
             SetTogglesToTextBackgroundBorder(context.HasBackgroundBorder);
             SetSelectionTextFont(context.Font);
-            ColorPicker.Color = context.Color;
+
+            if (_currentEditMode == EditMode.Text)
+                ColorPicker.Color = context.Color;
         }
 
         private void TextAlignmentToggled(object sender, RoutedEventArgs e)
