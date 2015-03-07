@@ -909,26 +909,6 @@
                     </Grid>
                 </Button>
 
-                <!-- color -->
-                <StackPanel Grid.Row="1" VerticalAlignment="Center" Margin="16,0,0,0">
-                    <StackPanel Orientation="Horizontal" Margin="20,0,20,-44">
-                        <Rectangle Fill="{Binding Fill, ElementName=ColorHistory1}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
-                        <Rectangle Fill="{Binding Fill, ElementName=ColorHistory2}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
-                        <Rectangle Fill="{Binding Fill, ElementName=ColorHistory3}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
-                        <Rectangle Fill="{Binding Fill, ElementName=ColorHistory4}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
-                        <Rectangle Fill="{Binding Fill, ElementName=ColorHistory5}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
-                        <Rectangle Fill="{Binding Fill, ElementName=ColorHistory6}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
-                    </StackPanel>
-                    <StackPanel Margin="12">
-                        <coding:ColorPicker x:Name="ColorPickerLandscape" Color="{Binding Color, ElementName=ColorPicker, Mode=TwoWay}" Height="198" Width="164" Margin="28,12,0,0" HorizontalAlignment="Left"
-                                            Style="{StaticResource CustomColorPickerStyle}" ColorChanged="ColorPickerChanged" RenderTransformOrigin="0.5,0.5">
-                            <coding:ColorPicker.RenderTransform>
-                                <RotateTransform Angle="-90" />
-                            </coding:ColorPicker.RenderTransform>
-                        </coding:ColorPicker>
-                    </StackPanel>
-                </StackPanel>
-
                 <!-- pen mode -->
                 <Grid Grid.Row="0" x:Name="PropertiesPenModeLandscape" Margin="40,0,0,0" Visibility="Collapsed">
                     <Grid.RowDefinitions>
@@ -1074,6 +1054,27 @@
                         </StackPanel>
                     </StackPanel>
                 </Grid>
+
+                <!-- color -->
+                <StackPanel Grid.Row="1" VerticalAlignment="Center" Margin="16,0,0,0">
+                    <StackPanel Orientation="Horizontal" Margin="20,8,20,-32">
+                        <Rectangle Fill="{Binding Fill, ElementName=ColorHistory1}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                        <Rectangle Fill="{Binding Fill, ElementName=ColorHistory2}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                        <Rectangle Fill="{Binding Fill, ElementName=ColorHistory3}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                        <Rectangle Fill="{Binding Fill, ElementName=ColorHistory4}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                        <Rectangle Fill="{Binding Fill, ElementName=ColorHistory5}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                        <Rectangle Fill="{Binding Fill, ElementName=ColorHistory6}" Width="26" Height="26" Margin="4" Tap="HistoryColorSelected" />
+                    </StackPanel>
+                    <StackPanel Margin="12">
+                        <coding:ColorPicker x:Name="ColorPickerLandscape" Color="{Binding Color, ElementName=ColorPicker, Mode=TwoWay}" Height="198" Width="164" Margin="28,12,0,0" HorizontalAlignment="Left"
+                                            Style="{StaticResource CustomColorPickerStyle}" ColorChanged="ColorPickerChanged" RenderTransformOrigin="0.5,0.5">
+                            <coding:ColorPicker.RenderTransform>
+                                <RotateTransform Angle="-90" />
+                            </coding:ColorPicker.RenderTransform>
+                        </coding:ColorPicker>
+                    </StackPanel>
+                </StackPanel>
+
 
                 <Grid Grid.RowSpan="2" Margin="-32,0,0,12" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsHitTestVisible="False">
                     <Ellipse Width="67" Height="67" Fill="{StaticResource PhoneChromeBrush}"/>
