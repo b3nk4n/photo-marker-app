@@ -831,7 +831,7 @@
                             <toolkit:ListPicker.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Height="50" Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Path Width="18" Height="21" Margin="0,0,6,2" Stretch="Fill" VerticalAlignment="Center" Fill="{StaticResource PhoneBackgroundBrush}" Data="F1 M 29,58L 29,55.0833C 32.4978,55.0833 35,53.2083 35,49.25L 35,29C 35,25.9394 32.7481,25 29.6875,25C 26.6269,25 24.5,25.9394 24.5,29L 21,29L 21,20L 55,20L 55,29L 51.5,29C 51.5,25.9394 49.373,25 46.3125,25C 43.2519,25 41,25.9394 41,29L 41,49.25C 41,53.2083 43.5022,55.0833 47,55.0833L 47,58L 29,58 Z "/>
+                                        <Path Width="18" Height="21" Margin="0,0,6,2" Stretch="Fill" VerticalAlignment="Center" Fill="Black" Data="F1 M 29,58L 29,55.0833C 32.4978,55.0833 35,53.2083 35,49.25L 35,29C 35,25.9394 32.7481,25 29.6875,25C 26.6269,25 24.5,25.9394 24.5,29L 21,29L 21,20L 55,20L 55,29L 51.5,29C 51.5,25.9394 49.373,25 46.3125,25C 43.2519,25 41,25.9394 41,29L 41,49.25C 41,53.2083 43.5022,55.0833 47,55.0833L 47,58L 29,58 Z "/>
                                         <TextBlock Text="{Binding Name}" FontFamily="{Binding Font}" TextWrapping="Wrap" Width="96" Margin="2,0,-2,0" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                                     </StackPanel>
                                 </DataTemplate>
@@ -999,7 +999,7 @@
                                 <toolkit:ListPicker.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Height="50" Orientation="Horizontal" VerticalAlignment="Center">
-                                            <Path Width="18" Height="21" Margin="0,0,6,2" Stretch="Fill" VerticalAlignment="Center" Fill="{StaticResource PhoneBackgroundBrush}" Data="F1 M 29,58L 29,55.0833C 32.4978,55.0833 35,53.2083 35,49.25L 35,29C 35,25.9394 32.7481,25 29.6875,25C 26.6269,25 24.5,25.9394 24.5,29L 21,29L 21,20L 55,20L 55,29L 51.5,29C 51.5,25.9394 49.373,25 46.3125,25C 43.2519,25 41,25.9394 41,29L 41,49.25C 41,53.2083 43.5022,55.0833 47,55.0833L 47,58L 29,58 Z "/>
+                                            <Path Width="18" Height="21" Margin="0,0,6,2" Stretch="Fill" VerticalAlignment="Center" Fill="Black" Data="F1 M 29,58L 29,55.0833C 32.4978,55.0833 35,53.2083 35,49.25L 35,29C 35,25.9394 32.7481,25 29.6875,25C 26.6269,25 24.5,25.9394 24.5,29L 21,29L 21,20L 55,20L 55,29L 51.5,29C 51.5,25.9394 49.373,25 46.3125,25C 43.2519,25 41,25.9394 41,29L 41,49.25C 41,53.2083 43.5022,55.0833 47,55.0833L 47,58L 29,58 Z "/>
                                             <TextBlock Text="{Binding Name}" FontFamily="{Binding Font}" TextWrapping="Wrap" Width="96" Margin="2,0,-2,0" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                                         </StackPanel>
                                     </DataTemplate>
