@@ -188,6 +188,8 @@
   <ItemGroup>
     <Content Include="Assets\Fonts\black_jack.ttf" />
     <Content Include="Assets\Fonts\ComicRelief.ttf" />
+    <Content Include="Assets\Fonts\Pacifico.ttf" />
+    <Content Include="Assets\Fonts\AmaticSC-Regular.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
@@ -304,9 +306,7 @@
     </Reference>
     <Reference Include="System.Windows.Interactivity" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Fonts\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

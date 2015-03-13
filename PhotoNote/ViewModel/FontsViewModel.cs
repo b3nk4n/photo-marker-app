@@ -15,26 +15,53 @@ namespace PhotoNote.ViewModel
     {
         public static readonly FontItemViewModel DEFAULT = new FontItemViewModel("Default", "Portable User Interface");
 
+        public static readonly FontItemViewModel AMETIC_SC = new FontItemViewModel("Amatic SC", "/Assets/Fonts/AmaticSC-Regular.ttf#Amatic SC");
+
         public static readonly FontItemViewModel ARIAL = new FontItemViewModel("Arial", "Arial");
 
         public static readonly FontItemViewModel BLACK_JACK = new FontItemViewModel("BlackJack", "/Assets/Fonts/black_jack.ttf#BlackJack");
 
-        public static readonly FontItemViewModel COMIC_RELIEF = new FontItemViewModel("Comic Relief", "/Assets/Fonts/ComicRelief.ttf#Comic Relief");
-
         public static readonly FontItemViewModel CALIBRI = new FontItemViewModel("Calibri", "Calibri");
 
-        public static readonly FontItemViewModel TIMES_NEW_ROMAN = new FontItemViewModel("Times New Roman", "Times New Roman");
+        public static readonly FontItemViewModel COMIC_RELIEF = new FontItemViewModel("Comic Relief", "/Assets/Fonts/ComicRelief.ttf#Comic Relief");
+
+        public static readonly FontItemViewModel COMIC_SANS_MS = new FontItemViewModel("Comic Sans MS", "Comic Sans MS");
+
+        public static readonly FontItemViewModel COURIER_NEW = new FontItemViewModel("Courier New", "Courier New");
+
+        public static readonly FontItemViewModel GEORGIA = new FontItemViewModel("Georgia", "Georgia");
+
+        public static readonly FontItemViewModel LACIDA_SANS = new FontItemViewModel("Lucida Sans Unicode", "Lucida Sans Unicode");
+
+        public static readonly FontItemViewModel PACIFICO = new FontItemViewModel("Pacifico", "/Assets/Fonts/Pacifico.ttf#Pacifico");
+
+        public static readonly FontItemViewModel SEGEO_WP_LIGHT = new FontItemViewModel("Segoe WP", "Segoe WP Light"); // when option is set to BOLD, it is like 'Segoe WP Black'
 
         public static readonly FontItemViewModel TAHOMA = new FontItemViewModel("Tahoma", "Tahoma");
 
+        public static readonly FontItemViewModel TIMES_NEW_ROMAN = new FontItemViewModel("Times New Roman", "Times New Roman");
+
+        public static readonly FontItemViewModel TREBUCHET_MS = new FontItemViewModel("Trebuchet MS", "Trebuchet MS");
+
+        public static readonly FontItemViewModel VERDANA = new FontItemViewModel("Verdana", "Verdana");
+
         private static readonly IEnumerable<FontItemViewModel> FontCollection = new List<FontItemViewModel>() {
                     DEFAULT,
+                    AMETIC_SC,
                     ARIAL,
                     BLACK_JACK,
                     CALIBRI,
                     COMIC_RELIEF,
+                    COMIC_SANS_MS,
+                    COURIER_NEW,
+                    GEORGIA,
+                    LACIDA_SANS,
+                    PACIFICO,
+                    SEGEO_WP_LIGHT,
                     TAHOMA,
-                    TIMES_NEW_ROMAN
+                    TIMES_NEW_ROMAN,
+                    TREBUCHET_MS,
+                    VERDANA
                 };
 
         public IEnumerable<FontItemViewModel> Fonts
