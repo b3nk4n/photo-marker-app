@@ -262,19 +262,19 @@
     <comment>EditPage</comment>
   </data>
   <data name="MessageBoxAttention" xml:space="preserve">
-    <value>внимание</value>
+    <value>Внимание!</value>
     <comment>EditPage</comment>
   </data>
   <data name="MessageBoxExitWithoutSave" xml:space="preserve">
-    <value>Выход без сохранения?</value>
+    <value>Вы действительно хотите выйти не сохранив изображение?</value>
     <comment>EditPage</comment>
   </data>
   <data name="ZoomPopupText" xml:space="preserve">
-    <value>Использование двух пальцев можно легко перемещать или изменять масштаб изображения. Это позволяет быстрее и более точные маркировки.</value>
+    <value>С помощью двух пальцев вы можете легко переместить или увеличить изображение. Это позволяет делать маркировки быстро и более точно.</value>
     <comment>EditPage</comment>
   </data>
   <data name="ZoomPopupTitle" xml:space="preserve">
-    <value>Вы знали?</value>
+    <value>Знаете ли вы?</value>
     <comment>EditPage</comment>
   </data>
   <data name="FontsHeader" xml:space="preserve">
