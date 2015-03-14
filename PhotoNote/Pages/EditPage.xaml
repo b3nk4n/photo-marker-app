@@ -611,6 +611,8 @@
                         </ObjectAnimationUsingKeyFrames>
                         <DoubleAnimation BeginTime="0:0:0.66" Duration="0:0:0.33" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ColorPreview" d:IsOptimized="True">
                         </DoubleAnimation>
+                        <DoubleAnimation BeginTime="0:0:0.66" Duration="0:0:0.33" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ColorPreviewLandscape" d:IsOptimized="True">
+                        </DoubleAnimation>
 					</Storyboard>
 				</VisualState>
                 <VisualState x:Name="DisplayedPenMode">
@@ -640,6 +642,9 @@
                         <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ColorPreview" d:IsOptimized="True">
                             <DiscreteDoubleKeyFrame KeyTime="0" Value="1"/>
                         </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ColorPreviewLandscape" d:IsOptimized="True">
+                            <DiscreteDoubleKeyFrame KeyTime="0" Value="1"/>
+                        </DoubleAnimationUsingKeyFrames>
                     </Storyboard>
 				</VisualState>
                 <VisualState x:Name="DisplayedTextMode">
@@ -667,6 +672,9 @@
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
                         </ObjectAnimationUsingKeyFrames>
                         <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ColorPreview" d:IsOptimized="True">
+                            <DiscreteDoubleKeyFrame KeyTime="0" Value="0"/>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ColorPreviewLandscape" d:IsOptimized="True">
                             <DiscreteDoubleKeyFrame KeyTime="0" Value="0"/>
                         </DoubleAnimationUsingKeyFrames>
                     </Storyboard>
@@ -1076,7 +1084,7 @@
                 </StackPanel>
 
 
-                <Grid Grid.RowSpan="2" Margin="-32,0,0,12" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsHitTestVisible="False">
+                <Grid x:Name="ColorPreviewLandscape" Grid.RowSpan="2" Margin="-32,0,0,12" HorizontalAlignment="Left" VerticalAlignment="Bottom" IsHitTestVisible="False">
                     <Ellipse Width="67" Height="67" Fill="{StaticResource PhoneChromeBrush}"/>
                     <Ellipse Width="53" Height="53" Fill="White"/>
                     <Ellipse Height="1" Width="1" Fill="{Binding SolidColorBrush, ElementName=ColorPickerLandscape}" Opacity="{Binding Value, ElementName=OpacitySliderLandscape}" RenderTransformOrigin="0.5,0.5">
