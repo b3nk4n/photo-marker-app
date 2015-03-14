@@ -79,6 +79,7 @@ namespace PhotoNote.Controls
             Text = context.Text;
             X = context.X;
             Y = context.Y;
+            RotationAngle = context.RotationAngle;
             SetContext(context.Context);
         }
 
@@ -98,7 +99,7 @@ namespace PhotoNote.Controls
         /// <returns>The text box context.</returns>
         public TextBoxContext GetTextBoxContext()
         {
-            return new TextBoxContext(Text, X, Y, GetContext());
+            return new TextBoxContext(Text, X, Y, RotationAngle ,GetContext());
         }
 
         /// <summary>
@@ -286,6 +287,21 @@ namespace PhotoNote.Controls
         }
 
         /// <summary>
+        /// Gets or sets the rotation of the text.
+        /// </summary>
+        public int RotationAngle
+        {
+            get
+            {
+                return (int)TextRotation.Angle;
+            }
+            set
+            {
+                TextRotation.Angle = value;
+            }
+        }
+
+        /// <summary>
         /// Indicates whether the internal text control has the focus.
         /// </summary>
         public bool HasFocus
@@ -294,6 +310,18 @@ namespace PhotoNote.Controls
             {
                 return FocusManager.GetFocusedElement() == TextControl;
             }
+        }
+
+        /// <summary>
+        /// Rotates the text box by 30 degrees.
+        /// </summary>
+        public void Rotate(int rotationValue)
+        {
+            var rotation = RotationAngle;
+            rotation += rotationValue;
+            if (rotation >= 360)
+                rotation -= 360;
+            RotationAngle = rotation;
         }
     }
 }

@@ -1498,7 +1498,7 @@ namespace PhotoNote.Pages
                     {
                         if (EditTextControl.Children.Count == 0 || InAppPurchaseHelper.IsProductActive(AppConstants.IAP_PREMIUM_VERSION))
                         {
-                            var context = new TextBoxContext(string.Empty, e.ManipulationOrigin.X, e.ManipulationOrigin.Y, _textContext);
+                            var context = new TextBoxContext(string.Empty, e.ManipulationOrigin.X, e.ManipulationOrigin.Y, 0, _textContext);
                             var textbox = AddTextBox(EditTextControl, context);
 
                             // select
@@ -1626,6 +1626,14 @@ namespace PhotoNote.Pages
             }
         }
 
+        private void TextOptionsRotateClicked(object sender, RoutedEventArgs e)
+        {
+            if (_selectedTextBox != null)
+            {
+                _selectedTextBox.Rotate(15);
+            }
+        }
+
         /// <summary>
         /// Unsets the focus and removes the text box.
         /// </summary>
@@ -1635,7 +1643,6 @@ namespace PhotoNote.Pages
         {
             parent.Children.Remove(textBox);
             UnselectTextBox(ref textBox);
-            
         }
 
         private void SelectTextBox(ExtendedTextBox textBox)

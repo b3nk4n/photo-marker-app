@@ -81,8 +81,6 @@ namespace PhotoNote.Controls
             {
                 ScaleX = scale,
                 ScaleY = scale,
-                //TranslateX = 32 * scale,
-                //TranslateY = 24 * scale
             };
 
             // add data
@@ -93,15 +91,9 @@ namespace PhotoNote.Controls
                 textbox.DataContext = new object();
                 textbox.IsEnabled = false;
                 textbox.IsActive = false;
+                textbox.RotationAngle = textBoxContext.RotationAngle;
                 EditTextControl.Children.Add(textbox);
                 textbox.UpdateLayout();
-                
-                //textbox.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                //textbox.Arrange(new Rect(0, 0, textbox.DesiredSize.Width, textbox.DesiredSize.Height));
-                //var temp = textbox.ActualHeight;
-                //textbox.UpdateLayout();
-
-                //textbox.SetTextBoxPosition(EditTextControl, textbox.X, textbox.Y);
             }
             this.UpdateLayout();
         }

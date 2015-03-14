@@ -85,7 +85,10 @@
 
     </UserControl.Resources>
 
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" RenderTransformOrigin="0.5 0.5">
+        <Grid.RenderTransform>
+            <RotateTransform x:Name="TextRotation" Angle="0" />
+        </Grid.RenderTransform>
         <Rectangle x:Name="BackgroundBorder" Fill="#99BBBBBB" Opacity="{Binding ElementName=TextControl, Path=TextOpacity}" Visibility="Visible" Margin="16,16"/>
         <Rectangle x:Name="Border" Stroke="{Binding ElementName=TextControl, Path=Foreground}" Opacity="{Binding ElementName=TextControl, Path=TextOpacity}" StrokeThickness="{Binding FontSize, ElementName=TextControl, Converter={StaticResource SizeToDouble}}" Visibility="Visible" Margin="16,16" DataContext="object" />
         <controls:OpacityTextBox x:Name="TextControl" FontSize="16" Text="Text" CaretBrush="White" AcceptsReturn="True" Style="{StaticResource DraggableTextBoxStyle}" />
