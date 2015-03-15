@@ -219,7 +219,8 @@ namespace PhotoNote.Pages
         {
             base.OnNavigatedFrom(e);
 
-            ScreenBlocker.Visibility = Visibility.Collapsed;
+            if (ScreenBlocker != null) // BugSense: System.NullReferenceException: Object reference not set to an instance of an object.
+                ScreenBlocker.Visibility = Visibility.Collapsed;
         }
 
         private void HideAllImages()
