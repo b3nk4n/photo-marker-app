@@ -247,6 +247,14 @@ namespace PhotoNote.Pages
             ApplicationBar.Buttons.Add(appBarTileButton);
 
             // in-app store
+            ApplicationBarMenuItem appBarSettingsMenuItem = new ApplicationBarMenuItem(AppResources.SettingsTitle);
+            appBarSettingsMenuItem.Click += (s, e) =>
+            {
+                NavigationService.Navigate(new Uri("/Pages/SettingsPage.xaml", UriKind.Relative));
+            };
+            ApplicationBar.MenuItems.Add(appBarSettingsMenuItem);
+
+            // in-app store
             ApplicationBarMenuItem appBarInAppStoreMenuItem = new ApplicationBarMenuItem(AppResources.InAppStoreTitle);
             appBarInAppStoreMenuItem.Click += (s, e) =>
             {

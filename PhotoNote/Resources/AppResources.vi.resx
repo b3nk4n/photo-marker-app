@@ -285,7 +285,15 @@
     <comment>EditPage</comment>
   </data>
   <data name="AppBarText" xml:space="preserve">
-    <value>bản văn</value>
+    <value>Bản văn</value>
     <comment>EditPage</comment>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>cài đặt</value>
+    <comment>SettingsPage</comment>
+  </data>
+  <data name="StylusOptimized" xml:space="preserve">
+    <value>Tối ưu hóa cho Stylus</value>
+    <comment>SettingsPage</comment>
   </data>
 </root>

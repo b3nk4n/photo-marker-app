@@ -288,4 +288,12 @@
     <value>متن</value>
     <comment>EditPage</comment>
   </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>تنظیمات</value>
+    <comment>SettingsPage</comment>
+  </data>
+  <data name="StylusOptimized" xml:space="preserve">
+    <value>بهینه شده برای قلم</value>
+    <comment>SettingsPage</comment>
+  </data>
 </root>

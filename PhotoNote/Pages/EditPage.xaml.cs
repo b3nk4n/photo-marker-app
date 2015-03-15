@@ -29,6 +29,7 @@ using PhotoNote.Conversion;
 using PhotoNote.ViewModel;
 using PhoneKit.Framework.InAppPurchase;
 using Newtonsoft.Json;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace PhotoNote.Pages
 {
@@ -1070,13 +1071,33 @@ namespace PhotoNote.Pages
             StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
             var touchPoint = e.StylusDevice.GetStylusPoints(InkControl).First();
             _centerStart = new Vector2((float)touchPoint.X, (float)touchPoint.Y);
+
+            if (!_isPenToolbarVisible && AppSettings.TouchHoldPenOptimization.Value == true) // only when setting is active
+            {
+                // delayed display of first point, that the point is not visible
+                // when tapping on the screen to close the toolbar
+                _activeStroke = StartStroke();
+                InkControl.Strokes.Add(_activeStroke);
+            }
+            
         }
 
         //StylusPoint objects are collected from the MouseEventArgs and added to MyStroke. 
         private void MyIP_MouseMove(object sender, MouseEventArgs e)
         {
-            if (_twoFingersActive || _currentEditMode == EditMode.Text)
+            if (_currentEditMode == EditMode.Text)
                 return;
+
+            if (_twoFingersActive)
+            {
+                // remove it, because 
+                if (_activeStroke != null )
+                {
+                    InkControl.Strokes.Remove(_activeStroke);
+                    _activeStroke = null;
+                }
+                return;
+            }
 
             _moveCounter++;
 
@@ -1177,7 +1198,9 @@ namespace PhotoNote.Pages
                     FinishArrow();
                 }
 
-                // remove ink segments when two fingers have been detected shortly after the drawing has begun
+                // remove ink segments when two fingers have been detected shortly after the drawing has begun.
+                // just to make shure that really everything was cleaned, because this cleaning is also done in
+                // move envent.
                 if (_twoFingersActive && _moveCounter < 3)
                 {
                     InkControl.Strokes.Remove(_activeStroke);

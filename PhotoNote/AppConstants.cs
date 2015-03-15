@@ -66,5 +66,11 @@ namespace PhotoNote
         public static readonly Color DEFAULT_TEXT_COLOR = Colors.Red;
         public const bool DEFAULT_TEXT_BORDER = false;
         public const bool DEFAULT_TEXT_BACKGROUND_BORDER = false;
+
+        /// <summary>
+        /// Touch Hold pen optimization, to show the ink-dot always immediately.
+        /// This might affect weird visual effects on zooming (blinking), thats why this option is optional.
+        /// </summary>
+        public const bool DEFAULT_TOUCH_HOLD = false;
     }
 }

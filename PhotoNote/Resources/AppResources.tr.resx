@@ -288,4 +288,12 @@
     <value>metin</value>
     <comment>EditPage</comment>
   </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>ayarlar</value>
+    <comment>SettingsPage</comment>
+  </data>
+  <data name="StylusOptimized" xml:space="preserve">
+    <value>Kalemi için optimize</value>
+    <comment>SettingsPage</comment>
+  </data>
 </root>

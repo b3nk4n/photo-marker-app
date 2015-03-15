@@ -288,4 +288,12 @@
     <value>texto</value>
     <comment>EditPage</comment>
   </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>configuración</value>
+    <comment>SettingsPage</comment>
+  </data>
+  <data name="StylusOptimized" xml:space="preserve">
+    <value>Optimizado para Stylus</value>
+    <comment>SettingsPage</comment>
+  </data>
 </root>

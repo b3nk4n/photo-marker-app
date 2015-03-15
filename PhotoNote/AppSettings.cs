@@ -83,5 +83,7 @@ namespace PhotoNote
         /// The text background border.
         /// </summary>
         public static StoredObject<bool> TextBackgroundBorder = new StoredObject<bool>("_text_backborder_", AppConstants.DEFAULT_TEXT_BACKGROUND_BORDER);
+
+        public static StoredObject<bool> TouchHoldPenOptimization = new StoredObject<bool>("_toch_hold_", AppConstants.DEFAULT_TOUCH_HOLD);
     }
 }

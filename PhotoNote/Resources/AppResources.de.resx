@@ -268,6 +268,10 @@
     <value>Speichern...</value>
     <comment>EditPage</comment>
   </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Einstellungen</value>
+    <comment>SettingsPage</comment>
+  </data>
   <data name="Share" xml:space="preserve">
     <value>Versenden</value>
     <comment>General</comment>
@@ -275,6 +279,10 @@
   <data name="ShowPhotoInfo" xml:space="preserve">
     <value>Bildinformationen anzeigen</value>
     <comment>EditPage</comment>
+  </data>
+  <data name="StylusOptimized" xml:space="preserve">
+    <value>Optimierung für Eingabestift</value>
+    <comment>SettingsPage</comment>
   </data>
   <data name="SupportAndFeedback" xml:space="preserve">
     <value>Hilfe und Feedback</value>

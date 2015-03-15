@@ -403,6 +403,15 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die settings ähnelt.
+        /// </summary>
+        public static string SettingsTitle {
+            get {
+                return ResourceManager.GetString("SettingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die share ähnelt.
         /// </summary>
         public static string Share {
@@ -417,6 +426,15 @@ namespace PhotoNote.Resources {
         public static string ShowPhotoInfo {
             get {
                 return ResourceManager.GetString("ShowPhotoInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Optimized for Stylus ähnelt.
+        /// </summary>
+        public static string StylusOptimized {
+            get {
+                return ResourceManager.GetString("StylusOptimized", resourceCulture);
             }
         }
         
