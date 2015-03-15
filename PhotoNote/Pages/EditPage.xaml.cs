@@ -259,7 +259,9 @@ namespace PhotoNote.Pages
                     
                     await Task.Delay(500);
                     var gfx = GraphicsHelper.Create(editedImageInkControl);
+                    //gfx = gfx.Crop(0, 0, gfx.PixelWidth / 2, gfx.PixelHeight / 2); // TODO: croping according to defined region --> create UI.
                     gfx.SaveJpeg(memStream, gfx.PixelWidth, gfx.PixelHeight, 0, 100);
+                    
 
                     RenderingTrash.Children.Remove(editedImageInkControl); // and remove it again from visual tree
                     
@@ -622,10 +624,19 @@ namespace PhotoNote.Pages
 
         private bool UpdatePicture(EditPicture pic)
         {
-            _editImage = pic;
-            UpdateZoomAppBarIcon();
-            UpdateImageOrientationAndScale();
-            EditImageControl.Source = _editImage.FullImage;
+            try
+            {
+                _editImage = pic;
+                UpdateZoomAppBarIcon();
+                UpdateImageOrientationAndScale();
+                EditImageControl.Source = _editImage.FullImage;
+            }
+            catch(Exception)
+            {
+                // sometimes the image can not be loaded (whyever...)
+                return false;
+            }
+            
             return true;
         }
 
