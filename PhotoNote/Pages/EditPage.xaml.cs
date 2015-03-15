@@ -1067,6 +1067,9 @@ namespace PhotoNote.Pages
         //A new stroke object named MyStroke is created. MyStroke is added to the StrokeCollection of the InkPresenter named MyIP
         private void MyIP_MouseLeftButtonDown(object sender, MouseEventArgs e)
         {
+            if (_currentEditMode == EditMode.Text)
+                return;
+
             InkControl.CaptureMouse();
             StylusPointCollection MyStylusPointCollection = new StylusPointCollection();
             var touchPoint = e.StylusDevice.GetStylusPoints(InkControl).First();
