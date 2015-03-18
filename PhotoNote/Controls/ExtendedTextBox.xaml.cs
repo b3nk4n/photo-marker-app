@@ -126,21 +126,29 @@ namespace PhotoNote.Controls
         /// <param name="y">The center y coord.</param>
         /// <param name="textbox">The textbox to move.</param>
         /// <returns>True, wenn new position is still in parent bounds.</returns>
-        public bool SetTextBoxPosition(Canvas parent, double x, double y)
+        public void SetPosition(Canvas parent, double x, double y)
         {
-            const int OUTER_DELTA = 12;
             // verify the text box stays in image bounds
             var top = y - this.ActualHeight / 2;
             var left = x - this.ActualWidth / 2;
-            var tbBounds = new Rectangle((int)left, (int)top, (int)this.ActualWidth, (int)this.ActualHeight);
-            var parentBounds = new Rectangle(OUTER_DELTA, OUTER_DELTA, (int)parent.ActualWidth - 2 * OUTER_DELTA, (int)parent.ActualHeight - 2 * OUTER_DELTA);
-            var inBounds = tbBounds.Intersects(parentBounds);
-
+            
             // set position
             X = left;
             Y = top;
             parent.UpdateLayout();
+        }
 
+        /// <summary>
+        /// Checks whether the text box is in parent bounds.
+        /// </summary>
+        /// <param name="parent">The parent container.</param>
+        /// <returns>True when in bounds, else false.</returns>
+        public bool IsInBounds(Canvas parent)
+        {
+            const int OUTER_DELTA = 12;
+            var tbBounds = new Rectangle((int)X, (int)Y, (int)this.ActualWidth, (int)this.ActualHeight);
+            var parentBounds = new Rectangle(OUTER_DELTA, OUTER_DELTA, (int)parent.ActualWidth - 2 * OUTER_DELTA, (int)parent.ActualHeight - 2 * OUTER_DELTA);
+            var inBounds = tbBounds.Intersects(parentBounds);
             return inBounds;
         }
 

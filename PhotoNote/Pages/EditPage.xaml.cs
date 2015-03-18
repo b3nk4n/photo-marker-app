@@ -1504,11 +1504,8 @@ namespace PhotoNote.Pages
             }
             else if (_selectedTextBox != null)
             {
-                // remove textbox when moved out of image
-                if (!_selectedTextBox.SetTextBoxPosition(EditTextControl, e.ManipulationOrigin.X, e.ManipulationOrigin.Y))
-                {
-                    RemoveTextBox(EditTextControl, ref _selectedTextBox);
-                }
+                // move text box
+                _selectedTextBox.SetPosition(EditTextControl, e.ManipulationOrigin.X, e.ManipulationOrigin.Y);
             }
 
             if (_currentEditMode == EditMode.Text)
@@ -1521,6 +1518,15 @@ namespace PhotoNote.Pages
 
         private void MyIP_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
         {
+            if (_currentEditMode == EditMode.Text && _selectedTextBox != null)
+            {
+                // remove textbox when moved out of image
+                if (!_selectedTextBox.IsInBounds(EditTextControl))
+                {
+                    RemoveTextBox(EditTextControl, ref _selectedTextBox);
+                }
+            }
+
             if (_currentEditMode == EditMode.Text && !_twoFingersActive)
             {
                 if (_selectedTextBox != null)
@@ -1651,7 +1657,7 @@ namespace PhotoNote.Pages
             parent.Children.Add(textbox);
             textbox.UpdateLayout();
 
-            textbox.SetTextBoxPosition(parent, context.X, context.Y);
+            textbox.SetPosition(parent, context.X, context.Y);
             return textbox;
         }
 
