@@ -77,6 +77,9 @@ namespace PhotoNote.Pages
 
         private MarkerContext _markerContext = new MarkerContext();
 
+        private System.Windows.Shapes.Rectangle _draggedRect = null;
+        private double _clipLeftPerc, _clipRightPerc, _clipTopPerc, _clipBotPerc = 0;
+
 
         public EditPage()
         {
@@ -106,6 +109,153 @@ namespace PhotoNote.Pages
             };
         }
 
+        private void InitializeCropRect()
+        {
+            var rects = new System.Windows.Shapes.Rectangle[] { CropRectTopRight, CropRectTopLeft, CropRectBotRight, CropRectBotLeft };
+            System.Windows.Point _dragOrigin = new System.Windows.Point();
+            double origLeftPerc = 0, origRightPerc = 0, origTopPerc = 0, origBotPerc = 0;
+
+            var setOrigin = new Action<System.Windows.Point>((p) =>
+            {
+                _dragOrigin = p;
+                origLeftPerc = this._clipLeftPerc;
+                origRightPerc = this._clipRightPerc;
+                origTopPerc = this._clipTopPerc;
+                origBotPerc = this._clipBotPerc;
+            });
+
+            foreach (var aRect in rects)
+            {
+                aRect.MouseLeftButtonDown += (s, e) =>
+                {
+                    var r = (System.Windows.Shapes.Rectangle)s;
+                    _draggedRect = r;
+                    setOrigin(e.GetPosition(EditImageControlForCropping));
+
+                    r.CaptureMouse();
+                };
+
+                aRect.MouseLeftButtonUp += (s, e) =>
+                {
+                    _draggedRect = null;
+                };
+
+                aRect.MouseMove += (s, e) =>
+                {
+                    if (_draggedRect != null)
+                    {
+
+                        var pos = e.GetPosition(EditImageControlForCropping);
+
+                        if (s == this.CropRectTopLeft || s == this.CropRectTopRight)
+                        {
+                            // Adjust top
+                            _clipTopPerc = origTopPerc + (pos.Y - _dragOrigin.Y) / EditImageControlForCropping.Height;
+                        }
+                        if (s == this.CropRectTopLeft || s == this.CropRectBotLeft)
+                        {
+                            // Adjust Left
+                            _clipLeftPerc = origLeftPerc + (pos.X - _dragOrigin.X) / EditImageControlForCropping.Width;
+                        }
+                        if (s == this.CropRectBotLeft || s == this.CropRectBotRight)
+                        {
+                            // Adjust bottom
+                            _clipBotPerc = origBotPerc - (pos.Y - _dragOrigin.Y) / EditImageControlForCropping.Height;
+                        }
+                        if (s == this.CropRectTopRight || s == this.CropRectBotRight)
+                        {
+                            // Adjust Right
+                            _clipRightPerc = origRightPerc - (pos.X - _dragOrigin.X) / EditImageControlForCropping.Width;
+                        }
+
+                        this.UpdateClipAndTransforms();
+                    }
+                };
+            }
+
+            var draggingImg = false;
+
+            EditImageControlForCropping.MouseLeftButtonDown += (s, e) =>
+            {
+                setOrigin(e.GetPosition(this.EditImageControlForCropping));
+                EditImageControlForCropping.CaptureMouse();
+                draggingImg = true;
+            };
+
+            EditImageControlForCropping.MouseLeftButtonUp += (s, e) =>
+            {
+                draggingImg = false;
+            };
+
+            EditImageControlForCropping.MouseMove += (s, e) =>
+            {
+                if (draggingImg)
+                {
+                    var pos = e.GetPosition(this.EditImageControlForCropping);
+
+                    var xAdjust = (pos.X - _dragOrigin.X) / EditImageControlForCropping.Width;
+                    var yAdjust = (pos.Y - _dragOrigin.Y) / EditImageControlForCropping.Height;
+
+                    _clipLeftPerc = origLeftPerc + xAdjust;
+                    _clipRightPerc = origRightPerc - xAdjust;
+                    _clipTopPerc = origTopPerc + yAdjust;
+                    _clipBotPerc = origBotPerc - yAdjust;
+
+                    this.UpdateClipAndTransforms();
+                }
+            };
+
+            EditImageControlForCropping.SizeChanged += (x, y) =>
+            {
+                this.UpdateClipAndTransforms();
+            };
+
+            this.UpdateClipAndTransforms();
+        }
+
+        void UpdateClipAndTransforms()
+        {
+            // Check bounds
+            if (_clipLeftPerc + _clipRightPerc >= 1)
+                _clipLeftPerc = (1 - _clipRightPerc) - 0.04;
+            if (_clipTopPerc + _clipBotPerc >= 1)
+                _clipTopPerc = (1 - _clipBotPerc) - 0.04;
+
+            if (_clipLeftPerc < 0)
+                _clipLeftPerc = 0;
+            if (_clipRightPerc < 0)
+                _clipRightPerc = 0;
+            if (_clipBotPerc < 0)
+                _clipBotPerc = 0;
+            if (_clipTopPerc < 0)
+                _clipTopPerc = 0;
+            if (_clipLeftPerc >= 1)
+                _clipLeftPerc = 0.99;
+            if (_clipRightPerc >= 1)
+                _clipRightPerc = 0.99;
+            if (_clipBotPerc >= 1)
+                _clipBotPerc = 0.99;
+            if (_clipTopPerc >= 1)
+                _clipTopPerc = 0.99;
+
+
+            // Image Clip
+            var leftX = _clipLeftPerc * this.EditImageControlForCropping.Width;
+            var topY = _clipTopPerc * this.EditImageControlForCropping.Height;
+
+            ClipRect.Rect = new Rect(leftX, topY, (1 - _clipRightPerc) * this.EditImageControlForCropping.Width - leftX, (1 - _clipBotPerc) * this.EditImageControlForCropping.Height - topY);
+
+            // Rectangle Transforms
+            ((TranslateTransform)this.CropRectTopLeft.RenderTransform).X = ClipRect.Rect.X;
+            ((TranslateTransform)this.CropRectTopLeft.RenderTransform).Y = ClipRect.Rect.Y;
+            ((TranslateTransform)this.CropRectTopRight.RenderTransform).X = -_clipRightPerc * this.EditImageControlForCropping.Width;
+            ((TranslateTransform)this.CropRectTopRight.RenderTransform).Y = ClipRect.Rect.Y;
+            ((TranslateTransform)this.CropRectBotLeft.RenderTransform).X = ClipRect.Rect.X;
+            ((TranslateTransform)this.CropRectBotLeft.RenderTransform).Y = -_clipBotPerc * this.EditImageControlForCropping.Height;
+            ((TranslateTransform)this.CropRectBotRight.RenderTransform).X = -_clipRightPerc * this.EditImageControlForCropping.Width;
+            ((TranslateTransform)this.CropRectBotRight.RenderTransform).Y = -_clipBotPerc * this.EditImageControlForCropping.Height;
+        }
+
         /// <summary>
         /// Builds the localized app bar.
         /// </summary>
@@ -129,7 +279,7 @@ namespace PhotoNote.Pages
             _appBarPenButton.Text = AppResources.AppBarPen;
             _appBarPenButton.Click += (s, e) =>
             {
-                if (_currentEditMode == EditMode.Text)
+                if (_currentEditMode != EditMode.Marker)
                 {
                     ChangedEditMode(EditMode.Marker);
                     UpdateMarkerAppBar();
@@ -160,7 +310,7 @@ namespace PhotoNote.Pages
             _appBarTextButton.Text = AppResources.AppBarText;
             _appBarTextButton.Click += (s, e) =>
             {
-                if (_currentEditMode == EditMode.Marker)
+                if (_currentEditMode != EditMode.Text)
                 {
                     ChangedEditMode(EditMode.Text);
                     UpdateMarkerAppBar();
@@ -230,6 +380,14 @@ namespace PhotoNote.Pages
             };
             ApplicationBar.MenuItems.Add(appBarSaveMenuItem);
 
+            // crop
+            ApplicationBarMenuItem appBarCropMenuItem = new ApplicationBarMenuItem("CROP!!!"); // TODO: translate
+            appBarCropMenuItem.Click += (s, e) =>
+            {
+                ChangedEditMode(EditMode.Cropping);
+            };
+            ApplicationBar.MenuItems.Add(appBarCropMenuItem);
+
             // image info (photo info)
             ApplicationBarMenuItem appBarPhotoInfoMenuItem = new ApplicationBarMenuItem(AppResources.ShowPhotoInfo);
             appBarPhotoInfoMenuItem.Click += async (s, e) =>
@@ -266,7 +424,17 @@ namespace PhotoNote.Pages
                     
                     await Task.Delay(500);
                     var gfx = GraphicsHelper.Create(editedImageInkControl);
-                    //gfx = gfx.Crop(0, 0, gfx.PixelWidth / 2, gfx.PixelHeight / 2); // TODO: croping according to defined region --> create UI.
+
+                    var imageScale = 1 / GetScaleFactorOfOrientation();
+                    var clipRect = ClipRect.Rect;
+                    var scaledClipRect = new Rect(Math.Round(clipRect.Left * imageScale), Math.Round(clipRect.Top * imageScale),
+                                                  Math.Round(clipRect.Width * imageScale), Math.Round(clipRect.Height * imageScale));
+                    if ((int)scaledClipRect.Width != gfx.PixelWidth || (int)scaledClipRect.Height != gfx.PixelHeight)
+                    {
+                        gfx = gfx.Crop(scaledClipRect);
+                    }
+
+                    // save to memory stream
                     gfx.SaveJpeg(memStream, gfx.PixelWidth, gfx.PixelHeight, 0, 100);
                     
                     GraphicsHelper.CleanUpMemory(gfx);
@@ -274,6 +442,7 @@ namespace PhotoNote.Pages
                     
                     memStream.Seek(0, SeekOrigin.Begin);
 
+                    // save to library
                     using (var media = StaticMediaLibrary.Instance)
                     {
                         var nameWithoutExtension = Path.GetFileNameWithoutExtension(imageName);
@@ -636,7 +805,9 @@ namespace PhotoNote.Pages
                 _editImage = pic;
                 UpdateZoomAppBarIcon();
                 UpdateImageOrientationAndScale();
+                InitializeCropRect(); // TODO remove
                 EditImageControl.Source = _editImage.FullImage;
+                EditImageControlForCropping.Source = _editImage.FullImage; // TODO remove
             }
             catch(Exception)
             {
@@ -656,6 +827,12 @@ namespace PhotoNote.Pages
             var scale = GetScaleFactorOfOrientation();
             EditImageControl.Width = scale * _editImage.Width;
             EditImageControl.Height = scale * _editImage.Height;
+
+            EditImageControlForCropping.Width = scale * _editImage.Width;
+            EditImageControlForCropping.Height = scale * _editImage.Height;
+
+            CropRectsContainer.Width = scale * _editImage.Width;
+            CropRectsContainer.Height = scale * _editImage.Height;
 
             // ink surface
             var neutralScaleFactor = GetBiggestScaleFactorOfSmallerOrientation();
@@ -688,6 +865,18 @@ namespace PhotoNote.Pages
             imageTransform.ScaleY = _zoom;
             imageTransform.TranslateX = _translateX;
             imageTransform.TranslateY = _translateY;
+
+            var imageCropTransform = EditImageControlForCropping.RenderTransform as CompositeTransform;
+            imageCropTransform.ScaleX = _zoom;
+            imageCropTransform.ScaleY = _zoom;
+            imageCropTransform.TranslateX = _translateX;
+            imageCropTransform.TranslateY = _translateY;
+
+            var cropRectsTransform = CropRectsContainer.RenderTransform as CompositeTransform;
+            cropRectsTransform.ScaleX = _zoom;
+            cropRectsTransform.ScaleY = _zoom;
+            cropRectsTransform.TranslateX = _translateX;
+            cropRectsTransform.TranslateY = _translateY;
 
             var inkTransform = InkControl.RenderTransform as CompositeTransform;
             inkTransform.ScaleX = scale / neutralScaleFactor * _zoom;
@@ -806,6 +995,8 @@ namespace PhotoNote.Pages
             {
                 VisualStateManager.GoToState(this, "LandscapeRight", true);
             }
+
+            UpdateClipAndTransforms();
         }
 
         #endregion
@@ -858,14 +1049,17 @@ namespace PhotoNote.Pages
                 PenToolbarLandscape.Visibility = System.Windows.Visibility.Visible;
             }
 
-            string visualState;
+            string visualState = null;
             if (_currentEditMode == EditMode.Marker)
                 visualState = "DisplayedPenMode";
-            else
+            else if (_currentEditMode == EditMode.Text)
                 visualState = "DisplayedTextMode";
 
-            VisualStateManager.GoToState(this, visualState, useTransition);
-            _isPenToolbarVisible = true;
+            if (visualState != null)
+            {
+                VisualStateManager.GoToState(this, visualState, useTransition);
+                _isPenToolbarVisible = true;
+            }
         }
 
         public void HidePenToolbar()
@@ -875,9 +1069,6 @@ namespace PhotoNote.Pages
 
             VisualStateManager.GoToState(this, "Normal", true);
             _isPenToolbarVisible = false;
-
-            //SaveSettings();
-            //SaveColorHistory(); // TODO: remove ok?
         }
 
         private List<System.Windows.Media.Color> _colorHistory;
@@ -1076,7 +1267,7 @@ namespace PhotoNote.Pages
             // reset move counter
             _inkMoveCounter = 0;
 
-            if (_currentEditMode == EditMode.Text)
+            if (_currentEditMode != EditMode.Marker)
                 return;
 
             InkControl.CaptureMouse();
@@ -1097,7 +1288,7 @@ namespace PhotoNote.Pages
         //StylusPoint objects are collected from the MouseEventArgs and added to MyStroke. 
         private void MyIP_MouseMove(object sender, MouseEventArgs e)
         {
-            if (_currentEditMode == EditMode.Text)
+            if (_currentEditMode != EditMode.Marker)
                 return;
 
             if (_twoFingersActive)
@@ -1166,7 +1357,7 @@ namespace PhotoNote.Pages
         //MyStroke is completed
         private void MyIP_LostMouseCapture(object sender, MouseEventArgs e)
         {
-            if (_currentEditMode != EditMode.Text)
+            if (_currentEditMode == EditMode.Marker)
             {
                 if (_isPenToolbarVisible)
                 {
@@ -1350,6 +1541,18 @@ namespace PhotoNote.Pages
             UpdateImageOrientationAndScale();
         }
 
+        private void ResetZoom()
+        {
+            _zoom = ZOOM_MIN;
+
+            // reset translation
+            _translateX = 0;
+            _translateY = 0;
+
+            UpdateZoomAppBarIcon();
+            UpdateImageOrientationAndScale();
+        }
+
         /// <summary>
         /// Remember the current zoom icon value to update the icon only when there is a change.
         /// </summary>
@@ -1468,6 +1671,9 @@ namespace PhotoNote.Pages
 
         private void MyIP_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
         {
+            if (_currentEditMode == EditMode.Cropping)
+                return;
+
             // first make sure we re using 2 fingers
             if (e.PinchManipulation != null)
             {
@@ -1599,6 +1805,12 @@ namespace PhotoNote.Pages
         /// <param name="newEditMode"></param>
         private void ChangedEditMode(EditMode newEditMode)
         {
+            // check if old mode was cropping
+            if (_currentEditMode == EditMode.Cropping && newEditMode != _currentEditMode)
+            {
+                CropDisabledAnimation.Begin();
+            }
+
             _currentEditMode = newEditMode;
 
             if (newEditMode == EditMode.Text)
@@ -1606,11 +1818,20 @@ namespace PhotoNote.Pages
                 AllTextBoxesToActiveState(true);
                 UpdateTextToolbarWithContext(_textContext);
             }
-            else
+            else if (newEditMode == EditMode.Marker)
             {
                 AllTextBoxesToActiveState(false);
                 UnselectTextBox(ref _selectedTextBox);
                 UpdatePenToolbarWithContext(_markerContext);
+            }
+            else if (newEditMode == EditMode.Cropping)
+            {
+                AllTextBoxesToActiveState(false);
+                UnselectTextBox(ref _selectedTextBox);
+                ResetZoom();
+                HidePenToolbar();
+
+                CropEnabledAnimation.Begin();
             }
         }
 
@@ -1964,7 +2185,7 @@ namespace PhotoNote.Pages
             {
                 _markerContext.Color = color;
             }
-            else // EditMode.Text
+            else if (_currentEditMode == EditMode.Text)
             {
                 _textContext.Color = color;
 

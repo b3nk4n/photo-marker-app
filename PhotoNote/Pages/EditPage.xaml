@@ -428,6 +428,54 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Name="CropEnabledAnimation">
+        	<DoubleAnimation Duration="0:0:1" To="0.8" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="RenderContainer" d:IsOptimized="True">
+        		<DoubleAnimation.EasingFunction>
+        			<CircleEase EasingMode="EaseInOut"/>
+        		</DoubleAnimation.EasingFunction>
+        	</DoubleAnimation>
+        	<DoubleAnimation Duration="0:0:1" To="0.8" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="RenderContainer" d:IsOptimized="True">
+        		<DoubleAnimation.EasingFunction>
+        			<CircleEase EasingMode="EaseInOut"/>
+        		</DoubleAnimation.EasingFunction>
+        	</DoubleAnimation>
+            <DoubleAnimation Duration="0:0:0.5" BeginTime="0:0:0.5" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="CropRectsContainer" d:IsOptimized="True">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="CropRectsContainer">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.5">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Name="CropDisabledAnimation">
+            <DoubleAnimation Duration="0:0:1" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="RenderContainer" d:IsOptimized="True">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Duration="0:0:1" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="RenderContainer" d:IsOptimized="True">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Duration="0:0:0.5" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="CropRectsContainer" d:IsOptimized="True">
+                <DoubleAnimation.EasingFunction>
+                    <CircleEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="CropRectsContainer">
+                <DiscreteObjectKeyFrame KeyTime="0:0:0.5">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
     </phone:PhoneApplicationPage.Resources>
 	<phone:PhoneApplicationPage.FontFamily>
 		<StaticResource ResourceKey="PhoneFontFamilyNormal"/>
@@ -690,13 +738,26 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0,0,0,72" Background="{StaticResource PhoneBackgroundBrush}">
 
             <Grid x:Name="EditImageContainer" Width="480" Height="728">
-                <Grid x:Name="RenderContainer">
+                <Grid x:Name="RenderContainer" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <CompositeTransform/>
+                    </Grid.RenderTransform>
 
-                    <Image x:Name="EditImageControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                    <Image x:Name="EditImageControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5"
+                           Opacity="0.15" IsHitTestVisible="False">
                         <Image.RenderTransform>
                             <CompositeTransform/>
                         </Image.RenderTransform>
                     </Image>
+
+                    <Image x:Name="EditImageControlForCropping" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <CompositeTransform/>
+                        </Image.RenderTransform>
+                        <Image.Clip>
+                            <RectangleGeometry x:Name="ClipRect"></RectangleGeometry>
+                        </Image.Clip>
+                    </Image>   
 
                     <Canvas x:Name="EditTextControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
                         <Canvas.RenderTransform>
@@ -716,6 +777,32 @@
                             <CompositeTransform/>
                         </InkPresenter.RenderTransform>
                     </InkPresenter>
+
+                    <Grid x:Name="CropRectsContainer" Visibility="Collapsed">
+                        <Grid.RenderTransform>
+                            <CompositeTransform/>
+                        </Grid.RenderTransform>
+                        <Rectangle Name="CropRectTopLeft" Width="40" Height="40" Margin="-20" Fill="{StaticResource PhoneAccentBrush}" HorizontalAlignment="Left" VerticalAlignment="Top" Stroke="White" StrokeThickness="1">
+                            <Rectangle.RenderTransform>
+                                <TranslateTransform></TranslateTransform>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                        <Rectangle Name="CropRectTopRight" Width="40" Height="40" Margin="-20" Fill="{StaticResource PhoneAccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Top" Stroke="White" StrokeThickness="1">
+                            <Rectangle.RenderTransform>
+                                <TranslateTransform></TranslateTransform>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                        <Rectangle Name="CropRectBotLeft" Width="40" Height="40" Margin="-20" Fill="{StaticResource PhoneAccentBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Stroke="White" StrokeThickness="1">
+                            <Rectangle.RenderTransform>
+                                <TranslateTransform></TranslateTransform>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                        <Rectangle Name="CropRectBotRight" Width="40" Height="40" Margin="-20" Fill="{StaticResource PhoneAccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Stroke="White" StrokeThickness="1">
+                            <Rectangle.RenderTransform>
+                                <TranslateTransform></TranslateTransform>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                    </Grid>
                 </Grid>
             </Grid>
 
