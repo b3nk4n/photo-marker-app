@@ -38,10 +38,14 @@ namespace PhotoNote.Pages
         private EditPicture _editImage;
 
         ApplicationBarIconButton _appBarZoomButton;
-
         ApplicationBarIconButton _appBarPenButton;
-
         ApplicationBarIconButton _appBarTextButton;
+        ApplicationBarIconButton _appBarUndoButton;
+        ApplicationBarMenuItem _appBarSaveMenuItem;
+        ApplicationBarMenuItem _appBarCropMenuItem;
+        ApplicationBarMenuItem _appBarPhotoInfoMenuItem;
+
+        ApplicationBarIconButton _appBarDoneButton;
 
         private Random rand = new Random();
 
@@ -49,7 +53,7 @@ namespace PhotoNote.Pages
 
         private bool _isPenToolbarVisible = false;
 
-        private const string PEN_POPUP_VISIBLE_KEY = "_pen_popup_visible_";
+        private const string PEN_POPUP_VISIBLE_KEY = "_pen_popup_vis_";
         private const string PEN_DATA_KEY = "_pen_data_";
         private const string CENTER_START_KEY = "_center_start_";
 
@@ -58,9 +62,16 @@ namespace PhotoNote.Pages
         private const string TRANSLATION_Y_KEY = "_trans_y_";
 
         private const string TEXT_ELEMENTS_KEY = "_text_elements_";
-        private const string TEXT_SELECTED_INDEX = "_text_selected_";
+        private const string TEXT_SELECTED_INDEX = "_text_sel_";
 
         private const string EDIT_MODE_KEY = "_edit_mode_";
+
+        private const string EDIT_MODE_BEFORE_CROP_KEY = "_bc_edit_mode_";
+
+        private const string CLIP_LEFT_PERC = "_cl_left_";
+        private const string CLIP_RIGHT_PERC = "_cl_right_";
+        private const string CLIP_TOP_PERC = "_cl_top_";
+        private const string CLIP_BOTTOM_PERC = "_cl_bottom_";
 
         private double _zoom = 1.0;
         private double _translateX;
@@ -70,6 +81,8 @@ namespace PhotoNote.Pages
         private const double ZOOM_MAX = 5.0;
 
         private EditMode _currentEditMode = EditMode.Marker;
+
+        private EditMode _editModeBeforeCrop = EditMode.Marker;
 
         private static StoredObject<bool> ZoomingInfoShow = new StoredObject<bool>("_zoomingInfo_", false);
 
@@ -84,7 +97,7 @@ namespace PhotoNote.Pages
         public EditPage()
         {
             InitializeComponent();
-            BuildLocalizedApplicationBar();
+            BuildLocalizedApplicationBarButtons();
 
             // add these slightly delayed, to get no selected events while creating the UI.
             FontPicker.SelectionChanged += FontPickerSelectionChanged;
@@ -147,63 +160,63 @@ namespace PhotoNote.Pages
 
                         var pos = e.GetPosition(EditImageControlForCropping);
 
-                        if (s == this.CropRectTopLeft || s == this.CropRectTopRight)
+                        if (IsTopClipRect(s))
                         {
-                            // Adjust top
                             _clipTopPerc = origTopPerc + (pos.Y - _dragOrigin.Y) / EditImageControlForCropping.Height;
                         }
-                        if (s == this.CropRectTopLeft || s == this.CropRectBotLeft)
+                        if (IsLeftClipRect(s))
                         {
                             // Adjust Left
                             _clipLeftPerc = origLeftPerc + (pos.X - _dragOrigin.X) / EditImageControlForCropping.Width;
                         }
-                        if (s == this.CropRectBotLeft || s == this.CropRectBotRight)
+                        if (IsBottomClipRect(s))
                         {
                             // Adjust bottom
                             _clipBotPerc = origBotPerc - (pos.Y - _dragOrigin.Y) / EditImageControlForCropping.Height;
                         }
-                        if (s == this.CropRectTopRight || s == this.CropRectBotRight)
+                        if (IsRightClipRect(s))
                         {
                             // Adjust Right
                             _clipRightPerc = origRightPerc - (pos.X - _dragOrigin.X) / EditImageControlForCropping.Width;
                         }
 
-                        this.UpdateClipAndTransforms();
+                        this.UpdateClipAndTransforms(s);
                     }
                 };
             }
 
-            var draggingImg = false;
+            // NOTE: not in use currently, but might be from interest later
+            //var draggingImg = false;
 
-            EditImageControlForCropping.MouseLeftButtonDown += (s, e) =>
-            {
-                setOrigin(e.GetPosition(this.EditImageControlForCropping));
-                EditImageControlForCropping.CaptureMouse();
-                draggingImg = true;
-            };
+            //EditImageControlForCropping.MouseLeftButtonDown += (s, e) =>
+            //{
+            //    setOrigin(e.GetPosition(this.EditImageControlForCropping));
+            //    EditImageControlForCropping.CaptureMouse();
+            //    draggingImg = true;
+            //};
 
-            EditImageControlForCropping.MouseLeftButtonUp += (s, e) =>
-            {
-                draggingImg = false;
-            };
+            //EditImageControlForCropping.MouseLeftButtonUp += (s, e) =>
+            //{
+            //    draggingImg = false;
+            //};
 
-            EditImageControlForCropping.MouseMove += (s, e) =>
-            {
-                if (draggingImg)
-                {
-                    var pos = e.GetPosition(this.EditImageControlForCropping);
+            //EditImageControlForCropping.MouseMove += (s, e) =>
+            //{
+            //    if (draggingImg)
+            //    {
+            //        var pos = e.GetPosition(this.EditImageControlForCropping);
 
-                    var xAdjust = (pos.X - _dragOrigin.X) / EditImageControlForCropping.Width;
-                    var yAdjust = (pos.Y - _dragOrigin.Y) / EditImageControlForCropping.Height;
+            //        var xAdjust = (pos.X - _dragOrigin.X) / EditImageControlForCropping.Width;
+            //        var yAdjust = (pos.Y - _dragOrigin.Y) / EditImageControlForCropping.Height;
 
-                    _clipLeftPerc = origLeftPerc + xAdjust;
-                    _clipRightPerc = origRightPerc - xAdjust;
-                    _clipTopPerc = origTopPerc + yAdjust;
-                    _clipBotPerc = origBotPerc - yAdjust;
+            //        _clipLeftPerc = origLeftPerc + xAdjust;
+            //        _clipRightPerc = origRightPerc - xAdjust;
+            //        _clipTopPerc = origTopPerc + yAdjust;
+            //        _clipBotPerc = origBotPerc - yAdjust;
 
-                    this.UpdateClipAndTransforms();
-                }
-            };
+            //        this.UpdateClipAndTransforms();
+            //    }
+            //};
 
             EditImageControlForCropping.SizeChanged += (x, y) =>
             {
@@ -213,13 +226,74 @@ namespace PhotoNote.Pages
             this.UpdateClipAndTransforms();
         }
 
-        void UpdateClipAndTransforms()
+        private bool IsTopClipRect(object cropRect)
         {
-            // Check bounds
-            if (_clipLeftPerc + _clipRightPerc >= 1)
-                _clipLeftPerc = (1 - _clipRightPerc) - 0.04;
-            if (_clipTopPerc + _clipBotPerc >= 1)
-                _clipTopPerc = (1 - _clipBotPerc) - 0.04;
+            return cropRect == this.CropRectTopLeft || cropRect == this.CropRectTopRight;
+        }
+
+        private bool IsLeftClipRect(object cropRect)
+        {
+            return cropRect == this.CropRectTopLeft || cropRect == this.CropRectBotLeft;
+        }
+
+        private bool IsRightClipRect(object cropRect)
+        {
+            return cropRect == this.CropRectTopRight || cropRect == this.CropRectBotRight;
+        }
+
+        private bool IsBottomClipRect(object cropRect)
+        {
+            return cropRect == this.CropRectBotLeft || cropRect == this.CropRectBotRight;
+        }
+
+        
+
+        void UpdateClipAndTransforms(object cropRect = null)
+        {
+            if (cropRect != null)
+            {
+                double offsetX = 0.25;
+                double offsetY = 0.25;
+
+                double w = EditImageControlForCropping.Width;
+                double h = EditImageControlForCropping.Height;
+
+                if (w != 0 && h != 0 && w != h)
+                {
+                    if (w > h)
+                    {
+                        offsetX = offsetX * (h / w);
+                    }
+                    else
+                    {
+                        offsetY = offsetY * (w / h);
+                    }
+                }
+
+                if (_clipLeftPerc + _clipRightPerc >= 1.0 - offsetX)
+                {
+                    if (IsLeftClipRect(cropRect))
+                        _clipLeftPerc = (1.0 - offsetX - _clipRightPerc);
+                    else
+                        _clipRightPerc = (1.0 - offsetX - _clipLeftPerc);
+                }
+
+                if (_clipTopPerc + _clipBotPerc >= 1.0 - offsetY)
+                {
+                    if (IsTopClipRect(cropRect))
+                        _clipTopPerc = (1.0 - offsetY - _clipBotPerc);
+                    else
+                        _clipBotPerc = (1.0 - offsetY - _clipTopPerc);
+                }
+            }
+            else
+            {
+                // paranoia check
+                if (_clipLeftPerc + _clipRightPerc >= 1)
+                    _clipLeftPerc = (1 - _clipRightPerc) - 0.15;
+                if (_clipTopPerc + _clipBotPerc >= 1)
+                    _clipTopPerc = (1 - _clipBotPerc) - 0.15;
+            }
 
             if (_clipLeftPerc < 0)
                 _clipLeftPerc = 0;
@@ -259,20 +333,19 @@ namespace PhotoNote.Pages
         /// <summary>
         /// Builds the localized app bar.
         /// </summary>
-        private void BuildLocalizedApplicationBar()
+        private void BuildLocalizedApplicationBarButtons()
         {
             // ApplicationBar der Seite einer neuen Instanz von ApplicationBar zuweisen
             ApplicationBar = new ApplicationBar();
             ApplicationBar.Opacity = 0.99;
 
             // undo
-            ApplicationBarIconButton appBarUndoButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.undo.curve.png", UriKind.Relative));
-            appBarUndoButton.Text = AppResources.AppBarUndo;
-            appBarUndoButton.Click += (s, e) =>
+            _appBarUndoButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.undo.curve.png", UriKind.Relative));
+            _appBarUndoButton.Text = AppResources.AppBarUndo;
+            _appBarUndoButton.Click += (s, e) =>
             {
                 Undo();
             };
-            ApplicationBar.Buttons.Add(appBarUndoButton);
 
             // pen toolbar
             _appBarPenButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.draw.marker.Normal.png", UriKind.Relative));
@@ -303,7 +376,6 @@ namespace PhotoNote.Pages
                     }
                 }
             };
-            ApplicationBar.Buttons.Add(_appBarPenButton);
 
             // text
             _appBarTextButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.interface.textbox.png", UriKind.Relative));
@@ -342,7 +414,6 @@ namespace PhotoNote.Pages
                     }
                 }
             };
-            ApplicationBar.Buttons.Add(_appBarTextButton);
 
             // zoom
             _appBarZoomButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.magnify1.png", UriKind.Relative));
@@ -357,11 +428,10 @@ namespace PhotoNote.Pages
                     ZoomingInfoShow.Value = true;
                 }
             };
-            ApplicationBar.Buttons.Add(_appBarZoomButton);
 
             // save
-            ApplicationBarMenuItem appBarSaveMenuItem = new ApplicationBarMenuItem(AppResources.AppBarSave);
-            appBarSaveMenuItem.Click += async (s, e) =>
+            _appBarSaveMenuItem = new ApplicationBarMenuItem(AppResources.AppBarSave);
+            _appBarSaveMenuItem.Click += async (s, e) =>
             {
                 if (await Save())
                 {
@@ -378,19 +448,17 @@ namespace PhotoNote.Pages
                     MessageBox.Show(AppResources.MessageBoxNoSave, AppResources.MessageBoxWarning, MessageBoxButton.OK);
                 }
             };
-            ApplicationBar.MenuItems.Add(appBarSaveMenuItem);
 
             // crop
-            ApplicationBarMenuItem appBarCropMenuItem = new ApplicationBarMenuItem("CROP!!!"); // TODO: translate
-            appBarCropMenuItem.Click += (s, e) =>
+            _appBarCropMenuItem = new ApplicationBarMenuItem("CROP!!!"); // TODO: translate
+            _appBarCropMenuItem.Click += (s, e) =>
             {
                 ChangedEditMode(EditMode.Cropping);
             };
-            ApplicationBar.MenuItems.Add(appBarCropMenuItem);
 
             // image info (photo info)
-            ApplicationBarMenuItem appBarPhotoInfoMenuItem = new ApplicationBarMenuItem(AppResources.ShowPhotoInfo);
-            appBarPhotoInfoMenuItem.Click += async (s, e) =>
+            _appBarPhotoInfoMenuItem = new ApplicationBarMenuItem(AppResources.ShowPhotoInfo);
+            _appBarPhotoInfoMenuItem.Click += async (s, e) =>
             {
                 if (HasNoImage())
                     return;
@@ -400,7 +468,35 @@ namespace PhotoNote.Pages
                     MessageBox.Show(AppResources.MessageBoxNoInfo, AppResources.MessageBoxWarning, MessageBoxButton.OK);
                 }
             };
-            ApplicationBar.MenuItems.Add(appBarPhotoInfoMenuItem);
+
+            // done
+            _appBarDoneButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.check.png", UriKind.Relative));
+            _appBarDoneButton.Text = "DONE!"; // TODO: translate
+            _appBarDoneButton.Click += (s, e) =>
+            {
+                ChangedEditMode(_editModeBeforeCrop);
+            };
+        }
+
+        private void UpdateApplicationBar(EditMode editMode)
+        {
+            ApplicationBar.Buttons.Clear();
+            ApplicationBar.MenuItems.Clear();
+
+            if (editMode == EditMode.Cropping)
+            {
+                ApplicationBar.Buttons.Add(_appBarDoneButton);
+            }
+            else
+            {
+                ApplicationBar.Buttons.Add(_appBarUndoButton);
+                ApplicationBar.Buttons.Add(_appBarPenButton);
+                ApplicationBar.Buttons.Add(_appBarTextButton);
+                ApplicationBar.Buttons.Add(_appBarZoomButton);
+                ApplicationBar.MenuItems.Add(_appBarSaveMenuItem);
+                ApplicationBar.MenuItems.Add(_appBarCropMenuItem);
+                ApplicationBar.MenuItems.Add(_appBarPhotoInfoMenuItem);
+            }
         }
 
         private async Task<bool> Save()
@@ -552,6 +648,8 @@ namespace PhotoNote.Pages
                 }
             }
 
+            UpdateApplicationBar(_currentEditMode);
+
             returnedFromTombstone = false;
         }
 
@@ -653,6 +751,25 @@ namespace PhotoNote.Pages
             PhoneStateHelper.DeleteValue(TRANSLATION_Y_KEY);
             _translateY = transY;
 
+            // clipping
+            var clipLeft = PhoneStateHelper.LoadValue<double>(CLIP_LEFT_PERC, 0);
+            PhoneStateHelper.DeleteValue(CLIP_LEFT_PERC);
+            _clipLeftPerc = clipLeft;
+            var clipRight = PhoneStateHelper.LoadValue<double>(CLIP_RIGHT_PERC, 0);
+            PhoneStateHelper.DeleteValue(CLIP_RIGHT_PERC);
+            _clipRightPerc = clipRight;
+            var clipTop = PhoneStateHelper.LoadValue<double>(CLIP_TOP_PERC, 0);
+            PhoneStateHelper.DeleteValue(CLIP_TOP_PERC);
+            _clipTopPerc = clipTop;
+            var clipBottom = PhoneStateHelper.LoadValue<double>(CLIP_BOTTOM_PERC, 0);
+            PhoneStateHelper.DeleteValue(CLIP_BOTTOM_PERC);
+            _clipBotPerc = clipBottom;
+
+            // last edit mode before crop
+            var editModeBeforeCrop = PhoneStateHelper.LoadValue<EditMode>(EDIT_MODE_BEFORE_CROP_KEY, EditMode.Marker);
+            PhoneStateHelper.DeleteValue(EDIT_MODE_BEFORE_CROP_KEY);
+            _editModeBeforeCrop = editModeBeforeCrop;
+
             // strokes
             var strokeData = PhoneStateHelper.LoadValue<string>(PEN_DATA_KEY);
             PhoneStateHelper.DeleteValue(PEN_DATA_KEY);
@@ -717,8 +834,7 @@ namespace PhotoNote.Pages
                 var textbox = EditTextControl.Children[textSelectedIndex] as ExtendedTextBox;
                 SelectTextBox(textbox);
                 SetSelectionTextFont(textbox.FontFamily);
-            }
-            // FIXME: selecting the item causes that the seleted items font is reverted to DEFAULT or that of the context.
+            } // FIXME: selecting the item causes that the seleted items font is reverted to DEFAULT or that of the context.  (!?)
         }
 
         private static System.Windows.Media.Color HexToColor(string hexString)
@@ -747,7 +863,16 @@ namespace PhotoNote.Pages
             // translation
             PhoneStateHelper.SaveValue(TRANSLATION_X_KEY, _translateX);
             PhoneStateHelper.SaveValue(TRANSLATION_Y_KEY, _translateY);
-            
+
+            // clipping
+            PhoneStateHelper.SaveValue(CLIP_LEFT_PERC, _clipLeftPerc);
+            PhoneStateHelper.SaveValue(CLIP_RIGHT_PERC, _clipRightPerc);
+            PhoneStateHelper.SaveValue(CLIP_TOP_PERC, _clipTopPerc);
+            PhoneStateHelper.SaveValue(CLIP_BOTTOM_PERC, _clipBotPerc);
+
+            // last edit mode before crop
+            PhoneStateHelper.SaveValue(EDIT_MODE_BEFORE_CROP_KEY, _editModeBeforeCrop);
+
             // strokes
             if (InkControl.Strokes.Count > 0)
             {
@@ -1016,6 +1141,11 @@ namespace PhotoNote.Pages
             else if (_selectedTextBox != null)
             {
                 UnselectTextBox(ref _selectedTextBox);
+                e.Cancel = true;
+            }
+            else if (_currentEditMode == EditMode.Cropping)
+            {
+                ChangedEditMode(_editModeBeforeCrop);
                 e.Cancel = true;
             }
             else if (InkControl.Strokes.Count > 0 ||
@@ -1811,6 +1941,11 @@ namespace PhotoNote.Pages
                 CropDisabledAnimation.Begin();
             }
 
+            if ((_currentEditMode == EditMode.Cropping || newEditMode == EditMode.Cropping) && _currentEditMode != newEditMode)
+            {
+                UpdateApplicationBar(newEditMode);
+            }
+
             _currentEditMode = newEditMode;
 
             if (newEditMode == EditMode.Text)
@@ -1826,6 +1961,13 @@ namespace PhotoNote.Pages
             }
             else if (newEditMode == EditMode.Cropping)
             {
+                // store the last edit mode to be able to get back and make sure
+                // not to store crop mode (which leads to an endless loop)
+                if (_currentEditMode != EditMode.Cropping)
+                {
+                    _editModeBeforeCrop = _currentEditMode;
+                }
+
                 AllTextBoxesToActiveState(false);
                 UnselectTextBox(ref _selectedTextBox);
                 ResetZoom();
