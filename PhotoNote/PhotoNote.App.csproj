@@ -197,6 +197,9 @@
     <Content Include="Assets\Fonts\ComicRelief.ttf" />
     <Content Include="Assets\Fonts\Pacifico.ttf" />
     <Content Include="Assets\Fonts\AmaticSC-Regular.ttf" />
+    <Content Include="Assets\Fonts\2Dumb.ttf" />
+    <Content Include="Assets\Fonts\3Dumb.ttf" />
+    <Content Include="Assets\Fonts\HarabaraHand.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">

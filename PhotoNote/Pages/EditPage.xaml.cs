@@ -215,7 +215,13 @@ namespace PhotoNote.Pages
             {
                 if (await Save())
                 {
-                    NavigationHelper.BackToMainPageWithHistoryClear(NavigationService);
+                    Dispatcher.BeginInvoke(() =>
+                    {
+                        // BugSense: Navigation is not allowed when the task is not in the foreground
+                        //           Solution: http://stackoverflow.com/questions/7373533/navigation-is-not-allowed-when-the-task-is-not-in-the-foreground-in-wp7-applic
+                        NavigationHelper.BackToMainPageWithHistoryClear(NavigationService);
+                    });
+                    
                 }
                 else
                 {
@@ -254,23 +260,23 @@ namespace PhotoNote.Pages
                 {
                     var neutralScaleFactor = GetBiggestScaleFactorOfSmallerOrientation();
                     var textContextList = GetTextBoxContextList();
-
                     var editedImageInkControl = new EditedImageInkControl(_editImage.FullImage as BitmapSource, InkControl.Strokes, textContextList, 1.0 / neutralScaleFactor);
-                    RenderingTrash.Children.Add(editedImageInkControl); // add to visual tree to enforce Bindings are invoked
+                    string imageName = _editImage.Name;
+                    RenderingTrash.Children.Add(editedImageInkControl); // add to visual tree to enforce Bindings are invoked // note: SAVES MEMORY according to Profiler tests (why ever !?!)
                     
                     await Task.Delay(500);
                     var gfx = GraphicsHelper.Create(editedImageInkControl);
                     //gfx = gfx.Crop(0, 0, gfx.PixelWidth / 2, gfx.PixelHeight / 2); // TODO: croping according to defined region --> create UI.
                     gfx.SaveJpeg(memStream, gfx.PixelWidth, gfx.PixelHeight, 0, 100);
                     
-
+                    GraphicsHelper.CleanUpMemory(gfx);
                     RenderingTrash.Children.Remove(editedImageInkControl); // and remove it again from visual tree
                     
                     memStream.Seek(0, SeekOrigin.Begin);
 
                     using (var media = StaticMediaLibrary.Instance)
                     {
-                        var nameWithoutExtension = Path.GetFileNameWithoutExtension(_editImage.Name);
+                        var nameWithoutExtension = Path.GetFileNameWithoutExtension(imageName);
 
                         // prepend image prefix
                         if (!nameWithoutExtension.StartsWith(AppConstants.IMAGE_PREFIX))
@@ -670,7 +676,7 @@ namespace PhotoNote.Pages
                 _translateX = -deltaMaxX;
             else if (_translateX > deltaMaxX)
                 _translateX = deltaMaxX;
-            
+
             if (_translateY < -deltaMaxY)
                 _translateY = -deltaMaxY;
             else if (_translateY > deltaMaxY)
@@ -1054,7 +1060,7 @@ namespace PhotoNote.Pages
 
         private Stroke _activeStroke;
         private Vector2 _centerStart;
-        private int _moveCounter;
+        private int _inkMoveCounter;
 
         /// <summary>
         /// Used to make sure no stroke is added multiple times. Not really necessary anymore, but makes sure
@@ -1067,6 +1073,9 @@ namespace PhotoNote.Pages
         //A new stroke object named MyStroke is created. MyStroke is added to the StrokeCollection of the InkPresenter named MyIP
         private void MyIP_MouseLeftButtonDown(object sender, MouseEventArgs e)
         {
+            // reset move counter
+            _inkMoveCounter = 0;
+
             if (_currentEditMode == EditMode.Text)
                 return;
 
@@ -1102,7 +1111,7 @@ namespace PhotoNote.Pages
                 return;
             }
 
-            _moveCounter++;
+            _inkMoveCounter++;
 
             // delayed display of first point, that the point is not visible
             // when tapping on the screen to close the toolbar
@@ -1159,7 +1168,6 @@ namespace PhotoNote.Pages
         {
             if (_currentEditMode != EditMode.Text)
             {
-
                 if (_isPenToolbarVisible)
                 {
                     // close the toolbar and do not draw anything when there was quite like a tap.
@@ -1204,7 +1212,7 @@ namespace PhotoNote.Pages
                 // remove ink segments when two fingers have been detected shortly after the drawing has begun.
                 // just to make shure that really everything was cleaned, because this cleaning is also done in
                 // move envent.
-                if (_twoFingersActive && _moveCounter < 3)
+                if (_twoFingersActive && _inkMoveCounter < 3)
                 {
                     InkControl.Strokes.Remove(_activeStroke);
                 }
@@ -1214,7 +1222,6 @@ namespace PhotoNote.Pages
             _activeStroke = null;
             strokeAdded = false;
             _twoFingersActive = false;
-            _moveCounter = 0;
         }
 
         /// <summary>
@@ -1506,7 +1513,7 @@ namespace PhotoNote.Pages
 
             if (_currentEditMode == EditMode.Text)
             {
-                _moveCounter++;
+                _inkMoveCounter++;
             }
         }
 
@@ -1520,12 +1527,12 @@ namespace PhotoNote.Pages
                 {
                     _selectedTextBox.IsEnabled = true;
 
-                    if (_previouslySelectedTextBox == _selectedTextBox && _moveCounter == 0)
+                    if (_previouslySelectedTextBox == _selectedTextBox && _inkMoveCounter == 0)
                     {
                         EditTextBox(_selectedTextBox);
                     }
                 }
-                else if (_previouslySelectedTextBox == null && _moveCounter <= 1 && !_isKeyboardActive)
+                else if (_previouslySelectedTextBox == null && _inkMoveCounter <= 1 && !_isKeyboardActive)
                 {
                     if (_isPenToolbarVisible)
                     {

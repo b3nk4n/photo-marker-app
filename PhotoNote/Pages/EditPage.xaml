@@ -713,7 +713,7 @@
 						ManipulationDelta="MyIP_ManipulationDelta"
                         ManipulationCompleted="MyIP_ManipulationCompleted">
                         <InkPresenter.RenderTransform>
-                            <CompositeTransform x:Name="PanTransform"/>
+                            <CompositeTransform/>
                         </InkPresenter.RenderTransform>
                     </InkPresenter>
                 </Grid>

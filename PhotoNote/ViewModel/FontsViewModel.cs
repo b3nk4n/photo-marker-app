@@ -31,6 +31,8 @@ namespace PhotoNote.ViewModel
 
         public static readonly FontItemViewModel GEORGIA = new FontItemViewModel("Georgia", "Georgia");
 
+        public static readonly FontItemViewModel HARABARA_HAND = new FontItemViewModel("Harabara Hand", "/Assets/Fonts/HarabaraHand.ttf#HarabaraHand");
+
         public static readonly FontItemViewModel LACIDA_SANS = new FontItemViewModel("Lucida Sans Unicode", "Lucida Sans Unicode");
 
         public static readonly FontItemViewModel PACIFICO = new FontItemViewModel("Pacifico", "/Assets/Fonts/Pacifico.ttf#Pacifico");
@@ -45,6 +47,10 @@ namespace PhotoNote.ViewModel
 
         public static readonly FontItemViewModel VERDANA = new FontItemViewModel("Verdana", "Verdana");
 
+        public static readonly FontItemViewModel DUMB2 = new FontItemViewModel("2Dumb", "/Assets/Fonts/2Dumb.ttf#2Dumb");
+
+        public static readonly FontItemViewModel DUMB3 = new FontItemViewModel("3Dumb", "/Assets/Fonts/3Dumb.ttf#3Dumb");
+
         private static readonly IEnumerable<FontItemViewModel> FontCollection = new List<FontItemViewModel>() {
                     DEFAULT,
                     AMETIC_SC,
@@ -55,13 +61,16 @@ namespace PhotoNote.ViewModel
                     COMIC_SANS_MS,
                     COURIER_NEW,
                     GEORGIA,
+                    HARABARA_HAND,
                     LACIDA_SANS,
                     PACIFICO,
                     SEGEO_WP_LIGHT,
                     TAHOMA,
                     TIMES_NEW_ROMAN,
                     TREBUCHET_MS,
-                    VERDANA
+                    VERDANA,
+                    DUMB2,
+                    DUMB3
                 };
 
         public IEnumerable<FontItemViewModel> Fonts

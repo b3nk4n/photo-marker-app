@@ -3,12 +3,13 @@ using Microsoft.Phone.Tasks;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Media.PhoneExtensions;
 using PhoneKit.Framework.Graphics;
+using System;
 using System.IO;
 using System.Windows.Media;
 
 namespace PhotoNote.Model
 {
-    public class EditPicture
+    public class EditPicture : IDisposable
     {
         private RobustPicture _image;
 
@@ -22,6 +23,15 @@ namespace PhotoNote.Model
             var shareTask = new ShareMediaTask();
             shareTask.FilePath = ImagePath;
             shareTask.Show();
+        }
+
+        /// <summary>
+        /// Disposes the image resource.
+        /// </summary>
+        public void Dispose()
+        {
+            _image.Dispose();
+            _image = null;
         }
 
         public ImageSource ThumbnailImage
