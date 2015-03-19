@@ -743,20 +743,10 @@
                         <CompositeTransform/>
                     </Grid.RenderTransform>
 
-                    <Image x:Name="EditImageControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5"
-                           Opacity="0.15" IsHitTestVisible="False">
+                    <Image x:Name="EditImageControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
                         <Image.RenderTransform>
                             <CompositeTransform/>
                         </Image.RenderTransform>
-                    </Image>
-
-                    <Image x:Name="EditImageControlForCropping" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
-                        <Image.RenderTransform>
-                            <CompositeTransform/>
-                        </Image.RenderTransform>
-                        <Image.Clip>
-                            <RectangleGeometry x:Name="ClipRect"></RectangleGeometry>
-                        </Image.Clip>
                     </Image>   
 
                     <Canvas x:Name="EditTextControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
@@ -766,17 +756,43 @@
                     </Canvas>
 
                     <InkPresenter x:Name="InkControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5"
-						MouseLeftButtonDown="MyIP_MouseLeftButtonDown" 
-						LostMouseCapture="MyIP_LostMouseCapture"
-						MouseMove="MyIP_MouseMove" 
-						Background="Transparent"
-						ManipulationStarted="MyIP_ManipulationStarted"
-						ManipulationDelta="MyIP_ManipulationDelta"
-                        ManipulationCompleted="MyIP_ManipulationCompleted">
+                                  Background="Transparent"
+                                  MouseLeftButtonDown="MyIP_MouseLeftButtonDown" 
+						          LostMouseCapture="MyIP_LostMouseCapture"
+						          MouseMove="MyIP_MouseMove"
+                                  ManipulationStarted="MyIP_ManipulationStarted"
+						          ManipulationDelta="MyIP_ManipulationDelta"
+                                  ManipulationCompleted="MyIP_ManipulationCompleted">
                         <InkPresenter.RenderTransform>
                             <CompositeTransform/>
                         </InkPresenter.RenderTransform>
                     </InkPresenter>
+
+                    <Canvas x:Name="CroppingControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5"
+                            Background="{StaticResource PhoneBackgroundBrush}" Opacity="0.8">
+                        <Canvas.RenderTransform>
+                            <CompositeTransform/>
+                        </Canvas.RenderTransform>
+                        <Canvas.Clip>
+                            <GeometryGroup>
+                                <RectangleGeometry x:Name="ClipRectLeft"></RectangleGeometry>
+                                <RectangleGeometry x:Name="ClipRectRight"></RectangleGeometry>
+                                <RectangleGeometry x:Name="ClipRectTop"></RectangleGeometry>
+                                <RectangleGeometry x:Name="ClipRectBottom"></RectangleGeometry>
+                            </GeometryGroup>
+                        </Canvas.Clip>
+                    </Canvas>
+
+                    <!-- must be deactived when marker is active to not steal the events -->
+                    <Canvas x:Name="InputControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5"
+                            Background="Transparent" Visibility="Collapsed"
+                            ManipulationStarted="MyIP_ManipulationStarted"
+						    ManipulationDelta="MyIP_ManipulationDelta"
+                            ManipulationCompleted="MyIP_ManipulationCompleted">
+                        <Canvas.RenderTransform>
+                            <CompositeTransform/>
+                        </Canvas.RenderTransform>
+                    </Canvas>
 
                     <Grid x:Name="CropRectsContainer" Visibility="Collapsed">
                         <Grid.RenderTransform>
