@@ -325,6 +325,12 @@ namespace PhotoNote.Pages
             ClipRectTop.Rect = new Rect(0, 0, w + CROPPING_GRAY_OFFSET, visibleRect.Top);
             ClipRectBottom.Rect = new Rect(0, visibleRect.Bottom, w + CROPPING_GRAY_OFFSET, h + CROPPING_GRAY_OFFSET - visibleRect.Bottom);
 
+            // Text
+            var imageScale = 1 / GetScaleFactorOfOrientation();
+            int imageWidth = (int)Math.Round(visibleRect.Width * imageScale);
+            int imageHeight = (int)Math.Round(visibleRect.Height * imageScale);
+            CropText.Text = string.Format("{0} x {1}", imageWidth, imageHeight);
+
             // Rectangle Transforms
             ((TranslateTransform)this.CropRectTopLeft.RenderTransform).X = visibleRect.X;
             ((TranslateTransform)this.CropRectTopLeft.RenderTransform).Y = visibleRect.Y;
