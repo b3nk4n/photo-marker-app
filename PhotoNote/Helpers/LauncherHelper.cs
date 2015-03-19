@@ -13,33 +13,6 @@ namespace PhotoNote.Helpers
     public static class LauncherHelper
     {
         /// <summary>
-        /// Launches picture in Photo hub.
-        /// </summary>
-        /// <param name="fileName">The file name of the image.</param>
-        /// <returns>True for success, else false.</returns>
-        //public static async Task<bool> LaunchPhotoAsync(string fileName)
-        //{
-        //    // search index;
-        //    EditPicture pic = GetImageFromFileName(fileName);
-
-        //    var tmpName = string.Format("tmp.{0}", pic.FileType.ToLower());
-
-        //    if (pic == null)
-        //        return false;
-
-        //    var res = StorageHelper.SaveFileFromStream(tmpName, pic.FullImageStream);
-
-        //    // return when image not found in library.
-        //    if (res)
-        //    {
-        //        var file = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(StorageHelper.APPDATA_LOCAL_SCHEME + "/" + tmpName));
-        //        return await Launcher.LaunchFileAsync(file);
-        //    }
-
-        //    return false;
-        //}
-
-        /// <summary>
         /// Launches Photo-Info.
         /// </summary>
         /// <param name="fileName">The file name of the image.</param>

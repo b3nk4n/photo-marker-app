@@ -1792,6 +1792,7 @@ namespace PhotoNote.Pages
 
             // reset move counter
             _inkMoveCounter = 0;
+            _twoFingersActive = false;
 
             if (_currentEditMode == EditMode.Text)
             {
@@ -1881,7 +1882,7 @@ namespace PhotoNote.Pages
                 UpdateImageOrientationAndScale();
                 UpdateZoomAppBarIcon();
             }
-            else if (_selectedTextBox != null)
+            else if (_selectedTextBox != null && !_twoFingersActive)
             {
                 // move text box
                 _selectedTextBox.SetPosition(EditTextControl, e.ManipulationOrigin.X, e.ManipulationOrigin.Y);
