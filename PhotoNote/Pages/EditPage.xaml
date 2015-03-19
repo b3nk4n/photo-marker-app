@@ -411,6 +411,12 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="TextOptions" d:IsOptimized="True">
+                <DiscreteDoubleKeyFrame KeyTime="0" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" Storyboard.TargetName="TextOptionsLandscape" d:IsOptimized="True">
+                <DiscreteDoubleKeyFrame KeyTime="0" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Name="HideTextOptionsAnimation">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="TextOptions">
@@ -426,6 +432,12 @@
                         <CircleEase EasingMode="EaseInOut"/>
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="TextOptions" d:IsOptimized="True">
+                <DiscreteDoubleKeyFrame KeyTime="0:0:0.5" Value="-1000" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" Storyboard.TargetName="TextOptionsLandscape" d:IsOptimized="True">
+                <DiscreteDoubleKeyFrame KeyTime="0:0:0.5" Value="-1000" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Name="CropEnabledAnimation">
@@ -515,20 +527,6 @@
                                 </DiscreteObjectKeyFrame.Value>
                             </DiscreteObjectKeyFrame>
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)" Storyboard.TargetName="TextOptions">
-                            <DiscreteObjectKeyFrame KeyTime="0">
-                                <DiscreteObjectKeyFrame.Value>
-                                    True
-                                </DiscreteObjectKeyFrame.Value>
-                            </DiscreteObjectKeyFrame>
-                        </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)" Storyboard.TargetName="TextOptionsLandscape">
-                            <DiscreteObjectKeyFrame KeyTime="0">
-                                <DiscreteObjectKeyFrame.Value>
-                                    False
-                                </DiscreteObjectKeyFrame.Value>
-                            </DiscreteObjectKeyFrame>
-                        </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
 				</VisualState>
 				<VisualState x:Name="LandscapeLeft">
@@ -565,20 +563,6 @@
                                 </DiscreteObjectKeyFrame.Value>
                             </DiscreteObjectKeyFrame>
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)" Storyboard.TargetName="TextOptions">
-                            <DiscreteObjectKeyFrame KeyTime="0">
-                                <DiscreteObjectKeyFrame.Value>
-                                    false
-                                </DiscreteObjectKeyFrame.Value>
-                            </DiscreteObjectKeyFrame>
-                        </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)" Storyboard.TargetName="TextOptionsLandscape">
-                            <DiscreteObjectKeyFrame KeyTime="0">
-                                <DiscreteObjectKeyFrame.Value>
-                                    true
-                                </DiscreteObjectKeyFrame.Value>
-                            </DiscreteObjectKeyFrame>
-                        </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
 				</VisualState>
 				<VisualState x:Name="LandscapeRight">
@@ -612,20 +596,6 @@
                             <DiscreteObjectKeyFrame KeyTime="0">
                                 <DiscreteObjectKeyFrame.Value>
                                     <Visibility>Visible</Visibility>
-                                </DiscreteObjectKeyFrame.Value>
-                            </DiscreteObjectKeyFrame>
-                        </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)" Storyboard.TargetName="TextOptions">
-                            <DiscreteObjectKeyFrame KeyTime="0">
-                                <DiscreteObjectKeyFrame.Value>
-                                    false
-                                </DiscreteObjectKeyFrame.Value>
-                            </DiscreteObjectKeyFrame>
-                        </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.IsHitTestVisible)" Storyboard.TargetName="TextOptionsLandscape">
-                            <DiscreteObjectKeyFrame KeyTime="0">
-                                <DiscreteObjectKeyFrame.Value>
-                                    true
                                 </DiscreteObjectKeyFrame.Value>
                             </DiscreteObjectKeyFrame>
                         </ObjectAnimationUsingKeyFrames>
@@ -794,7 +764,7 @@
                         </Canvas.RenderTransform>
                     </Canvas>
 
-                    <Grid x:Name="CropRectsContainer" Visibility="Collapsed">
+                    <Grid x:Name="CropRectsContainer" Visibility="Collapsed" Opacity="0">
                         <Grid.RenderTransform>
                             <CompositeTransform/>
                         </Grid.RenderTransform>
@@ -1199,7 +1169,10 @@
             </Grid>
 
             <!-- text options -->
-            <StackPanel x:Name="TextOptions" VerticalAlignment="Top" HorizontalAlignment="Center" Orientation="Horizontal" Background="#01000000" Visibility="Collapsed" Opacity="0" >
+            <StackPanel x:Name="TextOptions" VerticalAlignment="Top" HorizontalAlignment="Center" Orientation="Horizontal" Background="#01000000" Visibility="Collapsed" Opacity="0">
+                <StackPanel.RenderTransform>
+                    <TranslateTransform Y="-1000" />
+                </StackPanel.RenderTransform>
                 <Button Template="{StaticResource EmptyButtonControlTemplate}"
                     Click="TextOptionsEditClicked">
                     <Grid>
@@ -1223,6 +1196,9 @@
                 </RepeatButton>
             </StackPanel>
             <StackPanel x:Name="TextOptionsLandscape" VerticalAlignment="Center" HorizontalAlignment="Left" Background="#01000000" Visibility="Collapsed" Opacity="0" >
+                <StackPanel.RenderTransform>
+                    <TranslateTransform X="-1000" />
+                </StackPanel.RenderTransform>
                 <RepeatButton Template="{StaticResource EmptyButtonControlTemplate}" Interval="150"
                     Click="TextOptionsRotateClicked">
                     <Grid>
