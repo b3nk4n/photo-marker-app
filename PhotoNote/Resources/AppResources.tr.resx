@@ -296,4 +296,12 @@
     <value>Kalemi için optimize</value>
     <comment>SettingsPage</comment>
   </data>
+  <data name="AppBarCrop" xml:space="preserve">
+    <value>kırp</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="AppBarDone" xml:space="preserve">
+    <value>tamam</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

@@ -296,4 +296,12 @@
     <value>Optimizado para Stylus</value>
     <comment>SettingsPage</comment>
   </data>
+  <data name="AppBarCrop" xml:space="preserve">
+    <value>recortar</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="AppBarDone" xml:space="preserve">
+    <value>listo</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

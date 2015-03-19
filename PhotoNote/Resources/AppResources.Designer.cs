@@ -70,6 +70,24 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die crop ähnelt.
+        /// </summary>
+        public static string AppBarCrop {
+            get {
+                return ResourceManager.GetString("AppBarCrop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die done ähnelt.
+        /// </summary>
+        public static string AppBarDone {
+            get {
+                return ResourceManager.GetString("AppBarDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die marker ähnelt.
         /// </summary>
         public static string AppBarPen {

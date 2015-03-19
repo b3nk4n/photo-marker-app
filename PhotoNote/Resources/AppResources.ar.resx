@@ -296,4 +296,12 @@
     <value>الأمثل لإدخال القلم</value>
     <comment>SettingsPage</comment>
   </data>
+  <data name="AppBarCrop" xml:space="preserve">
+    <value>قص</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="AppBarDone" xml:space="preserve">
+    <value>تم</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

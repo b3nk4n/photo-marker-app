@@ -296,4 +296,12 @@
     <value>Стилус оптимизирована</value>
     <comment>SettingsPage</comment>
   </data>
+  <data name="AppBarCrop" xml:space="preserve">
+    <value>обрезать</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="AppBarDone" xml:space="preserve">
+    <value>готово</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

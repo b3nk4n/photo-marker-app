@@ -329,7 +329,8 @@ namespace PhotoNote.Pages
             var imageScale = 1 / GetScaleFactorOfOrientation();
             int imageWidth = (int)Math.Round(visibleRect.Width * imageScale);
             int imageHeight = (int)Math.Round(visibleRect.Height * imageScale);
-            CropText.Text = string.Format("{0} x {1}", imageWidth, imageHeight);
+            CropText.Text = string.Format(CultureInfo.InvariantCulture, "{0} x {1}", imageWidth, imageHeight);
+
 
             // Rectangle Transforms
             ((TranslateTransform)this.CropRectTopLeft.RenderTransform).X = visibleRect.X;
@@ -477,7 +478,7 @@ namespace PhotoNote.Pages
             };
 
             // crop
-            _appBarCropMenuItem = new ApplicationBarMenuItem("CROP!!!"); // TODO: translate
+            _appBarCropMenuItem = new ApplicationBarMenuItem(AppResources.AppBarCrop);
             _appBarCropMenuItem.Click += (s, e) =>
             {
                 ChangedEditMode(EditMode.Cropping);
@@ -498,7 +499,7 @@ namespace PhotoNote.Pages
 
             // done
             _appBarDoneButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.check.png", UriKind.Relative));
-            _appBarDoneButton.Text = "DONE!"; // TODO: translate
+            _appBarDoneButton.Text = AppResources.AppBarDone;
             _appBarDoneButton.Click += (s, e) =>
             {
                 ChangedEditMode(_editModeBeforeCrop);
@@ -960,7 +961,7 @@ namespace PhotoNote.Pages
                 _editImage = pic;
                 UpdateZoomAppBarIcon();
                 UpdateImageOrientationAndScale();
-                EditImageControl.Source = _editImage.FullImage; // TODO remove
+                EditImageControl.Source = _editImage.FullImage;
             }
             catch(Exception)
             {

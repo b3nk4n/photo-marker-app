@@ -296,4 +296,12 @@
     <value>Optimisé pour stylet</value>
     <comment>SettingsPage</comment>
   </data>
+  <data name="AppBarCrop" xml:space="preserve">
+    <value>rogner</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="AppBarDone" xml:space="preserve">
+    <value>terminé</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

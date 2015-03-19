@@ -296,4 +296,12 @@
     <value>Tối ưu hóa cho Stylus</value>
     <comment>SettingsPage</comment>
   </data>
+  <data name="AppBarCrop" xml:space="preserve">
+    <value>cắt xén</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="AppBarDone" xml:space="preserve">
+    <value>xong</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

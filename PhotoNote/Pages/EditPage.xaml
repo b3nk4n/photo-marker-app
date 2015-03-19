@@ -721,7 +721,7 @@
         <!--ContentPanel - zusätzliche Inhalte hier platzieren-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0,0,0,72" Background="{StaticResource PhoneBackgroundBrush}">
             
-            <TextBlock x:Name="CropText" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="12" Text="" Visibility="Collapsed"/>
+            <TextBlock x:Name="CropText" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="12" Text="" FlowDirection="LeftToRight" Visibility="Collapsed"/>
 
             <Grid x:Name="EditImageContainer" Width="480" Height="728">
                 <Grid x:Name="RenderContainer" RenderTransformOrigin="0.5,0.5">
@@ -755,7 +755,7 @@
                     </InkPresenter>
 
                     <Canvas x:Name="CroppingControl" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5"
-                            Background="{StaticResource PhoneBackgroundBrush}" Opacity="0.8">
+                            Background="{StaticResource PhoneBackgroundBrush}" Opacity="0.8" FlowDirection="LeftToRight">
                         <Canvas.RenderTransform>
                             <CompositeTransform/>
                         </Canvas.RenderTransform>
@@ -780,7 +780,7 @@
                         </Canvas.RenderTransform>
                     </Canvas>
 
-                    <Grid x:Name="CropRectsContainer" Visibility="Collapsed" Opacity="0">
+                    <Grid x:Name="CropRectsContainer" Visibility="Collapsed" Opacity="0" FlowDirection="LeftToRight">
                         <Grid.RenderTransform>
                             <CompositeTransform/>
                         </Grid.RenderTransform>

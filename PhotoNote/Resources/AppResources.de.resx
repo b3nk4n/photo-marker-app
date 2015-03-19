@@ -121,6 +121,14 @@
     <value>Hilfe</value>
     <comment>AboutPage</comment>
   </data>
+  <data name="AppBarCrop" xml:space="preserve">
+    <value>Zuschneiden</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="AppBarDone" xml:space="preserve">
+    <value>Fertig</value>
+    <comment>EditPage</comment>
+  </data>
   <data name="AppBarPen" xml:space="preserve">
     <value>Markerstift</value>
     <comment>EditPage</comment>

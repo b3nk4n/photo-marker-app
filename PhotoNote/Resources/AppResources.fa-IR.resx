@@ -296,4 +296,12 @@
     <value>بهینه شده برای قلم</value>
     <comment>SettingsPage</comment>
   </data>
+  <data name="AppBarCrop" xml:space="preserve">
+    <value>برش</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="AppBarDone" xml:space="preserve">
+    <value>اماده</value>
+    <comment>EditPage</comment>
+  </data>
 </root>
