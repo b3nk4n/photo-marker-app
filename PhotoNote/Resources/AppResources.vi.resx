@@ -285,11 +285,11 @@
     <comment>EditPage</comment>
   </data>
   <data name="AppBarText" xml:space="preserve">
-    <value>Bản văn</value>
+    <value>Vản băn</value>
     <comment>EditPage</comment>
   </data>
   <data name="SettingsTitle" xml:space="preserve">
-    <value>cài đặt</value>
+    <value>Cài đặt</value>
     <comment>SettingsPage</comment>
   </data>
   <data name="StylusOptimized" xml:space="preserve">
@@ -297,11 +297,11 @@
     <comment>SettingsPage</comment>
   </data>
   <data name="AppBarCrop" xml:space="preserve">
-    <value>cắt xén</value>
+    <value>Cắt xén</value>
     <comment>EditPage</comment>
   </data>
   <data name="AppBarDone" xml:space="preserve">
-    <value>xong</value>
+    <value>Xong</value>
     <comment>EditPage</comment>
   </data>
 </root>
