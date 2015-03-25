@@ -231,10 +231,7 @@
     <Content Include="Assets\AppBar\appbar.share.png" />
     <Content Include="Assets\ApplicationIcon.png" />
     <Content Include="Assets\Banner\Banner_pocketBRAIN.png" />
-    <Content Include="Assets\Banner\Banner_Bash0r.png" />
-    <Content Include="Assets\Banner\Banner_PhotoInfo.png" />
     <Content Include="Assets\Banner\Banner_powernAPP.png" />
-    <Content Include="Assets\Banner\Banner_ScribbleHunter.png" />
     <Content Include="Assets\Images\1.jpg" />
     <Content Include="Assets\Images\2.jpg" />
     <Content Include="Assets\Images\3.jpg" />
