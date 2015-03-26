@@ -17,6 +17,8 @@ namespace PhotoNote.ViewModel
 
         public static readonly FontItemViewModel AMETIC_SC = new FontItemViewModel("Amatic SC", "/Assets/Fonts/AmaticSC-Regular.ttf#Amatic SC");
 
+        public static readonly FontItemViewModel ARCHISTICO = new FontItemViewModel("Archistico", "/Assets/Fonts/Archistico_Simple.ttf#Archistico");
+
         public static readonly FontItemViewModel ARIAL = new FontItemViewModel("Arial", "Arial");
 
         public static readonly FontItemViewModel BLACK_JACK = new FontItemViewModel("BlackJack", "/Assets/Fonts/black_jack.ttf#BlackJack");
@@ -47,6 +49,8 @@ namespace PhotoNote.ViewModel
 
         public static readonly FontItemViewModel VERDANA = new FontItemViewModel("Verdana", "Verdana");
 
+        public static readonly FontItemViewModel REPORT_1942 = new FontItemViewModel("1942 Report", "/Assets/Fonts/1942.ttf#1942 report");
+
         public static readonly FontItemViewModel DUMB2 = new FontItemViewModel("2Dumb", "/Assets/Fonts/2Dumb.ttf#2Dumb");
 
         public static readonly FontItemViewModel DUMB3 = new FontItemViewModel("3Dumb", "/Assets/Fonts/3Dumb.ttf#3Dumb");
@@ -54,6 +58,7 @@ namespace PhotoNote.ViewModel
         private static readonly IEnumerable<FontItemViewModel> FontCollection = new List<FontItemViewModel>() {
                     DEFAULT,
                     AMETIC_SC,
+                    ARCHISTICO,
                     ARIAL,
                     BLACK_JACK,
                     CALIBRI,
@@ -69,6 +74,7 @@ namespace PhotoNote.ViewModel
                     TIMES_NEW_ROMAN,
                     TREBUCHET_MS,
                     VERDANA,
+                    REPORT_1942,
                     DUMB2,
                     DUMB3
                 };
