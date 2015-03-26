@@ -256,6 +256,12 @@ namespace PhotoNote.Pages
 
         void UpdateClipAndTransforms(object cropRect = null)
         {
+            // ensure this method is not called too early
+            if (EditImageControl == null ||
+                ClipRectLeft == null ||
+                CropText == null)
+                return;
+
             double w = EditImageControl.Width;
             double h = EditImageControl.Height;
 
@@ -491,8 +497,12 @@ namespace PhotoNote.Pages
                 if (fileName != null)
                 {
                     var shareTask = new ShareMediaTask();
-                    shareTask.FilePath = "C:\\Data\\Users\\Public\\Pictures\\Saved Pictures\\" + fileName;
-                    shareTask.Show();
+                    var image = StaticMediaLibrary.GetImageFromFileName(fileName);
+                    if (image != null)
+                    {
+                        shareTask.FilePath = image.ImagePath;
+                        shareTask.Show();
+                    }
                 }
                 else
                 {
@@ -2109,7 +2119,8 @@ namespace PhotoNote.Pages
             var textbox = new ExtendedTextBox();
             textbox.Text = context.Text;
             textbox.SetContext(context.Context);
-            //textbox.CharacterSpacing = textbox.CharacterSpacing; // TODO: support line height and text spacing (also have a look at TextStacking->BlockHeight property)
+            // TODO: support line height and text spacing (also have a look at TextStacking->BlockHeight property)
+            //textbox.CharacterSpacing = textbox.CharacterSpacing;
             //textbox.LineHeight = textbox.LineHeight;
             textbox.LostFocus += (s, e) =>
             {

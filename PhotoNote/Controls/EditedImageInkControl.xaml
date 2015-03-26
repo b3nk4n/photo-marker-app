@@ -8,7 +8,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="480" d:DesignWidth="480" phone:PhoneApplicationPage.Orientation="Landscape">
+    d:DesignHeight="480" d:DesignWidth="480">
 
     <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneChromeBrush}" FlowDirection="LeftToRight">
         <Image x:Name="BackgroundImage" Stretch="Uniform"
