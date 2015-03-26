@@ -60,6 +60,12 @@ namespace PhotoNote.Pages
         /// </summary>
         private bool _imageInAnimationPlayed;
 
+        /// <summary>
+        /// Indicates the image was selected by the chooser, so that no images
+        /// have to be loaded.
+        /// </summary>
+        private bool _imageWasSelectedByChooser;
+
         // Konstruktor
         public MainPage()
         {
@@ -67,7 +73,7 @@ namespace PhotoNote.Pages
 
             Loaded += (s, e) =>
             {
-                if (_mainViewModel != null)
+                if (_mainViewModel != null && !_imageWasSelectedByChooser)
                     _mainViewModel.Update();
                 
                 if (!_imageInAnimationPlayed)
@@ -128,6 +134,8 @@ namespace PhotoNote.Pages
             ScreenBlocker.Visibility = Visibility.Visible;
             fileNameToOpen = Path.GetFileName(pr.OriginalFileName);
             _delayedNavigaionTimer.Start();
+
+            _imageWasSelectedByChooser = true;
         }
 
         private void InitializeBannerBehaviour()
@@ -203,6 +211,8 @@ namespace PhotoNote.Pages
 
             if (ScreenBlocker != null) // BugSense: System.NullReferenceException: Object reference not set to an instance of an object.
                 ScreenBlocker.Visibility = Visibility.Collapsed;
+
+            _imageWasSelectedByChooser = false;
         }
 
         private void HideAllImages()

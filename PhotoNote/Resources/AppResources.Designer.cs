@@ -169,7 +169,7 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 2.2 ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die 2.3 ähnelt.
         /// </summary>
         public static string ApplicationVersion {
             get {

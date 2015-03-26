@@ -202,6 +202,21 @@
     <Content Include="Assets\Fonts\3Dumb.ttf" />
     <Content Include="Assets\Fonts\HarabaraHand.ttf" />
     <None Include="packages.config" />
+    <None Include="PhotoNote.App_2015_03_25_23_18_11.sap" />
+    <None Include="PhotoNote.App_2015_03_25_23_21_45.sap" />
+    <None Include="PhotoNote.App_2015_03_25_23_24_00.sap" />
+    <None Include="PhotoNote.App_2015_03_25_23_24_50.sap" />
+    <None Include="PhotoNote.App_2015_03_25_23_32_26.sap" />
+    <None Include="PhotoNote.App_2015_03_25_23_40_16.sap" />
+    <None Include="PhotoNote.App_2015_03_25_23_44_47.sap" />
+    <None Include="PhotoNote.App_2015_03_25_23_46_49.sap" />
+    <None Include="PhotoNote.App_2015_03_25_23_49_10.sap" />
+    <None Include="PhotoNote.App_2015_03_25_23_51_49.sap" />
+    <None Include="PhotoNote.App_2015_03_25_23_54_04.sap" />
+    <None Include="PhotoNote.App_2015_03_26_00_38_17.sap" />
+    <None Include="PhotoNote.App_2015_03_26_00_44_10.sap" />
+    <None Include="PhotoNote.App_2015_03_26_00_45_56.sap" />
+    <None Include="PhotoNote.App_2015_03_26_01_06_33.sap" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>

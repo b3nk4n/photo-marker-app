@@ -544,7 +544,11 @@ namespace PhotoNote.Pages
                 {
                     var neutralScaleFactor = GetBiggestScaleFactorOfSmallerOrientation();
                     var textContextList = GetTextBoxContextList();
-                    var editedImageInkControl = new EditedImageInkControl(_editImage.FullImage as BitmapSource, InkControl.Strokes, textContextList, 1.0 / neutralScaleFactor);
+
+                    //var editedImageInkControl = new EditedImageInkControl(_editImage.FullImage as BitmapSource, InkControl.Strokes, textContextList, 1.0 / neutralScaleFactor);
+                    // reuse the picture of EditImageControl.Source, which saves a lot of memory!
+                    var editedImageInkControl = new EditedImageInkControl(EditImageControl.Source as BitmapSource, InkControl.Strokes, textContextList, 1.0 / neutralScaleFactor);
+
                     string imageName = _editImage.Name;
                     RenderingTrash.Children.Add(editedImageInkControl); // add to visual tree to enforce Bindings are invoked // note: SAVES MEMORY according to Profiler tests (why ever !?!)
                     

@@ -111,7 +111,7 @@ namespace PhotoNote.Pages
         private bool UpdatePicture(EditPicture pic)
         {
             _editImage = pic;
-            ImageControl.Source = _editImage.FullImage;
+            ImageControl.Source = _editImage.Image; // do not use the full image here, because every time this page is visited, a new image is generated and memory is consumed
             return true;
         }
 
