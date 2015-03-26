@@ -2109,6 +2109,8 @@ namespace PhotoNote.Pages
             var textbox = new ExtendedTextBox();
             textbox.Text = context.Text;
             textbox.SetContext(context.Context);
+            //textbox.CharacterSpacing = textbox.CharacterSpacing; // TODO: support line height and text spacing (also have a look at TextStacking->BlockHeight property)
+            //textbox.LineHeight = textbox.LineHeight;
             textbox.LostFocus += (s, e) =>
             {
                 var thisTextBox = s as ExtendedTextBox;

@@ -158,7 +158,7 @@
     <comment>About Page</comment>
   </data>
   <data name="RateAndReview" xml:space="preserve">
-    <value>dai un voto ed una opinione</value>
+    <value>dai un voto ed un’opinione</value>
     <comment>AboutPage</comment>
   </data>
   <data name="SupportAndFeedback" xml:space="preserve">
@@ -214,7 +214,7 @@
     <comment>MainPage-Info</comment>
   </data>
   <data name="Info2" xml:space="preserve">
-    <value>Seleziona opzioni di modica</value>
+    <value>Seleziona opzioni di modifica</value>
     <comment>MainPage-Info</comment>
   </data>
   <data name="Info3Close" xml:space="preserve">
@@ -226,7 +226,7 @@
     <comment>MainPage-Info</comment>
   </data>
   <data name="Info4" xml:space="preserve">
-    <value>La foto può essere possono essere modificate immediatamente...</value>
+    <value>La foto può essere modificata immediatamente...</value>
     <comment>MainPage-Info</comment>
   </data>
   <data name="AppBarUndo" xml:space="preserve">

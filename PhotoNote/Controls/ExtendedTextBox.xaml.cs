@@ -207,6 +207,24 @@ namespace PhotoNote.Controls
         }
 
         /// <summary>
+        /// Gets or sets the character spacing.
+        /// </summary>
+        public new int CharacterSpacing
+        {
+            get { return TextControl.CharacterSpacing; }
+            set { TextControl.CharacterSpacing = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the character spacing.
+        /// </summary>
+        public new double LineHeight
+        {
+            get { return TextControl.LineHeight; }
+            set { TextControl.LineHeight = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the border.
         /// </summary>
         public bool HasBorder

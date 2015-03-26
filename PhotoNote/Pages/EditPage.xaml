@@ -723,7 +723,7 @@
             
             <TextBlock x:Name="CropText" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="12" Text="" FlowDirection="LeftToRight" Visibility="Collapsed"/>
 
-            <Grid x:Name="EditImageContainer" Width="480" Height="728">
+            <Grid x:Name="EditImageContainer" Width="480" Height="728" FlowDirection="LeftToRight">
                 <Grid x:Name="RenderContainer" RenderTransformOrigin="0.5,0.5">
                     <Grid.RenderTransform>
                         <CompositeTransform/>
