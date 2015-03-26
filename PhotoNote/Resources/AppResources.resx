@@ -304,4 +304,8 @@
     <value>done</value>
     <comment>EditPage</comment>
   </data>
+  <data name="AppBarSaveAndShare" xml:space="preserve">
+    <value>save and share</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

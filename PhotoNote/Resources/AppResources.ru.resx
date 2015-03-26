@@ -234,7 +234,7 @@
     <comment>EditPage</comment>
   </data>
   <data name="Share" xml:space="preserve">
-    <value>Поделиться</value>
+    <value>поделиться</value>
     <comment>General</comment>
   </data>
   <data name="Edit" xml:space="preserve">
@@ -302,6 +302,10 @@
   </data>
   <data name="AppBarDone" xml:space="preserve">
     <value>готово</value>
+    <comment>EditPage</comment>
+  </data>
+  <data name="AppBarSaveAndShare" xml:space="preserve">
+    <value>сохранить и поделиться</value>
     <comment>EditPage</comment>
   </data>
 </root>

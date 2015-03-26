@@ -106,6 +106,15 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die save and share ähnelt.
+        /// </summary>
+        public static string AppBarSaveAndShare {
+            get {
+                return ResourceManager.GetString("AppBarSaveAndShare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die select ähnelt.
         /// </summary>
         public static string AppBarSelectPicture {

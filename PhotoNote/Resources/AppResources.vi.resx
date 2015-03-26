@@ -304,4 +304,8 @@
     <value>Xong</value>
     <comment>EditPage</comment>
   </data>
+  <data name="AppBarSaveAndShare" xml:space="preserve">
+    <value>Lưu và Chia sẻ</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

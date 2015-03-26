@@ -30,6 +30,9 @@ using PhotoNote.ViewModel;
 using PhoneKit.Framework.InAppPurchase;
 using Newtonsoft.Json;
 using Microsoft.Xna.Framework.Input.Touch;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Microsoft.Phone.Tasks;
+using PhoneKit.Framework.Core.Tile;
 
 namespace PhotoNote.Pages
 {
@@ -42,6 +45,7 @@ namespace PhotoNote.Pages
         ApplicationBarIconButton _appBarTextButton;
         ApplicationBarIconButton _appBarUndoButton;
         ApplicationBarMenuItem _appBarSaveMenuItem;
+        ApplicationBarMenuItem _appBarInstantShareMenuItem;
         ApplicationBarMenuItem _appBarCropMenuItem;
         ApplicationBarMenuItem _appBarPhotoInfoMenuItem;
 
@@ -72,6 +76,8 @@ namespace PhotoNote.Pages
         private const string CLIP_RIGHT_PERC = "_cl_right_";
         private const string CLIP_TOP_PERC = "_cl_top_";
         private const string CLIP_BOTTOM_PERC = "_cl_bottom_";
+
+        private const string NEED_TO_SAVE_KEY = "_need_save_";
 
         private double _zoom = 1.0;
         private double _translateX;
@@ -461,7 +467,7 @@ namespace PhotoNote.Pages
             _appBarSaveMenuItem = new ApplicationBarMenuItem(AppResources.AppBarSave);
             _appBarSaveMenuItem.Click += async (s, e) =>
             {
-                if (await Save())
+                if (await Save() != null)
                 {
                     Dispatcher.BeginInvoke(() =>
                     {
@@ -470,6 +476,23 @@ namespace PhotoNote.Pages
                         NavigationHelper.BackToMainPageWithHistoryClear(NavigationService);
                     });
                     
+                }
+                else
+                {
+                    MessageBox.Show(AppResources.MessageBoxNoSave, AppResources.MessageBoxWarning, MessageBoxButton.OK);
+                }
+            };
+
+            // instant share
+            _appBarInstantShareMenuItem = new ApplicationBarMenuItem(AppResources.AppBarSaveAndShare);
+            _appBarInstantShareMenuItem.Click += async (s, e) =>
+            {
+                var fileName = await Save();
+                if (fileName != null)
+                {
+                    var shareTask = new ShareMediaTask();
+                    shareTask.FilePath = "C:\\Data\\Users\\Public\\Pictures\\Saved Pictures\\" + fileName;
+                    shareTask.Show();
                 }
                 else
                 {
@@ -524,20 +547,21 @@ namespace PhotoNote.Pages
                 ApplicationBar.Buttons.Add(_appBarTextButton);
                 ApplicationBar.Buttons.Add(_appBarZoomButton);
                 ApplicationBar.MenuItems.Add(_appBarSaveMenuItem);
+                ApplicationBar.MenuItems.Add(_appBarInstantShareMenuItem);
                 ApplicationBar.MenuItems.Add(_appBarCropMenuItem);
                 ApplicationBar.MenuItems.Add(_appBarPhotoInfoMenuItem);
             }
         }
 
-        private async Task<bool> Save()
+        private async Task<string> Save()
         {
             if (HasNoImage())
-                return false;
+                return null;
 
             SavingPopup.Visibility = System.Windows.Visibility.Visible;
 
             await Task.Delay(33);
-            bool success = true;
+            string resultString;
             try
             {
                 using (var memStream = new MemoryStream())
@@ -589,20 +613,24 @@ namespace PhotoNote.Pages
                         }
 
                         // save
-                        media.SavePicture(string.Format("{0}_{1:0000}.jpg", nameWithoutExtension, rand.Next(9999)), memStream);
+                        var outputName = string.Format("{0}_{1:0000}.jpg", nameWithoutExtension, rand.Next(9999));
+                        media.SavePicture(outputName, memStream);
+                        resultString = outputName;
+
+                        _needToSave = false;
                     }
                 }
             } 
             catch (Exception)
             {
-                success = false;
+                resultString = null;
             } 
             finally
             {
                 SavingPopup.Visibility = System.Windows.Visibility.Collapsed;
             }
 
-            return success;
+            return resultString;
         }
 
         /// <summary>
@@ -805,6 +833,11 @@ namespace PhotoNote.Pages
             PhoneStateHelper.DeleteValue(EDIT_MODE_BEFORE_CROP_KEY);
             _editModeBeforeCrop = editModeBeforeCrop;
 
+            // need save state
+            var needSave = PhoneStateHelper.LoadValue<bool>(NEED_TO_SAVE_KEY, false);
+            PhoneStateHelper.DeleteValue(NEED_TO_SAVE_KEY);
+            _needToSave = needSave;
+
             // strokes
             var strokeData = PhoneStateHelper.LoadValue<string>(PEN_DATA_KEY);
             PhoneStateHelper.DeleteValue(PEN_DATA_KEY);
@@ -907,6 +940,9 @@ namespace PhotoNote.Pages
 
             // last edit mode before crop
             PhoneStateHelper.SaveValue(EDIT_MODE_BEFORE_CROP_KEY, _editModeBeforeCrop);
+
+            // need save state
+            PhoneStateHelper.SaveValue(NEED_TO_SAVE_KEY, _needToSave);
 
             // strokes
             if (InkControl.Strokes.Count > 0)
@@ -1198,8 +1234,7 @@ namespace PhotoNote.Pages
                 UpdateMarkerAppBar();
                 e.Cancel = true;
             }
-            else if (InkControl.Strokes.Count > 0 ||
-                EditTextControl.Children.Count > 0)
+            else if (NeedToSave)
             {
                 e.Cancel = true;
                 await Task.Delay(100); // fixes the "kill app by OS" issue
@@ -1213,6 +1248,24 @@ namespace PhotoNote.Pages
             }
 
             base.OnBackKeyPress(e);
+        }
+
+        private bool _needToSave;
+
+        private void UpdateNeedToSaveStatus()
+        {
+            _needToSave = InkControl.Strokes.Count > 0 || EditTextControl.Children.Count > 0;
+        }
+
+        /// <summary>
+        /// Indicates whether the save dialog has to be shown.
+        /// </summary>
+        private bool NeedToSave
+        {
+            get
+            {
+                return _needToSave;
+            }
         }
 
         public void ShowPenToolbar(bool useTransition=true)
@@ -1582,6 +1635,11 @@ namespace PhotoNote.Pages
                 {
                     InkControl.Strokes.Remove(_activeStroke);
                 }
+                else if (!_twoFingersActive)
+                {
+                    // stroke was added, so the image was changed and needs to be saved
+                    UpdateNeedToSaveStatus();
+                }
             }
 
             // reset current context
@@ -1696,6 +1754,8 @@ namespace PhotoNote.Pages
             if (CanUndo())
             {
                 InkControl.Strokes.RemoveAt(InkControl.Strokes.Count - 1);
+
+                UpdateNeedToSaveStatus();
             }
         }
 
@@ -1909,6 +1969,8 @@ namespace PhotoNote.Pages
                 if (!_selectedTextBox.IsInBounds(EditTextControl))
                 {
                     RemoveTextBox(EditTextControl, ref _selectedTextBox);
+
+                    UpdateNeedToSaveStatus();
                 }
             }
 
@@ -1942,6 +2004,8 @@ namespace PhotoNote.Pages
 
                             // show text options
                             ShowTextOptionsAnimation.Begin();
+
+                            UpdateNeedToSaveStatus();
                         }
                         else if (!_upgradePopupShown) // show upgrade message only once (not req. to make it persistent)
                         {

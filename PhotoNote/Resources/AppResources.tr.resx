@@ -304,4 +304,8 @@
     <value>tamam</value>
     <comment>EditPage</comment>
   </data>
+  <data name="AppBarSaveAndShare" xml:space="preserve">
+    <value>kaydet ve paylaş</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

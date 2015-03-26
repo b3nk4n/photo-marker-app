@@ -304,4 +304,8 @@
     <value>listo</value>
     <comment>EditPage</comment>
   </data>
+  <data name="AppBarSaveAndShare" xml:space="preserve">
+    <value>guardar y compartir</value>
+    <comment>EditPage</comment>
+  </data>
 </root>

@@ -137,6 +137,10 @@
     <value>Speichern</value>
     <comment>EditPage</comment>
   </data>
+  <data name="AppBarSaveAndShare" xml:space="preserve">
+    <value>Speichern und versenden</value>
+    <comment>EditPage</comment>
+  </data>
   <data name="AppBarSelectPicture" xml:space="preserve">
     <value>Bild auswählen</value>
     <comment>Edit Page</comment>

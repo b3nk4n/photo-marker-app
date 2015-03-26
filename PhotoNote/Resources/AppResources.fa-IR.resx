@@ -304,4 +304,8 @@
     <value>اماده</value>
     <comment>EditPage</comment>
   </data>
+  <data name="AppBarSaveAndShare" xml:space="preserve">
+    <value>ذخیره و اشتراک گذاری</value>
+    <comment>EditPage</comment>
+  </data>
 </root>
