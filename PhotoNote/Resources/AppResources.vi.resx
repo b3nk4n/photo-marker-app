@@ -281,11 +281,11 @@
     <value>Font Chữ</value>
   </data>
   <data name="MessageBoxMultipleTextUpgrade" xml:space="preserve">
-    <value>Using multiple text elements requires Photo Marker PRO version. Do you want to upgrade now?</value>
+    <value>Để có thể sử dụng thêm nhiều thành phần văn bản hơn nữa đòi hỏi phải có Photo Marker phiên bản PRO. Bạn có muốn nâng cấp ngay bây giờ?</value>
     <comment>EditPage</comment>
   </data>
   <data name="AppBarText" xml:space="preserve">
-    <value>Vản băn</value>
+    <value>Văn bản</value>
     <comment>EditPage</comment>
   </data>
   <data name="SettingsTitle" xml:space="preserve">
