@@ -256,7 +256,10 @@
             </StackPanel>
         </Grid>
         
-        <Rectangle x:Name="ScreenBlocker" Height="800" Grid.RowSpan="4" Fill="{StaticResource PhoneBackgroundBrush}" Visibility="Collapsed" /> 
+        <Rectangle x:Name="ScreenBlocker" Height="800" Grid.RowSpan="4" Fill="{StaticResource PhoneBackgroundBrush}" Visibility="Collapsed" />
+
+        <!-- Feedback dialog -->
+        <local:LocalizedFeedbackDialogControl Grid.RowSpan="2" EnableAnimation="True" />
 
         <!-- Info Control will be created here... -->
         

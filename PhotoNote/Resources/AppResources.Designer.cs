@@ -178,7 +178,7 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 2.3 ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die 2.3.1 ähnelt.
         /// </summary>
         public static string ApplicationVersion {
             get {
@@ -205,11 +205,76 @@ namespace PhotoNote.Resources {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die [Your feedback here]
+        ///
+        ///
+        ///---------------------------------
+        ///Device Name: {0}
+        ///Device Manufacturer: {1}
+        ///Device Firmware Version: {2}
+        ///Device Hardware Version: {3}
+        ///Application Version: {4}
+        ///--------------------------------- ähnelt.
+        /// </summary>
+        public static string FeedbackBodyText {
+            get {
+                return ResourceManager.GetString("FeedbackBodyText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die apps@bsautermeister.de ähnelt.
         /// </summary>
         public static string FeedbackEmail {
             get {
                 return ResourceManager.GetString("FeedbackEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Sorry to hear you didn&apos;t want to rate Photo Marker.
+        ///
+        ///Tell us about your experience or suggest how we can make it even better. ähnelt.
+        /// </summary>
+        public static string FeedbackMessageText {
+            get {
+                return ResourceManager.GetString("FeedbackMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die no thanks ähnelt.
+        /// </summary>
+        public static string FeedbackNoText {
+            get {
+                return ResourceManager.GetString("FeedbackNoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Photo Marker Customer Feedback  ähnelt.
+        /// </summary>
+        public static string FeedbackSubject {
+            get {
+                return ResourceManager.GetString("FeedbackSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Can we make it better? ähnelt.
+        /// </summary>
+        public static string FeedbackTitleText {
+            get {
+                return ResourceManager.GetString("FeedbackTitleText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die give feedback ähnelt.
+        /// </summary>
+        public static string FeedbackYesText {
+            get {
+                return ResourceManager.GetString("FeedbackYesText", resourceCulture);
             }
         }
         
@@ -399,6 +464,55 @@ namespace PhotoNote.Resources {
         public static string RateAndReview {
             get {
                 return ResourceManager.GetString("RateAndReview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die You look to be getting a lot of use out of our application!
+        ///
+        ///Why not give us a 5 star rating to show your appreciation? ähnelt.
+        /// </summary>
+        public static string RatingMessage10Text {
+            get {
+                return ResourceManager.GetString("RatingMessage10Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die We&apos;d love you to rate our app 5 stars
+        ///
+        ///Showing us some love on the store helps us to continue to work on the app and make things even better! ähnelt.
+        /// </summary>
+        public static string RatingMessage5Text {
+            get {
+                return ResourceManager.GetString("RatingMessage5Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die no thanks ähnelt.
+        /// </summary>
+        public static string RatingNoText {
+            get {
+                return ResourceManager.GetString("RatingNoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Enjoying Photo Marker? ähnelt.
+        /// </summary>
+        public static string RatingTitleText {
+            get {
+                return ResourceManager.GetString("RatingTitleText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die rate ähnelt.
+        /// </summary>
+        public static string RatingYesText {
+            get {
+                return ResourceManager.GetString("RatingYesText", resourceCulture);
             }
         }
         

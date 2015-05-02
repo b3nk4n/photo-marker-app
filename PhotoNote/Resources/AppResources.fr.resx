@@ -142,7 +142,7 @@
     <comment>General</comment>
   </data>
   <data name="ApplicationVersion" xml:space="preserve">
-    <value>2.3</value>
+    <value>2.3.1</value>
     <comment>General</comment>
   </data>
   <data name="Contributors" xml:space="preserve">
@@ -307,5 +307,64 @@
   <data name="AppBarSaveAndShare" xml:space="preserve">
     <value>enregistrer et partager</value>
     <comment>EditPage</comment>
+  </data>
+  <data name="FeedbackBodyText" xml:space="preserve">
+    <value>[Votre feedback ici]
+
+
+---------------------------------
+Device Name: {0}
+Device Manufacturer: {1}
+Device Firmware Version: {2}
+Device Hardware Version: {3}
+Application Version: {4}
+---------------------------------</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="FeedbackMessageText" xml:space="preserve">
+    <value>Désolé d'apprendre que vous ne voulez pas évaluer Photo Marker.
+
+Dites-nous ce que vous en pensez ou faites-nous des suggestions pour améliorer notre application.</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="FeedbackNoText" xml:space="preserve">
+    <value>non, merci</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="FeedbackSubject" xml:space="preserve">
+    <value>Retour client Photo Marker</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="FeedbackTitleText" xml:space="preserve">
+    <value>Pouvons-nous faire mieux?</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="FeedbackYesText" xml:space="preserve">
+    <value>donnez votre avis</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="RatingMessage10Text" xml:space="preserve">
+    <value>Il semble que vous utilisez beaucoup notre application!
+
+Pourquoi ne pas donner 5 étoiles pour exprimer votre satisfaction?</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="RatingMessage5Text" xml:space="preserve">
+    <value>Merci d'attribuer 5 étoiles à notre app.
+
+Votre soutien sur le Store nous aide à améliorer sans cesse notre app!</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="RatingNoText" xml:space="preserve">
+    <value>non, merci</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="RatingTitleText" xml:space="preserve">
+    <value>Photo Marker vous plaît?</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="RatingYesText" xml:space="preserve">
+    <value>oui</value>
+    <comment>FeedbackDialogControl</comment>
   </data>
 </root>

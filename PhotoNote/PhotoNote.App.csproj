@@ -105,6 +105,7 @@
       <DependentUpon>InfoControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\LocalizedAboutControl.cs" />
+    <Compile Include="Controls\LocalizedFeedbackControl.cs" />
     <Compile Include="Controls\LocalizedInAppStoreControl.cs" />
     <Compile Include="Controls\OpacityTextBox.cs" />
     <Compile Include="Conversion\FontSizeToPaddingConverter.cs" />

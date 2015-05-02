@@ -108,6 +108,16 @@ namespace PhotoNote.Pages
             photoTask.ShowCamera = true;
             photoTask.Completed += photoTask_Completed;
 
+            // register startup actions
+            StartupActionManager.Instance.Register(10, ActionExecutionRule.Equals, () =>
+            {
+                FeedbackManager.Instance.StartFirst();
+            });
+            StartupActionManager.Instance.Register(25, ActionExecutionRule.Equals, () =>
+            {
+                FeedbackManager.Instance.StartSecond();
+            });
+
             InitializeBannerBehaviour();
         }
 
@@ -203,6 +213,8 @@ namespace PhotoNote.Pages
 
             bool res = _mainViewModel.CheckHasAnyPicture();
             EmptyButton.Visibility = (!res) ? Visibility.Visible : Visibility.Collapsed;
+
+            StartupActionManager.Instance.Fire(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

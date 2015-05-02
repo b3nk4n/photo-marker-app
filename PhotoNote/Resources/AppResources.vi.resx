@@ -142,7 +142,7 @@
     <comment>General</comment>
   </data>
   <data name="ApplicationVersion" xml:space="preserve">
-    <value>2.3</value>
+    <value>2.3.1</value>
     <comment>General</comment>
   </data>
   <data name="Contributors" xml:space="preserve">
@@ -307,5 +307,64 @@
   <data name="AppBarSaveAndShare" xml:space="preserve">
     <value>Lưu và Chia sẻ</value>
     <comment>EditPage</comment>
+  </data>
+  <data name="FeedbackBodyText" xml:space="preserve">
+    <value>[Your feedback here]
+
+
+---------------------------------
+Device Name: {0}
+Device Manufacturer: {1}
+Device Firmware Version: {2}
+Device Hardware Version: {3}
+Application Version: {4}
+---------------------------------</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="FeedbackMessageText" xml:space="preserve">
+    <value>Sorry to hear you didn't want to rate Photo Marker.
+
+Tell us about your experience or suggest how we can make it even better.</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="FeedbackNoText" xml:space="preserve">
+    <value>no thanks</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="FeedbackSubject" xml:space="preserve">
+    <value>Photo Marker Customer Feedback </value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="FeedbackTitleText" xml:space="preserve">
+    <value>Can we make it better?</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="FeedbackYesText" xml:space="preserve">
+    <value>give feedback</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="RatingMessage10Text" xml:space="preserve">
+    <value>You look to be getting a lot of use out of our application!
+
+Why not give us a 5 star rating to show your appreciation?</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="RatingMessage5Text" xml:space="preserve">
+    <value>We'd love you to rate our app 5 stars
+
+Showing us some love on the store helps us to continue to work on the app and make things even better!</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="RatingNoText" xml:space="preserve">
+    <value>no thanks</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="RatingTitleText" xml:space="preserve">
+    <value>Enjoying Photo Marker?</value>
+    <comment>FeedbackDialogControl</comment>
+  </data>
+  <data name="RatingYesText" xml:space="preserve">
+    <value>rate</value>
+    <comment>FeedbackDialogControl</comment>
   </data>
 </root>
