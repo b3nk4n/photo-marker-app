@@ -353,6 +353,7 @@ namespace PhotoNote.Pages
             ((TranslateTransform)this.CropRectBotLeft.RenderTransform).Y = -_clipBotPerc * h;
             ((TranslateTransform)this.CropRectBotRight.RenderTransform).X = -_clipRightPerc * w;
             ((TranslateTransform)this.CropRectBotRight.RenderTransform).Y = -_clipBotPerc * h;
+             
         }
 
         /// <summary>
@@ -361,6 +362,9 @@ namespace PhotoNote.Pages
         /// <returns>The cropping rectangle in logical screen coordinated.</returns>
         private Rect GetCropRect()
         {
+            if (EditImageControl == null)
+                return new Rect();
+
             double width = EditImageControl.Width;
             double height = EditImageControl.Height;
             var leftX = _clipLeftPerc * width;
@@ -1129,8 +1133,15 @@ namespace PhotoNote.Pages
         {
             var viewportBounds = GetViewportBounds();
 
-            var heightScale = viewportBounds.Height / _editImage.Height;
-            var widthScale = viewportBounds.Width / _editImage.Width;
+            var heightScale = 1.0;
+            var widthScale = 1.0;
+
+            if (!HasNoImage())
+            {
+                heightScale = viewportBounds.Height / _editImage.Height;
+                widthScale = viewportBounds.Width / _editImage.Width;
+            }
+            
             return (heightScale < widthScale) ? heightScale : widthScale;
         }
 
@@ -1138,8 +1149,14 @@ namespace PhotoNote.Pages
         {
             var viewportBounds = GetNeutralViewportBounds();
 
-            var heightScale = viewportBounds.Height / _editImage.Height;
-            var widthScale = viewportBounds.Width / _editImage.Width;
+            var heightScale = 1.0;
+            var widthScale = 1.0;
+
+            if (!HasNoImage())
+            {
+                heightScale = viewportBounds.Height / _editImage.Height;
+                widthScale = viewportBounds.Width / _editImage.Width;
+            }
             return (heightScale > widthScale) ? heightScale : widthScale;
         }
 

@@ -218,7 +218,7 @@ namespace PhotoNote.Controls
         /// <summary>
         /// Gets or sets the character spacing.
         /// </summary>
-        public new double LineHeight
+        public double LineHeight
         {
             get { return TextControl.LineHeight; }
             set { TextControl.LineHeight = value; }
