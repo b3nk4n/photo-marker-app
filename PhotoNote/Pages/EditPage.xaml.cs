@@ -857,32 +857,43 @@ namespace PhotoNote.Pages
             PhoneStateHelper.DeleteValue(PEN_DATA_KEY);
             if (!string.IsNullOrEmpty(strokeData))
             {
-                var strokes = strokeData.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var stroke in strokes)
+                try
                 {
-                    var strokeParams = stroke.Split('|');
-
-                    var myStroke = new Stroke();
-                    myStroke.DrawingAttributes.Color = HexToColor(strokeParams[0]);
-                    myStroke.DrawingAttributes.Height = double.Parse(strokeParams[1], CultureInfo.InvariantCulture);
-                    myStroke.DrawingAttributes.Width = double.Parse(strokeParams[2], CultureInfo.InvariantCulture);
-
-                    var pointList = strokeParams[3].Split('$');
-                    
-                    foreach (var pointPair in pointList)
+                    var strokes = strokeData.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var stroke in strokes)
                     {
-                        var pointPairList = pointPair.Split('_');
-                        if (pointPairList.Length == 2)
+                        var strokeParams = stroke.Split('|');
+
+                        var myStroke = new Stroke();
+                        myStroke.DrawingAttributes.Color = HexToColor(strokeParams[0]);
+                        myStroke.DrawingAttributes.Height = double.Parse(strokeParams[1], CultureInfo.InvariantCulture);
+                        myStroke.DrawingAttributes.Width = double.Parse(strokeParams[2], CultureInfo.InvariantCulture);
+
+                        var pointList = strokeParams[3].Split('$');
+
+                        foreach (var pointPair in pointList)
                         {
-                            var x = Convert.ToDouble(pointPairList[0], CultureInfo.InvariantCulture);
-                            var y = Convert.ToDouble(pointPairList[1], CultureInfo.InvariantCulture);
+                            var pointPairList = pointPair.Split('_');
+                            if (pointPairList.Length == 2)
+                            {
+                                var x = Convert.ToDouble(pointPairList[0], CultureInfo.InvariantCulture);
+                                var y = Convert.ToDouble(pointPairList[1], CultureInfo.InvariantCulture);
 
-                            myStroke.StylusPoints.Add(new StylusPoint(x, y));
+                                myStroke.StylusPoints.Add(new StylusPoint(x, y));
+                            }
                         }
-                    }
 
-                    InkControl.Strokes.Add(myStroke);
+                        InkControl.Strokes.Add(myStroke);
+                    }
                 }
+                catch (FormatException)
+                {
+                    // BUGSENSE 2.3
+                    // System.FormatException: Input string was not in a correct format.
+                    // probably was the saved string shortened, because of insufficient memory. Its better to restore just some of the
+                    // data than nothing and app crash ;-)
+                }
+                
             }
 
             // center start
