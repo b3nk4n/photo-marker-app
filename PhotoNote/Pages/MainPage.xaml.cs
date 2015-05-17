@@ -18,6 +18,8 @@ using PhotoNote.Controls;
 using PhoneKit.Framework.Advertising;
 using PhoneKit.Framework.Core.Collections;
 using System.Diagnostics;
+using PhoneKit.Framework.Core.Storage;
+using PhotoNote.Model;
 
 namespace PhotoNote.Pages
 {
@@ -65,6 +67,11 @@ namespace PhotoNote.Pages
         /// have to be loaded.
         /// </summary>
         private bool _imageWasSelectedByChooser;
+
+        /// <summary>
+        /// A random number generator for file names.
+        /// </summary>
+        private readonly Random _random = new Random();
 
         // Konstruktor
         public MainPage()
@@ -142,8 +149,24 @@ namespace PhotoNote.Pages
 
             // block screen (just because it looks better)
             ScreenBlocker.Visibility = Visibility.Visible;
-            fileNameToOpen = Path.GetFileName(pr.OriginalFileName);
-            _delayedNavigaionTimer.Start();
+
+            // check for OneDrive files
+            if (pr.OriginalFileName.StartsWith("C:\\Data\\SharedData\\"))
+            {
+                var fileName = Path.GetFileName(pr.OriginalFileName);
+                var file = string.Format("{0:0000}_{1}", _random.Next(10000), fileName);
+
+                if (StaticMediaLibrary.SaveStreamToSavedPictures(pr.ChosenPhoto, file))
+                {
+                    fileNameToOpen = file;
+                    _delayedNavigaionTimer.Start();
+                }          
+            }
+            else
+            {
+                fileNameToOpen = Path.GetFileName(pr.OriginalFileName);
+                _delayedNavigaionTimer.Start();
+            }
 
             _imageWasSelectedByChooser = true;
         }

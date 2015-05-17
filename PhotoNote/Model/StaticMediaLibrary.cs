@@ -142,6 +142,18 @@ namespace PhotoNote.Model
             return -1;
         }
 
+        /// <summary>
+        /// Saves a picture from a stream to the SavedPictures folder.
+        /// </summary>
+        /// <param name="source">The picture source stream.</param>
+        /// <param name="fullName">The full image name including extension.</param>
+        /// <returns>Returs True for success, else False.</returns>
+        public static bool SaveStreamToSavedPictures(Stream source, string fullName)
+        {
+            var res = _mediaLibrary.SavePicture(fullName, source);
+            return res != null;
+        }
+
         private static string RemoveImageCopyCounter(string fileName)
         {
             if (fileName.Length <= 3)
