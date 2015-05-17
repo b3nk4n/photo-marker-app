@@ -79,6 +79,8 @@ namespace PhotoNote.Pages
 
         private const string NEED_TO_SAVE_KEY = "_need_save_";
 
+        private const string CONSIDER_CROPPING_KEY = "_cons_crop_";
+
         private double _zoom = 1.0;
         private double _translateX;
         private double _translateY;
@@ -98,6 +100,9 @@ namespace PhotoNote.Pages
 
         private System.Windows.Shapes.Rectangle _draggedRect = null;
         private double _clipLeftPerc, _clipRightPerc, _clipTopPerc, _clipBotPerc = 0;
+
+        // Flag variable to ensure that the user really used the cropping tool at all
+        private bool _considerCropping = false;
 
 
         public EditPage()
@@ -483,6 +488,7 @@ namespace PhotoNote.Pages
                     {
                         // BugSense: Navigation is not allowed when the task is not in the foreground
                         //           Solution: http://stackoverflow.com/questions/7373533/navigation-is-not-allowed-when-the-task-is-not-in-the-foreground-in-wp7-applic
+                        // 17.05.15: Seems not to work!
                         NavigationHelper.BackToMainPageWithHistoryClear(NavigationService);
                     });
                     
@@ -519,6 +525,7 @@ namespace PhotoNote.Pages
             _appBarCropMenuItem.Click += (s, e) =>
             {
                 ChangedEditMode(EditMode.Cropping);
+                _considerCropping = true;
             };
 
             // image info (photo info)
@@ -593,14 +600,19 @@ namespace PhotoNote.Pages
                     await Task.Delay(500);
                     var gfx = GraphicsHelper.Create(editedImageInkControl);
 
-                    var imageScale = 1 / GetScaleFactorOfOrientation();
-                    var cropRect = GetCropRect();
-                    var scaledClipRect = new Rect(Math.Round(cropRect.Left * imageScale), Math.Round(cropRect.Top * imageScale),
-                                                  Math.Round(cropRect.Width * imageScale), Math.Round(cropRect.Height * imageScale));
-                    if ((int)scaledClipRect.Width != gfx.PixelWidth || (int)scaledClipRect.Height != gfx.PixelHeight)
+                    // when the user used the cropping tool (or at least opened it...)
+                    if (_considerCropping)
                     {
-                        gfx = gfx.Crop(scaledClipRect);
+                        var imageScale = 1 / GetScaleFactorOfOrientation();
+                        var cropRect = GetCropRect();
+                        var scaledClipRect = new Rect(Math.Round(cropRect.Left * imageScale), Math.Round(cropRect.Top * imageScale),
+                                                      Math.Round(cropRect.Width * imageScale), Math.Round(cropRect.Height * imageScale));
+                        if ((int)scaledClipRect.Width != gfx.PixelWidth || (int)scaledClipRect.Height != gfx.PixelHeight)
+                        {
+                            gfx = gfx.Crop(scaledClipRect);
+                        }
                     }
+                    
 
                     // save to memory stream
                     gfx.SaveJpeg(memStream, gfx.PixelWidth, gfx.PixelHeight, 0, 100);
@@ -852,6 +864,11 @@ namespace PhotoNote.Pages
             PhoneStateHelper.DeleteValue(NEED_TO_SAVE_KEY);
             _needToSave = needSave;
 
+            // consider cropping
+            var considerCropping = PhoneStateHelper.LoadValue<bool>(CONSIDER_CROPPING_KEY, false);
+            PhoneStateHelper.DeleteValue(CONSIDER_CROPPING_KEY);
+            _considerCropping = considerCropping;
+
             // strokes
             var strokeData = PhoneStateHelper.LoadValue<string>(PEN_DATA_KEY);
             PhoneStateHelper.DeleteValue(PEN_DATA_KEY);
@@ -968,6 +985,9 @@ namespace PhotoNote.Pages
 
             // need save state
             PhoneStateHelper.SaveValue(NEED_TO_SAVE_KEY, _needToSave);
+
+            // consider cropping
+            PhoneStateHelper.SaveValue(CONSIDER_CROPPING_KEY, _considerCropping);
 
             // strokes
             if (InkControl.Strokes.Count > 0)
