@@ -49,7 +49,8 @@ namespace PhotoNote.Pages
         ApplicationBarMenuItem _appBarCropMenuItem;
         ApplicationBarMenuItem _appBarPhotoInfoMenuItem;
 
-        ApplicationBarIconButton _appBarDoneButton;
+        ApplicationBarIconButton _appBarDoneCroppingButton;
+        ApplicationBarIconButton _appBarDoneFullScreenTextEditButton;
 
         private Random rand = new Random();
 
@@ -81,6 +82,8 @@ namespace PhotoNote.Pages
 
         private const string CONSIDER_CROPPING_KEY = "_cons_crop_";
 
+        private const string FULL_SCREEN_TEXT_TEMP_KEY = "_full_txt_temp_";
+
         private double _zoom = 1.0;
         private double _translateX;
         private double _translateY;
@@ -90,7 +93,7 @@ namespace PhotoNote.Pages
 
         private EditMode _currentEditMode = EditMode.Marker;
 
-        private EditMode _editModeBeforeCrop = EditMode.Marker;
+        private EditMode _editModeBefore = EditMode.Marker;
 
         private static StoredObject<bool> ZoomingInfoShow = new StoredObject<bool>("_zoomingInfo_", false);
 
@@ -541,15 +544,37 @@ namespace PhotoNote.Pages
                 }
             };
 
-            // done
-            _appBarDoneButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.check.png", UriKind.Relative));
-            _appBarDoneButton.Text = AppResources.AppBarDone;
-            _appBarDoneButton.Click += (s, e) =>
+            // done crop
+            _appBarDoneCroppingButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.check.png", UriKind.Relative));
+            _appBarDoneCroppingButton.Text = AppResources.AppBarDone;
+            _appBarDoneCroppingButton.Click += (s, e) =>
             {
-                ChangedEditMode(_editModeBeforeCrop);
+                ChangedEditMode(_editModeBefore);
                 UpdateTextAppBar();
                 UpdateMarkerAppBar();
             };
+
+            // done full screen edit text
+            _appBarDoneFullScreenTextEditButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.check.png", UriKind.Relative));
+            _appBarDoneFullScreenTextEditButton.Text = AppResources.AppBarDone;
+            _appBarDoneFullScreenTextEditButton.Click += (s, e) =>
+            {
+                // save text changes
+                if (_selectedTextBox != null)
+                {
+                    var editedText = FullScreenTextInput.Text;
+                    _selectedTextBox.Text = editedText;
+                    // loose textbox fucus
+                    this.Focus();
+                }
+                
+                ChangedEditMode(_editModeBefore);
+
+                UpdateTextAppBar();
+                UpdateMarkerAppBar();
+            };
+
+            
         }
 
         private void UpdateApplicationBar(EditMode editMode)
@@ -559,7 +584,11 @@ namespace PhotoNote.Pages
 
             if (editMode == EditMode.Cropping)
             {
-                ApplicationBar.Buttons.Add(_appBarDoneButton);
+                ApplicationBar.Buttons.Add(_appBarDoneCroppingButton);
+            }
+            else if (editMode == EditMode.FullScreenEditText)
+            {
+                ApplicationBar.Buttons.Add(_appBarDoneFullScreenTextEditButton);
             }
             else
             {
@@ -857,7 +886,7 @@ namespace PhotoNote.Pages
             // last edit mode before crop
             var editModeBeforeCrop = PhoneStateHelper.LoadValue<EditMode>(EDIT_MODE_BEFORE_CROP_KEY, EditMode.Marker);
             PhoneStateHelper.DeleteValue(EDIT_MODE_BEFORE_CROP_KEY);
-            _editModeBeforeCrop = editModeBeforeCrop;
+            _editModeBefore = editModeBeforeCrop;
 
             // need save state
             var needSave = PhoneStateHelper.LoadValue<bool>(NEED_TO_SAVE_KEY, false);
@@ -869,7 +898,60 @@ namespace PhotoNote.Pages
             PhoneStateHelper.DeleteValue(CONSIDER_CROPPING_KEY);
             _considerCropping = considerCropping;
 
-            // strokes
+            // center start
+            var centerStart = PhoneStateHelper.LoadValue<Vector2>(CENTER_START_KEY, new Vector2());
+            PhoneStateHelper.DeleteValue(CENTER_START_KEY);
+            _centerStart = centerStart;
+
+            // text elements
+            if (EditTextControl.Children.Count == 0)
+            {
+                var jsonArrayTextContexts = PhoneStateHelper.LoadValue<string>(TEXT_ELEMENTS_KEY, null);
+                if (!string.IsNullOrEmpty(jsonArrayTextContexts))
+                {
+                    PhoneStateHelper.DeleteValue(TEXT_ELEMENTS_KEY);
+                    var tbContextList = JsonConvert.DeserializeObject<IList<TextBoxContext>>(jsonArrayTextContexts);
+                
+                    foreach (var context in tbContextList)
+	                {
+                        var textbox = AddTextBox(EditTextControl, context);
+                        textbox.IsActive = false;
+                        textbox.IsEnabled = false;
+	                }
+                }
+            }
+
+            // text selected index
+            var textSelectedIndex = PhoneStateHelper.LoadValue<int>(TEXT_SELECTED_INDEX, -1);
+            PhoneStateHelper.DeleteValue(TEXT_SELECTED_INDEX);
+            if (textSelectedIndex != -1 && textSelectedIndex < EditTextControl.Children.Count)
+            {
+                var textbox = EditTextControl.Children[textSelectedIndex] as ExtendedTextBox;
+                SelectTextBox(textbox);
+                SetSelectionTextFont(textbox.FontFamily);
+
+                // show the popup, when we are in FullScreenTextEdit
+                if (_currentEditMode == EditMode.FullScreenEditText)
+                {
+                    // we use no animation here
+                    (FullScreenTextInputPopup.RenderTransform as TranslateTransform).Y = 0;
+                    FullScreenTextInputPopup.Visibility = System.Windows.Visibility.Visible;
+                    FullScreenTextInputPopup.Opacity = 1.0;
+
+                    var tempText = PhoneStateHelper.LoadValue<string>(FULL_SCREEN_TEXT_TEMP_KEY, "");
+                    PhoneStateHelper.DeleteValue(FULL_SCREEN_TEXT_TEMP_KEY);
+                    SetupFullScreenTextInput(tempText);
+                }
+
+            } // FIXME: selecting the item causes that the seleted items font is reverted to DEFAULT or that of the context.  (!?)
+            else
+            {
+                // when there is no selected text box, make sure we are not in FullScreenTextEdit mode
+                if (_currentEditMode == EditMode.FullScreenEditText)
+                    ChangedEditMode(EditMode.Text); // text mode is more likely
+            }
+
+            // strokes (should be done last, because the huge size could cause an exception in worst case)
             var strokeData = PhoneStateHelper.LoadValue<string>(PEN_DATA_KEY);
             PhoneStateHelper.DeleteValue(PEN_DATA_KEY);
             if (!string.IsNullOrEmpty(strokeData))
@@ -910,41 +992,8 @@ namespace PhotoNote.Pages
                     // probably was the saved string shortened, because of insufficient memory. Its better to restore just some of the
                     // data than nothing and app crash ;-)
                 }
-                
+
             }
-
-            // center start
-            var centerStart = PhoneStateHelper.LoadValue<Vector2>(CENTER_START_KEY, new Vector2());
-            PhoneStateHelper.DeleteValue(CENTER_START_KEY);
-            _centerStart = centerStart;
-
-            // text elements
-            if (EditTextControl.Children.Count == 0)
-            {
-                var jsonArrayTextContexts = PhoneStateHelper.LoadValue<string>(TEXT_ELEMENTS_KEY, null);
-                if (!string.IsNullOrEmpty(jsonArrayTextContexts))
-                {
-                    PhoneStateHelper.DeleteValue(TEXT_ELEMENTS_KEY);
-                    var tbContextList = JsonConvert.DeserializeObject<IList<TextBoxContext>>(jsonArrayTextContexts);
-                
-                    foreach (var context in tbContextList)
-	                {
-                        var textbox = AddTextBox(EditTextControl, context);
-                        textbox.IsActive = false;
-                        textbox.IsEnabled = false;
-	                }
-                }
-            }
-
-            // text selected index
-            var textSelectedIndex = PhoneStateHelper.LoadValue<int>(TEXT_SELECTED_INDEX, -1);
-            PhoneStateHelper.DeleteValue(TEXT_SELECTED_INDEX);
-            if (textSelectedIndex != -1 && textSelectedIndex < EditTextControl.Children.Count)
-            {
-                var textbox = EditTextControl.Children[textSelectedIndex] as ExtendedTextBox;
-                SelectTextBox(textbox);
-                SetSelectionTextFont(textbox.FontFamily);
-            } // FIXME: selecting the item causes that the seleted items font is reverted to DEFAULT or that of the context.  (!?)
         }
 
         private static System.Windows.Media.Color HexToColor(string hexString)
@@ -981,29 +1030,13 @@ namespace PhotoNote.Pages
             PhoneStateHelper.SaveValue(CLIP_BOTTOM_PERC, _clipBotPerc);
 
             // last edit mode before crop
-            PhoneStateHelper.SaveValue(EDIT_MODE_BEFORE_CROP_KEY, _editModeBeforeCrop);
+            PhoneStateHelper.SaveValue(EDIT_MODE_BEFORE_CROP_KEY, _editModeBefore);
 
             // need save state
             PhoneStateHelper.SaveValue(NEED_TO_SAVE_KEY, _needToSave);
 
             // consider cropping
             PhoneStateHelper.SaveValue(CONSIDER_CROPPING_KEY, _considerCropping);
-
-            // strokes
-            if (InkControl.Strokes.Count > 0)
-            {
-                StringBuilder strokeData = new StringBuilder();
-                foreach (var stroke in InkControl.Strokes)
-                {
-                    strokeData.AppendLine(String.Format("{0}|{1}|{2}|{3}",
-                        stroke.DrawingAttributes.Color.ToString(),
-                        stroke.DrawingAttributes.Height.ToString("0.00", 
-                        CultureInfo.InvariantCulture),
-                        stroke.DrawingAttributes.Width.ToString("0.00", CultureInfo.InvariantCulture),
-                        String.Join("$", stroke.StylusPoints.Select(p => String.Format("{0}_{1}", p.X.ToString("0.00", CultureInfo.InvariantCulture), p.Y.ToString("0.00", CultureInfo.InvariantCulture))))));
-                }
-                PhoneStateHelper.SaveValue(PEN_DATA_KEY, strokeData.ToString());
-            }
 
             // center start (cirlce)
             PhoneStateHelper.SaveValue(CENTER_START_KEY, _centerStart);
@@ -1017,7 +1050,7 @@ namespace PhotoNote.Pages
                     var jsonArrayTextContexts = JsonConvert.SerializeObject(contextList);
                     PhoneStateHelper.SaveValue(TEXT_ELEMENTS_KEY, jsonArrayTextContexts);
                 }
-                
+
             }
 
             // text selected index
@@ -1036,7 +1069,31 @@ namespace PhotoNote.Pages
                 }
                 PhoneStateHelper.SaveValue(TEXT_SELECTED_INDEX, index);
             }
-            
+
+            // full screen temporary text
+            if (_currentEditMode == EditMode.FullScreenEditText)
+            {
+                if (!string.IsNullOrEmpty(FullScreenTextInput.Text))
+                {
+                    PhoneStateHelper.SaveValue(FULL_SCREEN_TEXT_TEMP_KEY, FullScreenTextInput.Text);
+                }
+            }
+
+            // strokes (should be the last, because could cause an exception when size is too huge)
+            if (InkControl.Strokes.Count > 0)
+            {
+                StringBuilder strokeData = new StringBuilder();
+                foreach (var stroke in InkControl.Strokes)
+                {
+                    strokeData.AppendLine(String.Format("{0}|{1}|{2}|{3}",
+                        stroke.DrawingAttributes.Color.ToString(),
+                        stroke.DrawingAttributes.Height.ToString("0.00", 
+                        CultureInfo.InvariantCulture),
+                        stroke.DrawingAttributes.Width.ToString("0.00", CultureInfo.InvariantCulture),
+                        String.Join("$", stroke.StylusPoints.Select(p => String.Format("{0}_{1}", p.X.ToString("0.00", CultureInfo.InvariantCulture), p.Y.ToString("0.00", CultureInfo.InvariantCulture))))));
+                }
+                PhoneStateHelper.SaveValue(PEN_DATA_KEY, strokeData.ToString());
+            }
         }
 
         private bool UpdatePicture(EditPicture pic)
@@ -1280,6 +1337,13 @@ namespace PhotoNote.Pages
                 e.Cancel = true;
                 HidePenToolbar();
             }
+            else if (_currentEditMode == EditMode.FullScreenEditText)
+            {
+                ChangedEditMode(_editModeBefore);
+                UpdateTextAppBar();
+                UpdateMarkerAppBar();
+                e.Cancel = true;
+            }
             else if (_selectedTextBox != null)
             {
                 UnselectTextBox(ref _selectedTextBox);
@@ -1287,7 +1351,7 @@ namespace PhotoNote.Pages
             }
             else if (_currentEditMode == EditMode.Cropping)
             {
-                ChangedEditMode(_editModeBeforeCrop);
+                ChangedEditMode(_editModeBefore);
                 UpdateTextAppBar();
                 UpdateMarkerAppBar();
                 e.Cancel = true;
@@ -2115,7 +2179,15 @@ namespace PhotoNote.Pages
                 CropDisabledAnimation.Begin();
             }
 
-            if ((lastEditMode == EditMode.Cropping || newEditMode == EditMode.Cropping) && lastEditMode != newEditMode)
+            // check if old mode was cropping
+            if (lastEditMode == EditMode.FullScreenEditText && newEditMode != lastEditMode)
+            {
+                HideFullScreenTextInputPopup.Begin();
+                FullScreenTextInput.Text = string.Empty;
+            }
+
+            if (((lastEditMode == EditMode.Cropping || newEditMode == EditMode.Cropping) || (lastEditMode == EditMode.FullScreenEditText || newEditMode == EditMode.FullScreenEditText))
+                && lastEditMode != newEditMode)
             {
                 UpdateApplicationBar(newEditMode);
             }
@@ -2139,9 +2211,9 @@ namespace PhotoNote.Pages
             {
                 // store the last edit mode to be able to get back and make sure
                 // not to store crop mode (which leads to an endless loop)
-                if (lastEditMode != EditMode.Cropping)
+                if (lastEditMode != EditMode.Cropping && lastEditMode != EditMode.FullScreenEditText)
                 {
-                    _editModeBeforeCrop = lastEditMode;
+                    _editModeBefore = lastEditMode;
                 }
 
                 AllTextBoxesToActiveState(false);
@@ -2153,6 +2225,33 @@ namespace PhotoNote.Pages
 
                 CropEnabledAnimation.Begin();
             }
+            else if (newEditMode == EditMode.FullScreenEditText)
+            {
+                // store the last edit mode to be able to get back and make sure
+                // not to store crop mode (which leads to an endless loop)
+                if (lastEditMode != EditMode.Cropping && lastEditMode != EditMode.FullScreenEditText)
+                {
+                    _editModeBefore = lastEditMode;
+                }
+
+                HidePenToolbar();
+
+                InputControl.Visibility = Visibility.Collapsed;
+
+                if (_selectedTextBox != null)
+                {
+                    SetupFullScreenTextInput(_selectedTextBox.Text);
+                }
+
+                ShowFullScreenTextInputPopup.Begin();
+                FullScreenTextInput.Focus();
+            }
+        }
+
+        private void SetupFullScreenTextInput(string text)
+        {
+            FullScreenTextInput.Text = text;
+            FullScreenTextInput.Select(text.Length, 0);
         }
 
         /// <summary>
@@ -2209,7 +2308,9 @@ namespace PhotoNote.Pages
 
         private void TextOptionsEditClicked(object sender, RoutedEventArgs e)
         {
-            EditTextBox(_selectedTextBox);
+            // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            //EditTextBox(_selectedTextBox); 
+            ChangedEditMode(EditMode.FullScreenEditText);
         }
 
         private void TextOptionsDeleteClicked(object sender, RoutedEventArgs e)

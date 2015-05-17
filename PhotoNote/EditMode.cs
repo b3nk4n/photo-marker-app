@@ -11,6 +11,6 @@ namespace PhotoNote
     /// </summary>
     public enum EditMode
     {
-        Marker, Text, Cropping
+        Marker, Text, Cropping, FullScreenEditText
     }
 }
