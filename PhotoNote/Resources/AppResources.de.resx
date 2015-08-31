@@ -170,7 +170,7 @@
     <comment>General</comment>
   </data>
   <data name="ApplicationVersion" xml:space="preserve">
-    <value>2.4</value>
+    <value>2.5</value>
     <comment>General</comment>
   </data>
   <data name="Contributors" xml:space="preserve">
@@ -284,7 +284,8 @@ Erzählen Sie uns von Ihren Erfahrungen oder teilen Sie uns Vorschläge mit, dam
     <comment>MessageBox</comment>
   </data>
   <data name="MessageBoxUnknownError" xml:space="preserve">
-    <value>Hoppala! Irgendwas ist wohl schief gelaufen. Tut mir wirklich leid!</value>
+    <value>Hoppala! Irgendwas ist wohl schief gelaufen. Tut mir wirklich leid!
+Falls du Windows Mobile 10 verwendest: Ein Update für die App kommt bald! :)</value>
     <comment>MessageBox</comment>
   </data>
   <data name="MessageBoxWarning" xml:space="preserve">

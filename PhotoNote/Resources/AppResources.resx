@@ -142,7 +142,7 @@
     <comment>General</comment>
   </data>
   <data name="ApplicationVersion" xml:space="preserve">
-    <value>2.4</value>
+    <value>2.5</value>
     <comment>General</comment>
   </data>
   <data name="Contributors" xml:space="preserve">
@@ -250,7 +250,8 @@
     <comment>MessageBox</comment>
   </data>
   <data name="MessageBoxUnknownError" xml:space="preserve">
-    <value>Ooops! Anything went wrong. I'm very sorry!</value>
+    <value>Ooops! Anything went wrong. I'm very sorry!
+In case you are running Windows Mobile 10: An update to solve this error is coming soon! :)</value>
     <comment>MessageBox</comment>
   </data>
   <data name="SavingPicuture" xml:space="preserve">
