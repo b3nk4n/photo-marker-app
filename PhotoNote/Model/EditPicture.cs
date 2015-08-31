@@ -1,5 +1,4 @@
-﻿using Microsoft.Phone;
-using Microsoft.Phone.Tasks;
+﻿using Microsoft.Phone.Tasks;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Media.PhoneExtensions;
 using PhoneKit.Framework.Graphics;

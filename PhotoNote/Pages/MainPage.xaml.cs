@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
@@ -17,8 +15,6 @@ using PhotoNote.ViewModel;
 using PhotoNote.Controls;
 using PhoneKit.Framework.Advertising;
 using PhoneKit.Framework.Core.Collections;
-using System.Diagnostics;
-using PhoneKit.Framework.Core.Storage;
 using PhotoNote.Model;
 
 namespace PhotoNote.Pages

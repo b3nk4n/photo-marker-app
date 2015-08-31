@@ -3,8 +3,6 @@ using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using Microsoft.Xna.Framework.Media;
-using System.Diagnostics;
 using PhotoNote.Model;
 using System.Windows.Media.Imaging;
 using System.Windows.Input;
@@ -25,14 +23,11 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Collections.Generic;
 using PhoneKit.Framework.Core.Storage;
-using PhotoNote.Conversion;
 using PhotoNote.ViewModel;
 using PhoneKit.Framework.InAppPurchase;
 using Newtonsoft.Json;
-using Microsoft.Xna.Framework.Input.Touch;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Microsoft.Phone.Tasks;
-using PhoneKit.Framework.Core.Tile;
 
 namespace PhotoNote.Pages
 {
