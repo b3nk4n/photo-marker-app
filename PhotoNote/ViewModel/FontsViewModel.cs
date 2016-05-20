@@ -27,6 +27,8 @@ namespace PhotoNote.ViewModel
 
         public static readonly FontItemViewModel COURIER_NEW = new FontItemViewModel("Courier New", "Courier New");
 
+        public static readonly FontItemViewModel DIGITALIX = new FontItemViewModel("Digitalix", "/Assets/Fonts/digitalix.ttf#Digitalix");
+
         public static readonly FontItemViewModel GEORGIA = new FontItemViewModel("Georgia", "Georgia");
 
         public static readonly FontItemViewModel HARABARA_HAND = new FontItemViewModel("Harabara Hand", "/Assets/Fonts/HarabaraHand.ttf#HarabaraHand");
@@ -34,6 +36,8 @@ namespace PhotoNote.ViewModel
         public static readonly FontItemViewModel LACIDA_SANS = new FontItemViewModel("Lucida Sans Unicode", "Lucida Sans Unicode");
 
         public static readonly FontItemViewModel PACIFICO = new FontItemViewModel("Pacifico", "/Assets/Fonts/Pacifico.ttf#Pacifico");
+
+        public static readonly FontItemViewModel PIXELATE = new FontItemViewModel("Pixelate", "/Assets/Fonts/pixelate.ttf#Pixelate");
 
         public static readonly FontItemViewModel SEGEO_WP_LIGHT = new FontItemViewModel("Segoe WP", "Segoe WP Light"); // when option is set to BOLD, it is like 'Segoe WP Black'
 
@@ -61,10 +65,12 @@ namespace PhotoNote.ViewModel
                     COMIC_RELIEF,
                     COMIC_SANS_MS,
                     COURIER_NEW,
+                    DIGITALIX,
                     GEORGIA,
                     HARABARA_HAND,
                     LACIDA_SANS,
                     PACIFICO,
+                    PIXELATE,
                     SEGEO_WP_LIGHT,
                     TAHOMA,
                     TIMES_NEW_ROMAN,

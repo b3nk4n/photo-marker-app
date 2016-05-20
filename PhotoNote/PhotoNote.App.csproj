@@ -204,6 +204,8 @@
     <Content Include="Assets\Fonts\HarabaraHand.ttf" />
     <Content Include="Assets\Fonts\1942.ttf" />
     <Content Include="Assets\Fonts\Archistico_Simple.ttf" />
+    <Content Include="Assets\Fonts\digitalix.ttf" />
+    <Content Include="Assets\Fonts\pixelate.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
