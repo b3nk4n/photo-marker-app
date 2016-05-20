@@ -115,11 +115,13 @@ namespace PhotoNote.Pages
             // register startup actions
             StartupActionManager.Instance.Register(10, ActionExecutionRule.Equals, () =>
             {
-                FeedbackManager.Instance.StartFirst();
+                if (!InAppPurchaseHelper.IsProductActive(AppConstants.IAP_PREMIUM_VERSION))
+                    FeedbackManager.Instance.StartFirst();
             });
             StartupActionManager.Instance.Register(25, ActionExecutionRule.Equals, () =>
             {
-                FeedbackManager.Instance.StartSecond();
+                if (!InAppPurchaseHelper.IsProductActive(AppConstants.IAP_PREMIUM_VERSION))
+                    FeedbackManager.Instance.StartSecond();
             });
 
             InitializeBannerBehaviour();
