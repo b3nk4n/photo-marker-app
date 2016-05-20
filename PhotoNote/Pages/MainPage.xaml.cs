@@ -15,6 +15,7 @@ using PhotoNote.ViewModel;
 using PhotoNote.Controls;
 using PhoneKit.Framework.Advertising;
 using PhoneKit.Framework.Core.Collections;
+using PhoneKit.Framework.Core.Storage;
 using PhotoNote.Model;
 
 namespace PhotoNote.Pages
@@ -146,8 +147,9 @@ namespace PhotoNote.Pages
             // block screen (just because it looks better)
             ScreenBlocker.Visibility = Visibility.Visible;
 
-            // check for OneDrive files
-            if (pr.OriginalFileName.StartsWith("C:\\Data\\SharedData\\"))
+            // check for OneDrive files or files in wrong directories (such as Portrait pictures of the Windows 10 Camera [why ever!?])
+            if (pr.OriginalFileName.StartsWith("C:\\Data\\SharedData\\") ||
+                pr.OriginalFileName.StartsWith("C:\\Data\\Users\\DefApps\\AppData"))
             {
                 var fileName = Path.GetFileName(pr.OriginalFileName);
                 var file = string.Format("{0:0000}_{1}", _random.Next(10000), fileName);
