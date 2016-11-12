@@ -15,7 +15,6 @@ using PhotoNote.ViewModel;
 using PhotoNote.Controls;
 using PhoneKit.Framework.Advertising;
 using PhoneKit.Framework.Core.Collections;
-using PhoneKit.Framework.Core.Storage;
 using PhotoNote.Model;
 
 namespace PhotoNote.Pages

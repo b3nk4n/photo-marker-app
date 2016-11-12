@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoNote.App", "PhotoNote\PhotoNote.App.csproj", "{DEEDD2EC-1F82-4E0A-B44E-DD223920457F}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoneKit.Framework", "..\PhoneKit.Framework\PhoneKit.Framework\PhoneKit.Framework.csproj", "{9274ED00-223E-41D1-A1BC-E7CDD8C8D34D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoNote.Test", "PhotoNote.Test\PhotoNote.Test.csproj", "{249EDE92-22A4-46CC-B3D5-FDDCA142A7D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{C04F400E-6500-49E2-9398-6750DC570DCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,5 +76,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0028AC27-312B-4F73-B8F2-C3B8D9740A86} = {C04F400E-6500-49E2-9398-6750DC570DCC}
+		{9274ED00-223E-41D1-A1BC-E7CDD8C8D34D} = {C04F400E-6500-49E2-9398-6750DC570DCC}
 	EndGlobalSection
 EndGlobal
